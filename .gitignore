@@ -1,4 +1,7 @@
 *.DS_Store
+
 *.a
 *.so
+
 build/
+lib/
