@@ -3,8 +3,8 @@
 #include "cnmfe/cnmfe.h"
 
 TEST_CASE("CNMFe completes successfully", "[cnmfe]") {
-	Cnmfe cnmfe;
-	std::string actualStatus = cnmfe.runCnmfe();
-	const std::string expectedStatus = "CNMFe ran successfully";
-	REQUIRE(actualStatus == expectedStatus);
+    Cnmfe cnmfe;
+    std::string actualStatus = cnmfe.runCnmfe();
+    const std::string expectedStatus = "CNMFe ran successfully";
+    REQUIRE(actualStatus == expectedStatus);
 }

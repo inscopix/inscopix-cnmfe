@@ -3,5 +3,8 @@
 *.a
 *.so
 
+.idea/
+cmake-build-debug/
+
 build/
 lib/
