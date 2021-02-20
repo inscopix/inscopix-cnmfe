@@ -2,5 +2,5 @@
 #include "cnmfe/cnmfe.h"
 
 std::string Cnmfe::runCnmfe() {
-    return "CNMFe ran successfully";
+	return "CNMFe ran successfully";
 }

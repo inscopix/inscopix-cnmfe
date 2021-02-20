@@ -5,7 +5,7 @@ using namespace std;
 
 class Cnmfe {
 public:
-    string runCnmfe();
+	string runCnmfe();
 };
 
 #endif // CNMFE_H

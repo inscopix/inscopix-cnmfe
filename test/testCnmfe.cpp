@@ -4,7 +4,7 @@
 
 TEST_CASE("CNMFe completes successfully", "[cnmfe]") {
 	Cnmfe cnmfe;
-    std::string actualStatus = cnmfe.runCnmfe();
+	std::string actualStatus = cnmfe.runCnmfe();
 	const std::string expectedStatus = "CNMFe ran successfully";
-    REQUIRE(actualStatus == expectedStatus);
+	REQUIRE(actualStatus == expectedStatus);
 }
