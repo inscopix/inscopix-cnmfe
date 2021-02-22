@@ -2,10 +2,8 @@
 #include "cnmfe/cnmfe.h"
 
 int main(int argc, char **argv) {
-
-    Cnmfe cnmfe;
-    std::string status = cnmfe.runCnmfe();
-    std::cout << "CNMFe status: " << status << '\n';
-
-    return 0;
+	Cnmfe cnmfe;
+	std::string status = cnmfe.runCnmfe();
+	std::cout << "CNMFe status: " << status << '\n';
+	return 0;
 }

@@ -1,4 +1,10 @@
 *.DS_Store
+
 *.a
 *.so
+
+.idea/
+cmake-build-debug/
+
 build/
+lib/
