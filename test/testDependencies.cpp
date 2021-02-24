@@ -2,6 +2,7 @@
 #include "ThreadPool.h"
 #include "mio.hpp"
 #include "H5Cpp.h"
+#include <armadillo>
 
 
 void add(int a, int b, int & sum)
@@ -47,4 +48,13 @@ TEST_CASE("HDF5Dependency", "[dependencies]")
     h5file.close();
     REQUIRE(actualFilename == expectedFilename);
     std::remove(expectedFilename.c_str());
+}
+
+TEST_CASE("ArmadilloDependency", "[dependencies]")
+{
+    const arma::Col<float> a = {41.85f, 98.17f, -68.76f};
+    const arma::Col<float> b = {0.01f, 14.5f, 1.098f};
+    const arma::Col<float> expectedSum = {41.86f, 112.67f, -67.662f};
+    arma::Col<float> actualSum = a + b;
+    REQUIRE(arma::approx_equal(actualSum, expectedSum, "reldiff", 1e-5f));
 }

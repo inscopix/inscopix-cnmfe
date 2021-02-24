@@ -25,13 +25,23 @@ list(APPEND HEADER_ONLY_LIB_PATHS ${THREADPOOL_HEADER_PATHS} ${MIO_HEADER_PATHS}
 set(LIB_INCLUDE_PATHS)
 set(LIB_FILE_PATHS)
 # hdf5
-set(HDF5_LIBRARIES)
-get_filename_component(HDF5_LIB_DIR_PATH ${LIB_DIR}/hdf5/lib ABSOLUTE)
-list(APPEND HDF5_LIBRARIES "${HDF5_LIB_DIR_PATH}/libhdf5_cpp-static.a" "${HDF5_LIB_DIR_PATH}/libhdf5-static.a")
 get_filename_component(HDF5_HEADER_PATHS ${LIB_DIR}/hdf5/include ABSOLUTE)
+get_filename_component(HDF5_LIB_DIR_PATH ${LIB_DIR}/hdf5/lib ABSOLUTE)
+set(HDF5_LIBRARIES
+        ${HDF5_LIB_DIR_PATH}/libhdf5_cpp-static.a
+        ${HDF5_LIB_DIR_PATH}/libhdf5-static.a)
+# armadillo
+set(ARMADILLO_DEFINITIONS ARMA_DONT_USE_WRAPPER ARMA_64BIT_WORD ARMA_BLAS_LONG_LONG ARMA_USE_HDF5 ARMA_NO_DEBUG)
+get_filename_component(ARMADILLO_HEADER_PATHS lib/armadillo ABSOLUTE)
+get_filename_component(INTELMKL_LIB_DIR lib/Intel_MKL/lib ABSOLUTE)
+set(ARMADILLO_LIBRARIES
+        ${INTELMKL_LIB_DIR}/libmkl_intel_ilp64.a
+        ${INTELMKL_LIB_DIR}/libmkl_tbb_thread.a
+        ${INTELMKL_LIB_DIR}/libmkl_core.a
+        ${INTELMKL_LIB_DIR}/libtbb.a)
 
 # add headers and libs to project target
-list(APPEND LIB_INCLUDE_PATHS ${HDF5_HEADER_PATHS})
-list(APPEND LIB_FILE_PATHS ${HDF5_LIBRARIES})
+list(APPEND LIB_INCLUDE_PATHS ${HDF5_HEADER_PATHS} ${ARMADILLO_HEADER_PATHS})
+list(APPEND LIB_FILE_PATHS ${HDF5_LIBRARIES} ${ARMADILLO_LIBRARIES})
 target_include_directories(${CMAKE_PROJECT_NAME} PUBLIC ${HEADER_ONLY_LIB_PATHS} ${LIB_INCLUDE_PATHS})
 target_link_libraries(${CMAKE_PROJECT_NAME} PUBLIC ${LIB_FILE_PATHS})
