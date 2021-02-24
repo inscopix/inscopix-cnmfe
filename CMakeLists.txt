@@ -13,10 +13,11 @@ include_directories(include src)
 add_library(${CMAKE_PROJECT_NAME} STATIC ${SRC_FILES})
 
 # header-only libs
-set(HEADER_ONLY_LIB_SEARCH_PATHS)
-get_filename_component(t ${LIB_DIR}/ThreadPool ABSOLUTE)
-list(APPEND HEADER_ONLY_LIB_SEARCH_PATHS ${t})
-target_include_directories(${CMAKE_PROJECT_NAME} PUBLIC ${HEADER_ONLY_LIB_SEARCH_PATHS})
+set(HEADER_ONLY_LIB_PATHS)
+get_filename_component(THREADPOOL_HEADER_PATHS ${LIB_DIR}/ThreadPool ABSOLUTE)
+get_filename_component(MIO_HEADER_PATHS ${LIB_DIR}/mio ABSOLUTE)
+list(APPEND HEADER_ONLY_LIB_PATHS ${THREADPOOL_HEADER_PATHS} ${MIO_HEADER_PATHS})
+target_include_directories(${CMAKE_PROJECT_NAME} PUBLIC ${HEADER_ONLY_LIB_PATHS})
 
 # unit tests
 add_subdirectory(test)
