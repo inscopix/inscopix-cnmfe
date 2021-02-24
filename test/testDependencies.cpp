@@ -1,6 +1,8 @@
 #include "catch.hpp"
 #include "ThreadPool.h"
 #include "mio.hpp"
+#include "H5Cpp.h"
+
 
 void add(int a, int b, int & sum)
 {
@@ -35,4 +37,14 @@ TEST_CASE("MioDependency", "[dependencies]")
 
     REQUIRE(error);
     REQUIRE(error.message() == "No such file or directory");
+}
+
+TEST_CASE("HDF5Dependency", "[dependencies]")
+{
+    const std::string expectedFilename = "acmqn170a1naubn179nspqicoanqy.h5";
+    H5::H5File h5file(expectedFilename, H5F_ACC_TRUNC);
+    const std::string actualFilename = h5file.getFileName();
+    h5file.close();
+    REQUIRE(actualFilename == expectedFilename);
+    std::remove(expectedFilename.c_str());
 }
