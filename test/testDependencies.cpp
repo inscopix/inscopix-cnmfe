@@ -3,6 +3,7 @@
 #include "mio.hpp"
 #include "H5Cpp.h"
 #include <armadillo>
+#include "opencv2/core.hpp"
 
 
 void add(int a, int b, int & sum)
@@ -55,6 +56,19 @@ TEST_CASE("ArmadilloDependency", "[dependencies]")
     const arma::Col<float> a = {41.85f, 98.17f, -68.76f};
     const arma::Col<float> b = {0.01f, 14.5f, 1.098f};
     const arma::Col<float> expectedSum = {41.86f, 112.67f, -67.662f};
+
     arma::Col<float> actualSum = a + b;
+
     REQUIRE(arma::approx_equal(actualSum, expectedSum, "reldiff", 1e-5f));
+}
+
+TEST_CASE("OpenCVDependency", "[dependencies]")
+{
+    float data[10] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+    cv::Mat dataMat = cv::Mat(2, 5, CV_32F, data);
+
+    const double expectedSum = 55;
+    double actualSum = cv::sum(dataMat)[0];
+
+    REQUIRE(actualSum == expectedSum);
 }
