@@ -1,5 +1,5 @@
 #include <iostream>
-#include "cnmfe/cnmfe.h"
+#include "isx/cnmfe.h"
 
 std::string Cnmfe::runCnmfe() {
     return "CNMFe ran successfully";
