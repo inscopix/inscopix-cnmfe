@@ -11,7 +11,7 @@ void add(int a, int b, int & sum)
     sum = a + b;
 }
 
-TEST_CASE("ThreadPoolDependency", "[dependencies]")
+TEST_CASE("ThreadPoolDependency", "[cnmfe-dependencies]")
 {
     std::vector<std::future<void>> results(3);
     std::vector<int> sums {-1, -1, -1};
@@ -30,7 +30,7 @@ TEST_CASE("ThreadPoolDependency", "[dependencies]")
     REQUIRE(sums[2] == 14);
 }
 
-TEST_CASE("MioDependency", "[dependencies]")
+TEST_CASE("MioDependency", "[cnmfe-dependencies]")
 {
     std::string filename = "myfile_X9Fa1nahda8had.txt";
     std::error_code error;
@@ -41,7 +41,7 @@ TEST_CASE("MioDependency", "[dependencies]")
     REQUIRE(error.message() == "No such file or directory");
 }
 
-TEST_CASE("HDF5Dependency", "[dependencies]")
+TEST_CASE("HDF5Dependency", "[cnmfe-dependencies]")
 {
     const std::string expectedFilename = "acmqn170a1naubn179nspqicoanqy.h5";
     H5::H5File h5file(expectedFilename, H5F_ACC_TRUNC);
@@ -51,7 +51,7 @@ TEST_CASE("HDF5Dependency", "[dependencies]")
     std::remove(expectedFilename.c_str());
 }
 
-TEST_CASE("ArmadilloDependency", "[dependencies]")
+TEST_CASE("ArmadilloDependency", "[cnmfe-dependencies]")
 {
     const arma::Col<float> a = {41.85f, 98.17f, -68.76f};
     const arma::Col<float> b = {0.01f, 14.5f, 1.098f};
@@ -62,7 +62,7 @@ TEST_CASE("ArmadilloDependency", "[dependencies]")
     REQUIRE(arma::approx_equal(actualSum, expectedSum, "reldiff", 1e-5f));
 }
 
-TEST_CASE("OpenCVDependency", "[dependencies]")
+TEST_CASE("OpenCVDependency", "[cnmfe-dependencies]")
 {
     float data[10] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
     cv::Mat dataMat = cv::Mat(2, 5, CV_32F, data);
