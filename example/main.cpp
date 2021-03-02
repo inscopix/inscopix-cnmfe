@@ -1,5 +1,5 @@
 #include <iostream>
-#include "cnmfe/cnmfe.h"
+#include "isx/cnmfe.h"
 
 int main(int argc, char **argv) {
 	Cnmfe cnmfe;
