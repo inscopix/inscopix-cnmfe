@@ -34,6 +34,14 @@ namespace isx
     /// \param inData               Cube of movie data (h x w x t)
     /// \param outCorrMatrix        Matrix of cross-correlation with adjacent pixels
     void computeLocalCorr(const CubeFloat_t & inData, MatrixFloat_t & outCorrMatrix);
+
+    /// Computes the coefficients of a Lasso model fit using Least Angle Regression (aka Lars)
+    ///
+    /// \param inX        Predictors (observations x predictor values)
+    /// \param inY        Response variable
+    /// \param outBeta    Model coefficients
+    /// \param positive   Restricts coefficients to be positive if true
+    void lassoLars(MatrixFloat_t inX, RowFloat_t inY, ColumnFloat_t & outBeta, const float lambda, const bool positive);
 }
 
 #endif //ISX_CNMFE_UTILS_H

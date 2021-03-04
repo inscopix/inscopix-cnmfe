@@ -1,4 +1,5 @@
 #include "isxCnmfeUtils.h"
+#include "isxLassoLars.h"
 #include <opencv2/core/core.hpp>
 #include <opencv2/imgproc/imgproc.hpp>
 #include <map>
@@ -187,5 +188,32 @@ namespace isx
 
         outCorrMatrix = arma::mean(processedData, 2);
         outCorrMatrix /= mask;
+    }
+
+    void lassoLars(MatrixFloat_t inX, RowFloat_t inY, ColumnFloat_t & outBeta, const float lambda, const bool positive)
+    {
+        // normalize data
+        inX.each_row() -= arma::mean(inX, 0);
+        RowFloat_t norms(inX.n_cols);
+        for (size_t idx = 0; idx < inX.n_cols; idx++)
+        {
+            norms.at(idx) = arma::norm(inX.col(idx));
+        }
+        inX.each_row() /= norms;
+        inY -= arma::mean(inY);
+
+        inX /= static_cast<float>(inX.n_rows);
+        inY /= static_cast<float>(inX.n_rows);
+
+        // train model
+        LARS<float> lars(true, lambda/inX.n_rows, 0.0, 2.220446049250313e-16);
+        lars.Train(inX, inY, outBeta, false);
+
+//        // adjust betas
+//        outBeta /= norms.t();
+//        if (positive)
+//        {
+//            outBeta.elem(arma::find(outBeta < 0)).zeros();
+//        }
     }
 }
