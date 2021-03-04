@@ -56,6 +56,14 @@ template <typename Src, typename Dst = Src>
 inline arma::Mat<Dst>
 cvToArmaMat(const cv::Mat_<Src> & inSrc, bool inTranspose = true);
 
+/// Compute the nth percentile of a column
+///
+/// \param inColumn         The column vector to compute the statistic over.
+/// \param inP              Value of percentile to compute
+///
+template <typename T>
+T
+nthPercentile(const arma::Col<T> &inColumn, const T & inP);
 
 // Templated Implementations
 
@@ -74,6 +82,20 @@ cvToArmaMat(const cv::Mat_<Src> & inSrc, bool inTranspose)
     arma::Mat<Src> tmp(inSrc.cols, inSrc.rows);
     inSrc.copyTo(cv::Mat_<Src>{inSrc.rows, inSrc.cols, tmp.memptr()});
     return inTranspose ? arma::conv_to<arma::Mat<Dst>>::from(tmp).t() : arma::conv_to<arma::Mat<Dst>>::from(tmp);
+}
+
+template <typename T>
+T
+nthPercentile(const arma::Col<T> &inColumn, const T & inP)
+{
+    // Compute nth percentile using linear interpolation
+    arma::Col<T> sorted = arma::sort(inColumn);
+    const T rank = inP * (sorted.n_elem - 1);
+    const size_t lower =  static_cast<size_t>(std::floor(rank));
+    const size_t upper = static_cast<size_t>(std::ceil(rank));
+    T fractional, integral;
+    fractional = std::modf(rank, &integral);
+    return sorted(lower) + (sorted(upper) - sorted(lower)) * fractional;
 }
 
 } // namespace isx
