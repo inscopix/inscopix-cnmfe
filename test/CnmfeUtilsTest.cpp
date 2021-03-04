@@ -292,7 +292,7 @@ TEST_CASE("LocalCorrelationsFftTest", "[cnmfe-utils]")
     }
 }
 
-TEST_CASE("LassoLars", "[algo-internal]")
+TEST_CASE("LassoLars", "[cnmfe-utils]")
 {
     SECTION("single predictor")
     {
