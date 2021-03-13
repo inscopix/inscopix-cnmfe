@@ -29,14 +29,14 @@ namespace isx
 
         size_t count = 0;
         ColumnFloat_t error = inY - m_C - m_b;
-        float RSS = arma::dot(error, error);
+        float RSS = armaDotProduct(error, error);  // float RSS = arma::dot(error, error);
         while (fabs(RSS - m_errorThreshold) > m_errorThreshold * 1e-4 && arma::sum(m_C) > 1e-9 && count < m_maxIterations)
         {
             updatePoolValues(error, RSS);
             run();
             updateHyperParameters(inY);
             error = inY - m_C - m_b;
-            RSS = arma::dot(error, error);
+            RSS = armaDotProduct(error, error);  // RSS = arma::dot(error, error);
             count += 1;
         }
     }
@@ -149,8 +149,8 @@ namespace isx
             tmp += (1.0f - m_filter(pool.m_l)) * (1.0f - m_filter(pool.m_l)) / pool.m_w;
         }
         shift -= 1.0f / m_T / (1.0f - m_gamma) * tmp;
-        float alpha = arma::dot(shift, shift);
-        float beta = arma::dot(error, shift);
+        float alpha = armaDotProduct(shift, shift);  // arma::dot(shift, shift);
+        float beta = armaDotProduct(error, shift);  //arma::dot(error, shift);
         float epsilon = RSS - m_errorThreshold;
         float deltaPhi;
         if (beta * beta - alpha * epsilon > 0.0f)
