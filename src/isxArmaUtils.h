@@ -38,15 +38,6 @@ MatrixFloat_t cubeToMatrixBySlice(
     const CubeFloat_t & cube,
     bool colOrder = true);
 
-/// Computes the dot product of two armadillo columns (alternative to arma::dot())
-///
-/// \param u    first column vector
-/// \param v    second column vector
-/// \return     dot product of the two input vectors
-float armaDotProduct(
-    const ColumnFloat_t & u,
-    const ColumnFloat_t & v);
-
 /// Convert an Armadillo matrix to an OpenCV matrix.
 ///
 /// \param  inSrc           Armadillo matrix of type Src.

@@ -23,10 +23,4 @@ namespace isx
         }
         return matrix;
     }
-
-    float armaDotProduct(const ColumnFloat_t & u, const ColumnFloat_t & v)
-    {
-        ColumnFloat_t tmp = u % v;
-        return arma::sum(tmp);
-    }
 } // namespace isx
