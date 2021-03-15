@@ -25,8 +25,7 @@ namespace isx
     /// Sparse nonnegative deconvolution problem solver for temporal components
     enum DeconvolutionMethod_t
     {
-        OASIS = 0, // Online active set optimization problem solver
-        SCS        // Generic convex optimization problem solver
+        OASIS = 0 // Online active set optimization problem solver
     };
 
     struct DeconvolutionParams
