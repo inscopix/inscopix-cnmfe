@@ -5,7 +5,6 @@
 
 namespace isx
 {
-    /// \cond doxygen chokes on enum class inside of namespace
     /// Method used for averaging the noise
     enum class AveragingMethod_t
     {
@@ -13,7 +12,6 @@ namespace isx
         MEDIAN,
         LOGMEXP
     };
-    /// \endcond doxygen chokes on enum class inside of namespace
 
     /// Computes the average of the power spectral density (PSD) for each pixel
     ///
