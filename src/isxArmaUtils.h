@@ -11,9 +11,6 @@ namespace isx
 /// A column vector storing float values.
 typedef arma::Col<float> ColumnFloat_t;
 
-/// A row vector storing float values.
-typedef arma::Row<float> RowFloat_t;
-
 // A matrix storing float values.
 typedef arma::Mat<float> MatrixFloat_t;
 
