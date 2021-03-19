@@ -209,11 +209,11 @@ namespace isx
         LARS<float> lars(true, lambda/inX.n_rows, 0.0, 2.220446049250313e-16);
         lars.Train(inX, inY, outBeta, false);
 
-//        // adjust betas
-//        outBeta /= norms.t();
-//        if (positive)
-//        {
-//            outBeta.elem(arma::find(outBeta < 0)).zeros();
-//        }
+        // adjust betas
+        outBeta /= norms.t();
+        if (positive)
+        {
+            outBeta.elem(arma::find(outBeta < 0)).zeros();
+        }
     }
 }
