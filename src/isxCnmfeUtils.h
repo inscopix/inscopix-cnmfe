@@ -42,6 +42,16 @@ namespace isx
     /// \param outBeta    Model coefficients
     /// \param positive   Restricts coefficients to be positive if true
     void lassoLars(MatrixFloat_t inX, RowFloat_t inY, ColumnFloat_t & outBeta, const float lambda, const bool positive);
+
+    /// Remove empty components from the set of footprints and traces - empty means flat trace or black footprint
+    ///
+    /// \param inOutA               Spatial footprints
+    /// \param inOutC               Denoised temporal traces
+    /// \param inOutCRaw            Raw temporal traces
+    void removeEmptyComponents(
+        CubeFloat_t & inOutA,
+        MatrixFloat_t & inOutC,
+        MatrixFloat_t & inOutCRaw);
 }
 
 #endif //ISX_CNMFE_UTILS_H
