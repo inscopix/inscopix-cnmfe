@@ -8,6 +8,9 @@
 namespace isx
 {
 
+/// A row vector storing float values.
+typedef arma::Row<float> RowFloat_t;
+
 /// A column vector storing float values.
 typedef arma::Col<float> ColumnFloat_t;
 

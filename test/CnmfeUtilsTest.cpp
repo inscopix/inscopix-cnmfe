@@ -291,3 +291,67 @@ TEST_CASE("LocalCorrelationsFftTest", "[cnmfe-utils]")
         REQUIRE(arma::approx_equal(expResult, actResult, "reldiff", 1e-5f));
     }
 }
+
+TEST_CASE("LassoLars", "[cnmfe-utils]")
+{
+    SECTION("single predictor")
+    {
+        isx::MatrixFloat_t inX = {-0.04f, 0.6f, 2.4f, -1.0f, 0.9f, 1.7f, 0.0f};
+        inX = inX.t();
+        isx::RowFloat_t inY = {-1.0f,-2.0f,0.0f,3.0f,4.0f,9.0f,0.0f};
+        isx::ColumnFloat_t expectedBeta = {0.6738859f};
+
+        float lambda = 0.05f;
+        isx::ColumnFloat_t outBeta;
+        isx::lassoLars(inX, inY, outBeta, lambda, true);
+
+        REQUIRE(arma::approx_equal(expectedBeta, outBeta, "reldiff", 1e-5f));
+    }
+
+    SECTION("multiple predictors")
+    {
+        isx::MatrixFloat_t inX = {
+                {5.0f, 5.0f, 0.5f},
+                {5.0f, 4.0f, 9.1f},
+                {6.0f, 3.0f, 4.0f},
+                {5.0f, 4.0f, 12.0f},
+                {7.0f, -5.0f, 0.9f},
+        };
+        isx::RowFloat_t inY = {-1.0f, 2.0f, 42.0f, -6.0f, 1.0f};
+        isx::ColumnFloat_t expectedBeta = {61.54273113f, 12.2913786f, 0.86923194f};
+
+        float lambda = 0.02294787473418495f;
+        isx::ColumnFloat_t outBeta;
+        isx::lassoLars(inX, inY, outBeta, lambda, true);
+
+        REQUIRE(arma::approx_equal(expectedBeta, outBeta, "reldiff", 1e-5f));
+    }
+
+    SECTION("negative coefficients")
+    {
+        isx::MatrixFloat_t inX = {0.0f, 1.0f, 1.0f};
+        inX = inX.t();
+        isx::RowFloat_t inY = {-1.0f,-2.0f,-3.0f};
+        isx::ColumnFloat_t expectedBeta = {-0.39772962f};
+
+        float lambda = 0.3f;
+        isx::ColumnFloat_t outBeta;
+        isx::lassoLars(inX, inY, outBeta, lambda, false);
+
+        REQUIRE(arma::approx_equal(expectedBeta, outBeta, "reldiff", 1e-5f));
+    }
+
+    SECTION("positive constraint on coefficients")
+    {
+        isx::MatrixFloat_t inX = {0.0f, 1.0f, 1.0f};
+        inX = inX.t();
+        isx::RowFloat_t inY = {-1.0f,-2.0f,-3.0f};
+        isx::ColumnFloat_t expectedBeta = {0.0f};
+
+        float lambda = 0.3f;
+        isx::ColumnFloat_t outBeta;
+        isx::lassoLars(inX, inY, outBeta, lambda, true);
+
+        REQUIRE(arma::approx_equal(expectedBeta, outBeta, "reldiff", 1e-5f));
+    }
+}
