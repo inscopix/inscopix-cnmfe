@@ -216,4 +216,34 @@ namespace isx
             outBeta.elem(arma::find(outBeta < 0)).zeros();
         }
     }
+
+    void removeEmptyComponents(
+        CubeFloat_t & inOutA,
+        MatrixFloat_t & inOutC,
+        MatrixFloat_t & inOutCRaw)
+    {
+        // - Components with flat temporal traces are considered empty. These are identified
+        //   by summing the absolute difference between all consecutive elements.
+        // - Taking the absolute value prevents the signal from summing to 0 due to positive and negative
+        //   differences balancing out by chance.
+        MatrixFloat_t traceDiffs = arma::sum(arma::abs(arma::diff(inOutC, 1, 1)), 1);
+        ColumnFloat_t footprintSums(inOutA.n_slices);
+        for (size_t sliceId(0); sliceId < inOutA.n_slices; sliceId++)
+        {
+            footprintSums(sliceId) = arma::accu(inOutA.slice(sliceId));
+        }
+
+        arma::uvec emptyCompInd = arma::find((traceDiffs == 0) || (footprintSums == 0));
+
+        if (!emptyCompInd.empty())
+        {
+            inOutA.shed_slices(emptyCompInd);
+            inOutC.shed_rows(emptyCompInd);
+            if (!inOutCRaw.is_empty())
+            {
+                inOutCRaw.shed_rows(emptyCompInd);
+            }
+            // ISX_LOG_INFO("CNMFe: Removed ", emptyCompInd.size(), " empty components");
+        }
+    }
 }
