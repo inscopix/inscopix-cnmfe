@@ -4,7 +4,11 @@
 #include "H5Cpp.h"
 #include <armadillo>
 #include "opencv2/core.hpp"
-
+namespace libtiff {
+    // placed in its own namespace to avoid
+    // type redefinition conflict with OpenCV
+    #include "tiffio.h"
+}
 
 void add(int a, int b, int & sum)
 {
@@ -32,7 +36,7 @@ TEST_CASE("ThreadPoolDependency", "[cnmfe-dependencies]")
 
 TEST_CASE("MioDependency", "[cnmfe-dependencies]")
 {
-    std::string filename = "myfile_X9Fa1nahda8had.txt";
+    const std::string filename = "myfile_X9Fa1nahda8had.txt";
     std::error_code error;
     mio::shared_mmap_source mmap;
     mmap.map(filename, error);
@@ -71,4 +75,18 @@ TEST_CASE("OpenCVDependency", "[cnmfe-dependencies]")
     double actualSum = cv::sum(dataMat)[0];
 
     REQUIRE(actualSum == expectedSum);
+}
+
+TEST_CASE("LibTiffDependency", "[cnmfe-dependencies]")
+{
+    void * buf = libtiff::_TIFFmalloc(size_t(10));
+    libtiff::_TIFFfree(buf);
+    REQUIRE(TIFFTAG_IMAGEWIDTH == 256);
+
+    const char * mode = "w";
+    const std::string filename = "myfile_X9Fa1nahda8had.tiff";
+    libtiff::TIFF * tiffFile = libtiff::TIFFOpen(filename.c_str(), mode);
+    REQUIRE(tiffFile != nullptr);
+    TIFFClose(tiffFile);
+    std::remove(filename.c_str());
 }
