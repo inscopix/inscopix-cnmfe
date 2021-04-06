@@ -1,8 +1,9 @@
 #include "isxCnmfeIO.h"
 #include "isxTest.h"
 #include "catch.hpp"
+#include <iostream>
 
-TEST_CASE("CNMFeSaveOutputToH5", "[cnmfe-io]")
+TEST_CASE("SaveCNMFeOutputToH5", "[cnmfe-io]")
 {
     const std::string outputFilename = "acakm180a1naubn179nspqic98palanqy.h5";
     const std::string footprintsKey = "footprints";
@@ -45,6 +46,39 @@ TEST_CASE("CNMFeSaveOutputToH5", "[cnmfe-io]")
 
         REQUIRE(arma::approx_equal(actualFootprints, expectedFootprints, "reldiff", 1e-5f));
         REQUIRE(arma::approx_equal(actualTraces, expectedTraces, "reldiff", 1e-5f));
+    }
+
+    std::remove(outputFilename.c_str());
+}
+
+TEST_CASE("SaveCNMFeTracesToCSV", "[cnmfe-io]")
+{
+    const std::string outputFilename = "coanciunw.18qsnma2.auna.csv";
+
+    SECTION("2 traces, 3 time points")
+    {
+        const isx::MatrixFloat_t expectedTraces = {
+            {0.74f, 0.9f, 1.2f},
+            {100.8f, 187.13f, 200.01f},
+        };
+
+        isx::saveCnmfeTracesToCSVFile(expectedTraces, outputFilename);
+
+        isx::MatrixFloat_t actualTraces;
+        std::ifstream csvFileRead(outputFilename);
+        REQUIRE(csvFileRead.is_open());
+
+        std::string line;
+        getline(csvFileRead, line);
+        REQUIRE(line == "Frame,C0,C1");
+        getline(csvFileRead, line);
+        REQUIRE(line == "0,0.74,100.8");
+        getline(csvFileRead, line);
+        REQUIRE(line == "1,0.9,187.13");
+        getline(csvFileRead, line);
+        REQUIRE(line == "2,1.2,200.01");
+
+        csvFileRead.close();
     }
 
     std::remove(outputFilename.c_str());
