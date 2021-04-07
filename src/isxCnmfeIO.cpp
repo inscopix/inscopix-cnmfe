@@ -9,8 +9,8 @@ namespace isx
         const CubeFloat_t & footprints,
         const MatrixFloat_t & traces,
         const std::string & outputFilename,
-        const std::string footprintsKey,
-        const std::string tracesKey)
+        const std::string & footprintsKey,
+        const std::string & tracesKey)
     {
         // data is transposed since armadillo elements are stored in column-major ordering
         footprints.save(arma::hdf5_name(outputFilename, footprintsKey, arma::hdf5_opts::trans + arma::hdf5_opts::append));
@@ -58,8 +58,8 @@ namespace isx
 
     void saveTracesToCSVFile(
         const MatrixFloat_t & traces,
-        const std::string outputFilename,
-        const std::string cellNamePrefix)
+        const std::string & outputFilename,
+        const std::string & cellNamePrefix)
     {
         if (traces.n_rows > 0)
         {

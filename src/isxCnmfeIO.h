@@ -16,8 +16,8 @@ namespace isx
         const CubeFloat_t & footprints,
         const MatrixFloat_t & traces,
         const std::string & outputFilename,
-        const std::string footprintsKey = "footprints",
-        const std::string tracesKey = "traces");
+        const std::string & footprintsKey = "footprints",
+        const std::string & tracesKey = "traces");
 
     /// Saves cnmfe temporal traces to a csv file
     /// (one row per timepoint, one column per cell)
@@ -27,8 +27,8 @@ namespace isx
     /// \param cellNamePrefix   Prefix to use for each cell name (suffix is the cell id)
     void saveTracesToCSVFile(
         const MatrixFloat_t & traces,
-        const std::string outputFilename,
-        const std::string cellNamePrefix = "C");
+        const std::string & outputFilename,
+        const std::string & cellNamePrefix = "C");
 
     ///  Saves cnmfe footprints to a tiff file
     ///
