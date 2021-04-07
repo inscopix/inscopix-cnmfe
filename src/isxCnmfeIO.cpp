@@ -1,13 +1,14 @@
 #include "isxCnmfeIO.h"
+#include "isxExportTiff.h"
 #include <fstream>
 #include <iomanip>
 
 namespace isx
 {
-    void saveCnmfeOutputToH5File(
+    void saveOutputToH5File(
         const CubeFloat_t & footprints,
         const MatrixFloat_t & traces,
-        const std::string outputFilename,
+        const std::string & outputFilename,
         const std::string footprintsKey,
         const std::string tracesKey)
     {
@@ -16,15 +17,25 @@ namespace isx
         traces.save(arma::hdf5_name(outputFilename, tracesKey, arma::hdf5_opts::trans + arma::hdf5_opts::append));
     }
 
+    std::string convertNumberToPaddedString(const size_t inNumber, const size_t inWidth)
+    {
+        std::stringstream ss;
+        ss.width(inWidth);
+        ss.fill('0');
+        ss << inNumber;
+        return ss.str();
+    }
+
     void writeHeaders(
         std::ofstream & inStream,
         const std::string & cellNamePrefix,
         const size_t numCells)
     {
+        size_t width = (numCells > 10) ? (size_t(std::floor(std::log10(numCells - 1)) + 1)) : (1);
         inStream << "Frame";
         for (size_t cellId(0); cellId < numCells; cellId++)
         {
-            inStream << "," << cellNamePrefix << std::to_string(cellId);
+            inStream << "," << cellNamePrefix << convertNumberToPaddedString(cellId, width);
         }
         inStream << std::endl;
     }
@@ -45,7 +56,7 @@ namespace isx
         }
     }
 
-    void saveCnmfeTracesToCSVFile(
+    void saveTracesToCSVFile(
         const MatrixFloat_t & traces,
         const std::string outputFilename,
         const std::string cellNamePrefix)
@@ -57,5 +68,18 @@ namespace isx
             writeTraces(outFile, traces);
             outFile.close();
         }
+    }
+
+    void saveFootprintsToTiffFile(
+        const CubeFloat_t & footprints,
+        const std::string & outputFilename)
+    {
+        TiffExporter * out = new TiffExporter(outputFilename, true);
+        for (size_t i = 0; i < footprints.n_slices; ++i)
+        {
+            out->toTiffOut(footprints.slice(i));
+            out->nextTiffDir();
+        }
+        delete out;
     }
 }

@@ -9,7 +9,7 @@ TEST_CASE("SaveCNMFeOutputToH5", "[cnmfe-io]")
     const std::string footprintsKey = "footprints";
     const std::string tracesKey = "traces";
 
-    SECTION("3 cells, 5 time points, 4x6 pixels fov")
+    SECTION("3 cells, 5 time points, 4x6 pixels FOV")
     {
         isx::CubeFloat_t expectedFootprints(4, 6, 3);
         expectedFootprints.slice(0) = {
@@ -37,7 +37,7 @@ TEST_CASE("SaveCNMFeOutputToH5", "[cnmfe-io]")
             {5.901f, 1.43f, 3.72f, 1.11f, 2.22f}
         };
 
-        isx::saveCnmfeOutputToH5File(expectedFootprints, expectedTraces, outputFilename, footprintsKey, tracesKey);
+        isx::saveOutputToH5File(expectedFootprints, expectedTraces, outputFilename, footprintsKey, tracesKey);
 
         isx::CubeFloat_t actualFootprints;
         isx::MatrixFloat_t actualTraces;
@@ -62,7 +62,7 @@ TEST_CASE("SaveCNMFeTracesToCSV", "[cnmfe-io]")
             {100.8f, 187.13f, 200.01f},
         };
 
-        isx::saveCnmfeTracesToCSVFile(expectedTraces, outputFilename);
+        isx::saveTracesToCSVFile(expectedTraces, outputFilename);
 
         isx::MatrixFloat_t actualTraces;
         std::ifstream csvFileRead(outputFilename);
@@ -79,6 +79,40 @@ TEST_CASE("SaveCNMFeTracesToCSV", "[cnmfe-io]")
         REQUIRE(line == "2,1.2,200.01");
 
         csvFileRead.close();
+    }
+
+    std::remove(outputFilename.c_str());
+}
+
+TEST_CASE("SaveCNMFeFootprintsToTiff", "[cnmfe-io]")
+{
+    const std::string outputFilename = "cnaaiucnaw279aiodnuin8q1.tiff";
+
+    SECTION("3 cells, 4x6 pixels FOV")
+    {
+        isx::CubeFloat_t expectedFootprints(4, 6, 3);
+        expectedFootprints.slice(0) = {
+            {1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f},
+            {19.8f, 10.1f, 1.0f, 0.0f, 1.0f, 2.0f},
+            {0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 1.0f},
+            {0.1f, 78.9f, 10.9f, 18.17f, 0.34f, 9.1f}
+        };
+        expectedFootprints.slice(1) = {
+            {1.0f, 1.0f, 1.0f, 0.0f, 0.0f, 0.0f},
+            {0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f},
+            {0.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f},
+            {0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f}
+        };
+        expectedFootprints.slice(2) = {
+            {1.9f, 2.9f, 3.9f, 4.9f, 5.9f, 6.9f},
+            {1.01f, 1.02f, 1.03f, 1.04f, -0.1f, 0.5f},
+            {-1.0f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f},
+            {9.1f, 8.5f, 6.7f, 8.3f, 4.1f, 5.1f}
+        };
+
+        isx::saveFootprintsToTiffFile(expectedFootprints, outputFilename);
+
+        // TODO: validate output tiff file
     }
 
     std::remove(outputFilename.c_str());
