@@ -1,20 +1,14 @@
-# isx-cnmfe
-Algorithm for automated source extraction from 1P data
+# Inscopix CNMFe
+Constrained non-negative matrix factorization algorithm for automated source extraction from microendoscopic data
 
-Constrained non-negative matrix factorization for microendoscopic data
-
-
-Required dependencies:
-- armadillo
-- Intel_MKL (or LAPACK/BLAS)
-- OpenCV
-- mlpack
-- mio
-- ThreadPool
-
-Optional dependencies:
-- cvxcore
-- scs
-- hdf5
-- libtiff
-- Catch
+### Dependencies
+| Package       | Version       |
+| ------------- |:-------------:|
+| armadillo     | 9.900.1       |
+| Intel MKL     | 2017.2        |
+| OpenCV        | 3.2.0         |
+| hdf5          | 1.10          |
+| libtiff       | 4.0.8         |
+| ThreadPool    | 1.0           |
+| Catch         | 1.4.0         |
+| mio           | commit 8c0d3c7|
