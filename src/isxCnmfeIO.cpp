@@ -74,12 +74,11 @@ namespace isx
         const CubeFloat_t & footprints,
         const std::string & outputFilename)
     {
-        TiffExporter * out = new TiffExporter(outputFilename, true);
+        std::unique_ptr<TiffExporter> out(new TiffExporter(outputFilename, true));
         for (size_t i = 0; i < footprints.n_slices; ++i)
         {
             out->toTiffOut(footprints.slice(i));
             out->nextTiffDir();
         }
-        delete out;
     }
 }
