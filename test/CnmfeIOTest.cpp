@@ -1,7 +1,7 @@
 #include "isxCnmfeIO.h"
+#include "isxTiffMovie.h"
 #include "isxTest.h"
 #include "catch.hpp"
-#include <iostream>
 
 TEST_CASE("SaveCNMFeOutputToH5", "[cnmfe-io]")
 {
@@ -112,7 +112,17 @@ TEST_CASE("SaveCNMFeFootprintsToTiff", "[cnmfe-io]")
 
         isx::saveFootprintsToTiffFile(expectedFootprints, outputFilename);
 
-        // TODO: validate output tiff file
+        std::unique_ptr<isx::TiffMovie> movie(new isx::TiffMovie(outputFilename));
+        REQUIRE(movie->getFrameWidth() == 6);
+        REQUIRE(movie->getFrameHeight() == 4);
+        REQUIRE(movie->getNumFrames() == 3);
+
+        for (size_t sliceId(0); sliceId < expectedFootprints.n_slices; sliceId++)
+        {
+            isx::MatrixFloat_t actualFootprint;
+            movie->getFrame(sliceId, actualFootprint);
+            REQUIRE(arma::approx_equal(actualFootprint, expectedFootprints.slice(sliceId), "reldiff", 1e-5f));
+        }
     }
 
     std::remove(outputFilename.c_str());
