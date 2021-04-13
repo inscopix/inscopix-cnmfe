@@ -9,10 +9,9 @@ namespace isx
     /// The data types of values.
     enum class DataType
     {
-        U16 = 0,
-        F32,
-        U8,
-        RGB888,
+        F32 = 0,
+        U16,
+        U8
     };
 
     /// Get the size of a data type in bytes.

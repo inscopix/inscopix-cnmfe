@@ -6,21 +6,17 @@ namespace isx
     {
         switch (inDataType)
         {
-            case DataType::U8:
+            case DataType::F32:
             {
-                return sizeof(uint8_t);
+                return sizeof(float);
             }
             case DataType::U16:
             {
                 return sizeof(uint16_t);
             }
-            case DataType::F32:
+            case DataType::U8:
             {
-                return sizeof(float);
-            }
-            case DataType::RGB888:
-            {
-                return 3 * sizeof(uint8_t);
+                return sizeof(uint8_t);
             }
             default:
             {
