@@ -1,4 +1,6 @@
 #include "isxUtilities.h"
+#include <sys/stat.h>
+#include <string>
 
 namespace isx
 {
@@ -23,5 +25,18 @@ namespace isx
                 return 0;
             }
         }
+    }
+
+    void removeFiles(const std::vector<std::string> & inFilePaths)
+    {
+        for (const auto & f : inFilePaths)
+        {
+            std::remove(f.c_str());
+        }
+    }
+
+    bool fileExists (const std::string & filename) {
+        struct stat buffer;
+        return (stat (filename.c_str(), &buffer) == 0);
     }
 }

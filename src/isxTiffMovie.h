@@ -69,6 +69,8 @@ namespace isx
         size_t m_numFrames;
         DataType m_dataType;
     };
+
+    using SpTiffMovie_t = std::shared_ptr<TiffMovie>;
 }
 
 #endif //ISX_TIFF_MOVIE
