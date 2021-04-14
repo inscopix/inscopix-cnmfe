@@ -9,12 +9,6 @@ namespace libtiff {
 
 namespace isx
 {
-    TiffMovie::TiffMovie(const std::string & inFileName, const size_t inNumDirectories)
-    {
-        initialize(inFileName);
-        m_numFrames = inNumDirectories;
-    }
-
     TiffMovie::TiffMovie(const std::string & inFileName)
     {
         initialize(inFileName);
@@ -60,9 +54,14 @@ namespace isx
                 m_dataType = DataType::U16;
                 break;
             }
+            case sizeof(uint8_t) * 8:
+            {
+                m_dataType = DataType::U8;
+                break;
+            }
             default:
             {
-                throw std::runtime_error("Unsupported number of bits (" + std::to_string(bits) + "). Only 16 (U16) and 32 (F32) bit images are supported.");
+                throw std::runtime_error("Unsupported number of bits (" + std::to_string(bits) + "). Only 8 (U8), 16 (U16), and 32 (F32) bit images are supported.");
             }
         }
 
