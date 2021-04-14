@@ -9,12 +9,6 @@ namespace libtiff {
 
 namespace isx
 {
-    TiffMovie::TiffMovie(const std::string & inFileName, const size_t inNumDirectories)
-    {
-        initialize(inFileName);
-        m_numFrames = inNumDirectories;
-    }
-
     TiffMovie::TiffMovie(const std::string & inFileName)
     {
         initialize(inFileName);

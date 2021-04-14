@@ -21,12 +21,6 @@ namespace isx
         /// \param inFileName the filename for one TIFF movie file
         TiffMovie(const std::string & inFileName);
 
-        /// Constructor that allows specification of the number of directories
-        /// to avoid expensive IO to get this.
-        /// \param inFileName the filename for one TIFF movie file
-        /// \param inNumDirectories the number of directories in the TIFF movie file
-        TiffMovie(const std::string & inFileName, const size_t inNumDirectories);
-
         /// Destructor
         ///
         ~TiffMovie();
