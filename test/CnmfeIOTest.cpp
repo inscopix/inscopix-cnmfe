@@ -1,6 +1,5 @@
 #include "isxCnmfeIO.h"
 #include "isxTiffMovie.h"
-#include "isxTest.h"
 #include "catch.hpp"
 
 TEST_CASE("SaveCNMFeOutputToH5", "[cnmfe-io]")
