@@ -35,7 +35,6 @@ namespace isx
     bool pathExists (const std::string & filename);
 
     /// Creates a new directory using the specified path
-    /// Non-existent intermediate directories in the path are created as well
     ///
     /// \param path
     /// \return   True if the directory was successfully created
