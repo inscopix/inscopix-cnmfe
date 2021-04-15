@@ -2,6 +2,7 @@
 #define ISX_CNMFE_UTILS_H
 
 #include "isxArmaUtils.h"
+#include "isxCnmfeParams.h"
 
 namespace isx
 {
@@ -52,6 +53,20 @@ namespace isx
         CubeFloat_t & inOutA,
         MatrixFloat_t & inOutC,
         MatrixFloat_t & inOutCRaw);
+
+    /// Scale spatial and temporal components
+    ///
+    /// \param inOutA               Spatial footprints
+    /// \param inOutC               Temporal traces
+    /// \param inOutputType         Output unit type which specifies how components should be scaled
+    /// \param inDeconvParams       Deconvolution params which specify noise range and noise method if output unit type is NOISE_SCALED
+    /// \param inPercentile         Percentile of brightest pixels to average over if output unit type is DF
+    void scaleSpatialTemporalComponents(
+        CubeFloat_t & inOutA,
+        MatrixFloat_t & inOutC,
+        const CnmfeOutputType_t inOutputType = CnmfeOutputType_t::NON_NORMALIZED,
+        const DeconvolutionParams inDeconvParams = DeconvolutionParams(),
+        const float inPercentile = 0.5f);
 }
 
 #endif //ISX_CNMFE_UTILS_H

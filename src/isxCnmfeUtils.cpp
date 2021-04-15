@@ -246,4 +246,74 @@ namespace isx
             // ISX_LOG_INFO("CNMFe: Removed ", emptyCompInd.size(), " empty components");
         }
     }
+
+    void normalizeSpatialTemporalComponents(CubeFloat_t & inOutA, MatrixFloat_t & inOutC)
+    {
+        MatrixFloat_t matA(
+            inOutA.memptr(),
+            inOutA.n_rows *inOutA.n_cols,
+            inOutA.n_slices,
+            false,
+            true);
+
+        ColumnFloat_t nA = arma::sqrt(arma::sum(arma::square(matA)).t() + std::numeric_limits<float>::epsilon());
+        matA = matA * arma::diagmat(1.0f / nA);
+        inOutC = arma::diagmat(nA) * inOutC;
+    }
+
+    void scaleSpatialTemporalComponents(
+        CubeFloat_t & inOutA,
+        MatrixFloat_t & inOutC,
+        const CnmfeOutputType_t inOutputType,
+        const DeconvolutionParams inDeconvParams,
+        const float inPercentile)
+    {
+        if (inOutputType == CnmfeOutputType_t::NORMALIZED)
+        {
+            normalizeSpatialTemporalComponents(inOutA, inOutC);
+        }
+        else if (inOutputType == CnmfeOutputType_t::NOISE_SCALED)
+        {
+            MatrixFloat_t matA(
+                inOutA.memptr(),
+                inOutA.n_rows *inOutA.n_cols,
+                inOutA.n_slices,
+                false,
+                true);
+
+            ColumnFloat_t nA = arma::sqrt(arma::sum(arma::square(matA)).t() + std::numeric_limits<float>::epsilon());
+            matA = matA * arma::diagmat(1.0f / nA);
+
+            for (size_t k = 0; k < inOutA.n_slices; k++)
+            {
+                float sn = getNoiseFft(inOutC.row(k).t(), inDeconvParams.m_noiseRange, inDeconvParams.m_noiseMethod);
+                if (sn != 0.0f)
+                {
+                    inOutC.row(k) /= sn;
+                }
+                else
+                {
+                    // ISX_LOG_WARNING("Division by zero when scaling traces by noise.");
+                }
+            }
+        }
+        else if (inOutputType == CnmfeOutputType_t::DF)
+        {
+            normalizeSpatialTemporalComponents(inOutA, inOutC);
+
+            // scale the temporal traces by the average pixel intensity of the nth brightest pixels in each footprint
+            for (size_t k = 0; k < inOutA.n_slices; k++)
+            {
+                isx::ColumnFloat_t a(inOutA.slice(k).memptr(), inOutA.n_rows * inOutA.n_cols);
+                a = arma::sort(a);
+
+                isx::ColumnFloat_t a2 = arma::square(a);
+                a2 = arma::sqrt(arma::cumsum(a2));
+
+                arma::uvec ind = arma::find(a2 > inPercentile);
+                float pixelContrib = arma::mean(a.elem(ind));
+                inOutC.row(k) *= pixelContrib;
+            }
+        }
+    }
 }
