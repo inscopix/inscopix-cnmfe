@@ -35,8 +35,23 @@ namespace isx
         }
     }
 
-    bool fileExists (const std::string & filename) {
+    bool pathExists (const std::string & filename)
+    {
         struct stat buffer;
         return (stat (filename.c_str(), &buffer) == 0);
+    }
+
+    bool makeDirectory(const std::string & path)
+    {
+        if (mkdir(path.c_str(), 0777) == -1)
+        {
+            return false;
+        }
+        return true;
+    }
+
+    std::string getBaseName(const std::string & path)
+    {
+        return path.substr(path.find_last_of("/\\") + 1);
     }
 }

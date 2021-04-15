@@ -143,7 +143,7 @@ namespace isx
         bool filesExists = true; // check that every filename provided exists
         for (const auto & filename : inFilenames)
         {
-            filesExists &= fileExists(filename);
+            filesExists &= pathExists(filename);
         }
 
         // do not overwrite existing memory mapped files if they exists
