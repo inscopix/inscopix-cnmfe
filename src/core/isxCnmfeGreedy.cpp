@@ -395,7 +395,6 @@ namespace isx
         const bool isFirstOrderAr = inDeconvParams.m_firstOrderAR;        
         inDeconvParams.m_firstOrderAR = true;
 
-        // ISX_LOG_INFO("CNMFe: Computing One Photon Initialization");
         {
             MatrixFloat_t outCRaw, tmpS;
             initNeuronsCorrPNR(inY, outA, outC, outCRaw, tmpS, inDeconvParams, inInitParams, maxNumNeurons);
@@ -412,7 +411,6 @@ namespace isx
             false,
             true);
         
-        // ISX_LOG_INFO("CNMFe: Computing Ring Model For Background Estimation");
         {
             arma::SpMat<float> W;
             ColumnFloat_t B0;
@@ -425,10 +423,8 @@ namespace isx
             cubeB += inY;
         }
 
-        // ISX_LOG_INFO("CNMFe: Updating Spatial Components");
         updateSpatialComponents(cubeB, outA, outC, inOutNoise, inSpatialParams.m_closingKSize, inSpatialParams.m_pixelsPerProc, inNumThreads);
 
-        // ISX_LOG_INFO("CNMFe: Updating Temporal Components");
         {
             // temporary variables not needed beyond this step
             ColumnFloat_t tmpBl, tmpC1, tmpSn;
@@ -439,7 +435,6 @@ namespace isx
                 inDeconvParams, 2, inNumThreads);
         }
 
-        // ISX_LOG_INFO("CNMFe: Searching for more neurons in the residual");
         for (size_t iter = 0; iter < numIterations - 1; ++iter)
         {
             // maxNumNeurons is the global allowable number of neurons
@@ -461,7 +456,6 @@ namespace isx
             }
         }
 
-        // ISX_LOG_INFO("CNMFe: Merging components");
         {
             MatrixFloat_t tmpRawC;
             MatrixFloat_t matA = cubeToMatrixBySlice(outA);
@@ -469,10 +463,8 @@ namespace isx
             outA = matrixToCubeByCol(matA, inY.n_rows, inY.n_cols);
         }
 
-        // ISX_LOG_INFO("CNMFe: Updating Spatial Components");
         updateSpatialComponents(cubeB, outA, outC, inOutNoise, inSpatialParams.m_closingKSize, inSpatialParams.m_pixelsPerProc, inNumThreads);
 
-        // ISX_LOG_INFO("CNMFe: Updating Temporal Components");
         {
             // temporary variables not needed beyond this step
             ColumnFloat_t tmpBl, tmpC1, tmpSn;
@@ -483,7 +475,6 @@ namespace isx
                 inDeconvParams, 2, inNumThreads);
         }
 
-        // ISX_LOG_INFO("CNMFe: Recomputing background");
         {
             arma::SpMat<float> W;
             ColumnFloat_t B0;
@@ -498,7 +489,6 @@ namespace isx
             cubeB += inY;
         }
 
-        // ISX_LOG_INFO("CNMFe: Merging components");
         {
             MatrixFloat_t tmpRawC;
             MatrixFloat_t matA = cubeToMatrixBySlice(outA);
@@ -506,10 +496,8 @@ namespace isx
             outA = matrixToCubeByCol(matA, inY.n_rows, inY.n_cols);
         }
 
-        // ISX_LOG_INFO("CNMFe: Updating Spatial Components");
         updateSpatialComponents(cubeB, outA, outC, inOutNoise, 1, inSpatialParams.m_pixelsPerProc, inNumThreads);
 
-        // ISX_LOG_INFO("CNMFe: Extracting Raw Traces");
         {
             // Compute trace residual YrA
             MatrixFloat_t matA = cubeToMatrixBySlice(outA);
@@ -524,8 +512,6 @@ namespace isx
 
         if (outputFinalTraces)
         {
-            // ISX_LOG_INFO("CNMFe: Updating Temporal Components");
-            
             // Use input AR order settings for last temporal component update
             inDeconvParams.m_firstOrderAR = isFirstOrderAr;
 
@@ -539,7 +525,6 @@ namespace isx
         }
 
         // remove empty components
-        // ISX_LOG_INFO("CNMFe: Removing empty components");
         removeEmptyComponents(outA, outC, outRawC);
     }
 

@@ -159,7 +159,6 @@ namespace isx
 
         if (listConxcomp.n_elem == 0)
         {
-            // ISX_LOG_INFO("CNMFe: No more components merged!");
             return false;
         }
 

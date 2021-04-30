@@ -126,12 +126,10 @@ namespace isx
                 }
 
                 cumComponentsUpdated += compSize;
-                // ISX_LOG_INFO("CNMFe: ", cumComponentsUpdated, " out of total ", K, " temporal components updated");
             }
 
             if (arma::norm(Ccopy - inOutC, "fro") <= 1e-3f * arma::norm(inOutC, "fro"))
             {
-                // ISX_LOG_INFO("CNMFe: Temporal: Stopping - Overall temporal component not changing significantly");
                 break;
             }
             else

@@ -243,7 +243,6 @@ namespace isx
             {
                 inOutCRaw.shed_rows(emptyCompInd);
             }
-            // ISX_LOG_INFO("CNMFe: Removed ", emptyCompInd.size(), " empty components");
         }
     }
 
@@ -290,10 +289,6 @@ namespace isx
                 if (sn != 0.0f)
                 {
                     inOutC.row(k) /= sn;
-                }
-                else
-                {
-                    // ISX_LOG_WARNING("Division by zero when scaling traces by noise.");
                 }
             }
         }

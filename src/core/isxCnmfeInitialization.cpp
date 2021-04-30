@@ -453,8 +453,6 @@ namespace isx
         outCRaw = outCRaw.head_rows(numNeurons);
         outC = outC.head_rows(numNeurons);
         outS = outS.head_rows(numNeurons);
-
-        // ISX_LOG_INFO(numNeurons, " neurons were initialized");
     }
 
 } // namespace isx

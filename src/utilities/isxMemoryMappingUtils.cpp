@@ -155,7 +155,6 @@ namespace isx
             }
             catch (std::exception)
             {
-                // ISX_LOG_INFO("Encountered corrupt memory map file! Deleting and recreating...");
                 outMemoryMappedMovies.clear();
                 removeFiles(inFilenames);
                 writeMemoryMapOfMovie(inMovie, inFilenames, inOutRois);

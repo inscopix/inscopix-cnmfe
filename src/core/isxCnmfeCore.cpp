@@ -33,8 +33,6 @@ namespace isx
 
     void Cnmfe::fit(const CubeFloat_t & inY)
     {
-        // ISX_LOG_INFO("CNMFe: ", m_numThreads, " threads assigned");
-
         // estimate noise in each pixel
         isx::getNoiseFft(inY, m_noise, m_deconvParams.m_noiseRange, m_deconvParams.m_noiseMethod);
 

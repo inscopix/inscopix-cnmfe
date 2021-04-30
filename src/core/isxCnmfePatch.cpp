@@ -70,10 +70,6 @@ namespace isx
             || (patchSize >= inNumRows && patchSize >= inNumCols))
         {
             patchCoordinates.emplace_back(std::make_tuple(0, inNumRows - 1, 0, inNumCols - 1));
-            if (inMode != CnmfeMode_t::ALL_IN_MEMORY)
-            {
-                // ISX_LOG_INFO("CNMFe: patch size larger than fov, using single patch");
-            }
             return;
         }
 
@@ -211,8 +207,6 @@ namespace isx
         const size_t numThreads,
         const CnmfeOutputType_t outputType)
     {
-        // ISX_LOG_INFO("CNMFe: ", cnmfeModeNameMap.at(inPatchParams.m_mode), " mode");
-
         const size_t numRows = inMovie->getFrameHeight();
         const size_t numCols = inMovie->getFrameWidth();
         size_t numFrames = inMovie->getNumFrames();
@@ -260,7 +254,6 @@ namespace isx
             memoryMapFilePaths,
             patchCoordinates,
             mappedFovs);
-        // ISX_LOG_INFO("CNMFe: Finished memory mapping");
 
         // border applied to whole FOV, therefore set to 0 for patches
         if (inPatchParams.m_mode == CnmfeMode_t::PATCH_PARALLEL || inPatchParams.m_mode == CnmfeMode_t::PATCH_SEQUENTIAL)
