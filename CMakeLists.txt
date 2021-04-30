@@ -4,7 +4,17 @@ project(cnmfe)
 set(CMAKE_CXX_FLAGS "-Wall")
 set(CMAKE_CXX_STANDARD 11)
 
-set(LIB_DIR lib)
+# identify operating system
+set(OS_MAC FALSE)
+set(OS_LINUX FALSE)
+if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
+    set(OS_MAC TRUE)
+elseif(UNIX AND NOT APPLE)
+    set(ISX_OS_LINUX TRUE)
+else()
+    message(FATAL_ERROR "cmake is not configured for this OS")
+endif()
+
 set(SRC_DIR
         include
         src
@@ -28,6 +38,7 @@ add_library(${CMAKE_PROJECT_NAME} STATIC ${SRC_FILES})
 add_subdirectory(test)
 
 # header-only dependencies
+set(LIB_DIR lib)
 set(HEADER_ONLY_LIB_PATHS)
 get_filename_component(THREADPOOL_HEADER_PATHS ${LIB_DIR}/ThreadPool ABSOLUTE)
 get_filename_component(MIO_HEADER_PATHS ${LIB_DIR}/mio ABSOLUTE)
