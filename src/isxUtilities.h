@@ -40,6 +40,12 @@ namespace isx
     /// \return   True if the directory was successfully created
     bool makeDirectory(const std::string & path);
 
+    /// Removes a directory and all its content using the specified path
+    ///
+    /// \param path
+    /// \return   True if the directory was successfully removed
+    bool removeDirectory(const std::string & path);
+
     /// Get the base name of a path
     ///
     /// The base name does not include the extension nor the directory name.

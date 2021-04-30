@@ -1,5 +1,4 @@
 #include "isxCnmfeInitialization.h"
-#include "isxTest.h"
 #include "catch.hpp"
 #include <string>
 

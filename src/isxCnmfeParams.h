@@ -84,8 +84,8 @@ namespace isx
         {
         }
 
-        bool    m_deconvolve;           ///< If true, deconvolve in InitCorrPNR. Otherwise, don't.
-        int32_t m_gSiz = 13;            ///< Average diameter of neuron
+        bool m_deconvolve = true;       ///< If true, deconvolve in InitCorrPNR. Otherwise, don't.
+        int32_t m_gSiz = 7;             ///< Average diameter of neuron
         int32_t m_gSig = 0;             ///< Width of Gaussian kernel used for spatial filtering (< 2 will be auto estimated)
         float  m_minCorr = 0.8f;        ///< Minimum local correlation coefficient for seed pixel
         float  m_minPNR = 10.0f;        ///< Minimum peak-to-noise ratio for seed pixel

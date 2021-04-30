@@ -1,5 +1,6 @@
 #include "isxUtilities.h"
 #include <sys/stat.h>
+#include <unistd.h>
 #include <string>
 
 namespace isx
@@ -50,8 +51,18 @@ namespace isx
         return true;
     }
 
+    bool removeDirectory(const std::string & path)
+    {
+        if (rmdir(path.c_str()) == -1)
+        {
+            return false;
+        }
+        return true;
+    }
+
     std::string getBaseName(const std::string & path)
     {
-        return path.substr(path.find_last_of("/\\") + 1);
+        const std::string filename = path.substr(path.find_last_of("/\\") + 1);
+        return filename.substr(0, filename.find_last_of('.'));
     }
 }
