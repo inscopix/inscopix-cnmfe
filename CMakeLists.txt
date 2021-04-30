@@ -5,24 +5,36 @@ set(CMAKE_CXX_FLAGS "-Wall")
 set(CMAKE_CXX_STANDARD 11)
 
 set(LIB_DIR lib)
-
-file(GLOB SRC_FILES "src/*.cpp")
-include_directories(include src)
+set(SRC_DIR
+        include
+        src
+        src/exposed
+        src/core
+        src/oasis
+        src/io
+        src/utilities)
+file(GLOB SRC_FILES
+        "src/*.cpp"
+        "src/exposed/*.cpp"
+        "src/core/*.cpp"
+        "src/oasis/*.cpp"
+        "src/io/*.cpp"
+        "src/utilities/*.cpp")
 
 # cnmfe static library
 add_library(${CMAKE_PROJECT_NAME} STATIC ${SRC_FILES})
 
-## cnmfe unit tests
+# cnmfe unit tests
 add_subdirectory(test)
 
-# header-only libs
+# header-only dependencies
 set(HEADER_ONLY_LIB_PATHS)
 get_filename_component(THREADPOOL_HEADER_PATHS ${LIB_DIR}/ThreadPool ABSOLUTE)
 get_filename_component(MIO_HEADER_PATHS ${LIB_DIR}/mio ABSOLUTE)
 get_filename_component(JSON_HEADER_PATHS ${LIB_DIR}/json ABSOLUTE)
 list(APPEND HEADER_ONLY_LIB_PATHS ${THREADPOOL_HEADER_PATHS} ${MIO_HEADER_PATHS} ${JSON_HEADER_PATHS})
 
-# static libs
+# static lib dependencies
 set(LIB_INCLUDE_PATHS)
 set(LIB_FILE_PATHS)
 # hdf5
@@ -40,7 +52,7 @@ set(ARMADILLO_LIBRARIES
         ${INTELMKL_LIB_DIR}/libmkl_tbb_thread.a
         ${INTELMKL_LIB_DIR}/libmkl_core.a
         ${INTELMKL_LIB_DIR}/libtbb.a)
-# openCV
+# opencv
 list(APPEND CMAKE_PREFIX_PATH ${LIB_DIR}/OpenCV/share/OpenCV)
 find_package(OpenCV 3.2.0 REQUIRED core imgproc video features2d)
 set(OPENCV_HEADER_PATHS ${OpenCV_INCLUDE_DIRS})
@@ -61,6 +73,6 @@ list(APPEND LIB_FILE_PATHS
         ${ARMADILLO_LIBRARIES}
         ${OPENCV_LIBRARIES}
         ${LIBTIFF_LIBRARIES})
-target_include_directories(${CMAKE_PROJECT_NAME} PUBLIC ${HEADER_ONLY_LIB_PATHS} ${LIB_INCLUDE_PATHS})
+target_include_directories(${CMAKE_PROJECT_NAME} PUBLIC ${HEADER_ONLY_LIB_PATHS} ${LIB_INCLUDE_PATHS} ${SRC_DIR})
 target_link_libraries(${CMAKE_PROJECT_NAME} PUBLIC ${LIB_FILE_PATHS})
 target_compile_definitions(${CMAKE_PROJECT_NAME} PUBLIC ${ARMADILLO_DEFINITIONS})

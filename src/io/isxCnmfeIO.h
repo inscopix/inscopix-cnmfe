@@ -37,6 +37,52 @@ namespace isx
     void saveFootprintsToTiffFile(
         const CubeFloat_t & footprints,
         const std::string & outputFilename);
+
+    /// Generates a unique directory name to store memory-mapped files
+    ///
+    /// \param inputMoviePath
+    /// \param outputDir
+    /// \param processingMode
+    /// \param patchSize
+    /// \param patchOverlap
+    ///
+    /// \return directory name to store memory-mapped files
+    std::string getMemoryMapDirPath(
+        const std::string & inputMoviePath,
+        const std::string & outputDir,
+        const int processingMode,
+        const int patchSize,
+        const int patchOverlap);
+
+    /// Generates an output filepath to store both footprints and traces (.h5)
+    ///
+    /// \param inputMoviePath
+    /// \param outputDir
+    ///
+    /// \return filepath to store both footprints and traces (.h5)
+    std::string getH5OutputFilename(
+        const std::string & inputMoviePath,
+        const std::string & outputDir);
+
+    /// Generates an output filepath to store footprints (.tiff stack)
+    ///
+    /// \param inputMoviePath
+    /// \param outputDir
+    ///
+    /// \return filepath to store footprints (.tiff stack)
+    std::string getFootprintsOutputFilename(
+        const std::string & inputMoviePath,
+        const std::string & outputDir);
+
+    /// Generates an output filepath to store traces (.csv)
+    ///
+    /// \param inputMoviePath
+    /// \param outputDir
+    ///
+    /// \return filepath to store traces (.csv)
+    std::string getTracesOutputFilename(
+        const std::string & inputMoviePath,
+        const std::string & outputDir);
 } // namespace isx
 
 #endif //ISX_CNMFE_IO_H

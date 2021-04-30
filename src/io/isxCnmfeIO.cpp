@@ -1,5 +1,8 @@
 #include "isxCnmfeIO.h"
+#include "isxCnmfeParams.h"
 #include "isxExportTiff.h"
+#include "isxUtilities.h"
+#include "json.hpp"
 #include <fstream>
 #include <iomanip>
 
@@ -80,5 +83,42 @@ namespace isx
             out->toTiffOut(footprints.slice(i));
             out->nextTiffDir();
         }
+    }
+
+    std::string getMemoryMapDirPath(
+        const std::string & inputMoviePath,
+        const std::string & outputDir,
+        const int processingMode,
+        const int patchSize,
+        const int patchOverlap)
+    {
+        nlohmann::json params;
+        params["absoluteFilepath"] = inputMoviePath;
+        if (static_cast<isx::CnmfeMode_t>(processingMode) != CnmfeMode_t::ALL_IN_MEMORY)
+        {
+            // patch size and patch overlap don't matter for all-in-memory mode
+            params["patchSize"] = patchSize;
+            params["patchOverlap"] = patchOverlap;
+        }
+
+        // construct unique hash based on input parameters to uniquely identify memory map files
+        std::stringstream id;
+        id << std::hex << std::hash<std::string>{}(params.dump());
+        return outputDir + "/" + getBaseName(inputMoviePath) + "-" + id.str();
+    }
+
+    std::string getH5OutputFilename(const std::string & inputMoviePath, const std::string & outputDir)
+    {
+        return outputDir + "/" + getBaseName(inputMoviePath) + "_output.h5";
+    }
+
+    std::string getFootprintsOutputFilename(const std::string & inputMoviePath, const std::string & outputDir)
+    {
+        return outputDir + "/" + getBaseName(inputMoviePath) + "_footprints.tiff";
+    }
+
+    std::string getTracesOutputFilename(const std::string & inputMoviePath, const std::string & outputDir)
+    {
+        return outputDir + "/" + getBaseName(inputMoviePath) + "_traces.csv";
     }
 }
