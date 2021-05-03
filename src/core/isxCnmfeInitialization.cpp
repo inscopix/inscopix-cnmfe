@@ -165,9 +165,9 @@ namespace isx
 
         // spatial filtering using disk background filter
         cv::Mat spatialFilter;
-        if (inInitParams.m_gSig > 0)
+        if (inInitParams.m_gaussianKernelSize > 0)
         {
-            spatialFilter = constructDiskFilter(inInitParams.m_gSig);
+            spatialFilter = constructDiskFilter(inInitParams.m_gaussianKernelSize);
 
             for (size_t i = 0; i < inDataProcessed.n_slices; ++i)
             {
@@ -261,8 +261,8 @@ namespace isx
 
             // select seed pixels as local maximums
             cv::Mat vMax;
-            cv::Mat tmpKernel = cv::Mat::ones(static_cast<int32_t>(round(inInitParams.m_gSiz / 4.0f)),
-                                              static_cast<int32_t>(round(inInitParams.m_gSiz / 4.0f)), CV_32FC1);
+            cv::Mat tmpKernel = cv::Mat::ones(static_cast<int32_t>(round(inInitParams.m_averageCellDiameter / 4.0f)),
+                                              static_cast<int32_t>(round(inInitParams.m_averageCellDiameter / 4.0f)), CV_32FC1);
             cv::dilate(vSearchMat, vMax, tmpKernel);
 
             cv::Mat mask;
@@ -313,10 +313,10 @@ namespace isx
                 }
 
                 // crop small region around seed pixel for estimating spatiotemporal activity of the neuron
-                int rMin = std::max(0, r - inInitParams.m_gSiz);
-                int rMax = std::min(static_cast<int>(inData.n_rows), r + inInitParams.m_gSiz + 1);
-                int cMin = std::max(0, c - inInitParams.m_gSiz);
-                int cMax = std::min(static_cast<int>(inData.n_cols), c + inInitParams.m_gSiz + 1);
+                int rMin = std::max(0, r - inInitParams.m_averageCellDiameter);
+                int rMax = std::min(static_cast<int>(inData.n_rows), r + inInitParams.m_averageCellDiameter + 1);
+                int cMin = std::max(0, c - inInitParams.m_averageCellDiameter);
+                int cMax = std::min(static_cast<int>(inData.n_cols), c + inInitParams.m_averageCellDiameter + 1);
 
                 CubeFloat_t dataRawBox(
                     inDataModifiable(arma::span(rMin, rMax - 1), arma::span(cMin, cMax - 1), arma::span::all));
@@ -381,12 +381,12 @@ namespace isx
                 }
 
                 // define neighborhood of pixels to update after initializing a neuron
-                int r2Min = std::max(0, r - 2 * inInitParams.m_gSiz);
-                int r2Max = std::min(static_cast<int>(inData.n_rows), r + 2 * inInitParams.m_gSiz + 1);
-                int c2Min = std::max(0, c - 2 * inInitParams.m_gSiz);
-                int c2Max = std::min(static_cast<int>(inData.n_cols), c + 2 * inInitParams.m_gSiz + 1);
+                int r2Min = std::max(0, r - 2 * inInitParams.m_averageCellDiameter);
+                int r2Max = std::min(static_cast<int>(inData.n_rows), r + 2 * inInitParams.m_averageCellDiameter + 1);
+                int c2Min = std::max(0, c - 2 * inInitParams.m_averageCellDiameter);
+                int c2Max = std::min(static_cast<int>(inData.n_cols), c + 2 * inInitParams.m_averageCellDiameter + 1);
 
-                if (inInitParams.m_gSig > 0) {
+                if (inInitParams.m_gaussianKernelSize > 0) {
                     // spatially filter neuron shape
                     MatrixFloat_t tmpImg(
                         outA(arma::span(r2Min, r2Max - 1), arma::span(c2Min, c2Max - 1), arma::span(numNeurons))
@@ -414,10 +414,10 @@ namespace isx
 
                 // update local correlation image
                 // compute local correlation of candidate pixel for size of neuron + 1 pixel border of neighbouring neurons
-                int r3Min = std::max(0, r - inInitParams.m_gSiz - 1);
-                int r3Max = std::min(static_cast<int>(inData.n_rows), r + inInitParams.m_gSiz + 2);
-                int c3Min = std::max(0, c - inInitParams.m_gSiz - 1);
-                int c3Max = std::min(static_cast<int>(inData.n_cols), c + inInitParams.m_gSiz + 2);
+                int r3Min = std::max(0, r - inInitParams.m_averageCellDiameter - 1);
+                int r3Max = std::min(static_cast<int>(inData.n_rows), r + inInitParams.m_averageCellDiameter + 2);
+                int c3Min = std::max(0, c - inInitParams.m_averageCellDiameter - 1);
+                int c3Max = std::min(static_cast<int>(inData.n_cols), c + inInitParams.m_averageCellDiameter + 2);
                 dataFilteredBox = inDataProcessed(arma::span(r3Min, r3Max - 1), arma::span(c3Min, c3Max - 1), arma::span::all);
                 noiseBox = minPixelNoise(arma::span(r3Min, r3Max - 1), arma::span(c3Min, c3Max - 1));
                 for (size_t i = 0; i < dataFilteredBox.n_slices; ++i)

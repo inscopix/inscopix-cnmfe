@@ -66,16 +66,16 @@ namespace isx
 
         InitializationParams(
             const bool deconvolve,
-            const int32_t gSiz,
-            const int32_t gSig,
+            const int32_t averageCellDiameter,
+            const int32_t gaussianKernelSize,
             const float minCorr,
             const float minPNR,
             const int32_t minNumPixels,
             const int32_t boundaryDist,
             const int32_t noiseThreshold)
             : m_deconvolve(deconvolve)
-            , m_gSiz(gSiz)
-            , m_gSig(gSig)
+            , m_averageCellDiameter(averageCellDiameter)
+            , m_gaussianKernelSize(gaussianKernelSize)
             , m_minCorr(minCorr)
             , m_minPNR(minPNR)
             , m_minNumPixels(minNumPixels)
@@ -84,14 +84,14 @@ namespace isx
         {
         }
 
-        bool m_deconvolve = true;       ///< If true, deconvolve in InitCorrPNR. Otherwise, don't.
-        int32_t m_gSiz = 7;             ///< Average diameter of neuron
-        int32_t m_gSig = 0;             ///< Width of Gaussian kernel used for spatial filtering (< 2 will be auto estimated)
-        float  m_minCorr = 0.8f;        ///< Minimum local correlation coefficient for seed pixel
-        float  m_minPNR = 10.0f;        ///< Minimum peak-to-noise ratio for seed pixel
-        int32_t m_minNumPixels = 3;     ///< Minimum number of non-zero pixels for each neuron
-        int32_t m_boundaryDist = 0;     ///< Minimum distance from image boundary for neuron initialization
-        int32_t m_noiseThreshold = 2;   ///< Nose threshold used when computing local correlation image
+        bool m_deconvolve = true;           ///< If true, deconvolve in InitCorrPNR. Otherwise, don't.
+        int32_t m_averageCellDiameter = 7;  ///< Average diameter of neuron
+        int32_t m_gaussianKernelSize = 0;   ///< Width of Gaussian kernel used for spatial filtering (< 2 will be auto estimated)
+        float  m_minCorr = 0.8f;            ///< Minimum local correlation coefficient for seed pixel
+        float  m_minPNR = 10.0f;            ///< Minimum peak-to-noise ratio for seed pixel
+        int32_t m_minNumPixels = 3;         ///< Minimum number of non-zero pixels for each neuron
+        int32_t m_boundaryDist = 0;         ///< Minimum distance from image boundary for neuron initialization
+        int32_t m_noiseThreshold = 2;       ///< Nose threshold used when computing local correlation image
     };
 
     struct SpatialParams

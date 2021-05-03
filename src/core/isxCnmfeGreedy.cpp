@@ -382,13 +382,13 @@ namespace isx
         }
 
         // estimate appropriate morphological filter sizes based on cell diameter
-        if (inInitParams.m_gSig < 2)
+        if (inInitParams.m_gaussianKernelSize < 2)
         {
-            inInitParams.m_gSig = static_cast<int32_t>((static_cast<float>(inInitParams.m_gSiz - 1)) / 4.0f);
+            inInitParams.m_gaussianKernelSize = static_cast<int32_t>((static_cast<float>(inInitParams.m_averageCellDiameter - 1)) / 4.0f);
         }
         if (inSpatialParams.m_closingKSize < 2)
         {
-            inSpatialParams.m_closingKSize = static_cast<int32_t>((static_cast<float>(inInitParams.m_gSiz - 1)) / 4.0f);
+            inSpatialParams.m_closingKSize = static_cast<int32_t>((static_cast<float>(inInitParams.m_averageCellDiameter - 1)) / 4.0f);
         }
 
         // Only use second order AR for final update temporal components call
@@ -416,7 +416,7 @@ namespace isx
             ColumnFloat_t B0;
             std::pair<size_t, size_t> inDims(inY.n_rows, inY.n_cols);
 
-            computeW(matY, cubeToMatrixBySlice(outA), outC, inDims, ringSizeFactor * inInitParams.m_gSiz, 
+            computeW(matY, cubeToMatrixBySlice(outA), outC, inDims, ringSizeFactor * inInitParams.m_averageCellDiameter,
                      W, B0, inSpatialParams.m_bgSsub, inNumThreads);
 
             computeB(arma::reshape(B0, inY.n_rows, inY.n_cols), W, cubeB, inSpatialParams.m_bgSsub);
@@ -479,7 +479,7 @@ namespace isx
             arma::SpMat<float> W;
             ColumnFloat_t B0;
             std::pair<size_t,size_t> inDims(inY.n_rows, inY.n_cols);
-            computeW(matY, cubeToMatrixBySlice(outA), outC, inDims, ringSizeFactor * inInitParams.m_gSiz,
+            computeW(matY, cubeToMatrixBySlice(outA), outC, inDims, ringSizeFactor * inInitParams.m_averageCellDiameter,
                      W, B0, inSpatialParams.m_bgSsub, inNumThreads);
 
             matB = matY - cubeToMatrixBySlice(outA) * outC;

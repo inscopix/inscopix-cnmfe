@@ -36,10 +36,10 @@ namespace isx
 
         // prepare cnmfe parameters
         InitializationParams initParams;
-        initParams.m_gSiz = averageCellDiameter * 2;
+        initParams.m_averageCellDiameter = averageCellDiameter * 2;
         initParams.m_minCorr = minCorr;
         initParams.m_minPNR = minPnr;
-        initParams.m_gSig = gaussianKernelSize;
+        initParams.m_gaussianKernelSize = gaussianKernelSize;
 
         SpatialParams spatialParams;
         spatialParams.m_bgSsub = backgroundDownsamplingFactor;
