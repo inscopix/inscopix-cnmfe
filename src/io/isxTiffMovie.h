@@ -4,6 +4,7 @@
 #include "isxArmaUtils.h"
 #include "isxUtilities.h"
 #include <string>
+#include <memory>
 
 /// Forward-declare TIFF formats
 struct tiff;
