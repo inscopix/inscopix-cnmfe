@@ -73,11 +73,11 @@ if (${OS_MAC})
 elseif (${OS_LINUX})
     set(ARMADILLO_LIBRARIES
             -Wl,--start-group
-            ${INTELMKL_LIB_DIR}/static/libmkl_intel_ilp64.a
-            ${INTELMKL_LIB_DIR}/static/libmkl_tbb_thread.a
-            ${INTELMKL_LIB_DIR}/static/libmkl_core.a
+            ${INTELMKL_LIB_DIR}/libmkl_intel_ilp64.a
+            ${INTELMKL_LIB_DIR}/libmkl_tbb_thread.a
+            ${INTELMKL_LIB_DIR}/libmkl_core.a
             -Wl,--end-group
-            ${INTELMKL_LIB_DIR}/static/libtbb.a
+            ${INTELMKL_LIB_DIR}/libtbb.a
             libpthread.so)
 endif()
 # opencv
