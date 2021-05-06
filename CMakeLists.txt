@@ -50,7 +50,7 @@ set(LIB_INCLUDE_PATHS)
 set(LIB_FILE_PATHS)
 # hdf5
 get_filename_component(HDF5_HEADER_PATHS ${LIB_DIR}/hdf5/include ABSOLUTE)
-get_filename_component(HDF5_LIB_DIR_PATH ${LIB_DIR}/hdf5/lib-fPIC ABSOLUTE)
+get_filename_component(HDF5_LIB_DIR_PATH ${LIB_DIR}/hdf5/lib ABSOLUTE)
 if (${OS_MAC})
     set(HDF5_LIBRARIES
             ${HDF5_LIB_DIR_PATH}/libhdf5_cpp-static.a
