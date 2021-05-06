@@ -10,7 +10,7 @@ set(OS_LINUX FALSE)
 if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
     set(OS_MAC TRUE)
 elseif(UNIX AND NOT APPLE)
-    set(ISX_OS_LINUX TRUE)
+    set(OS_LINUX TRUE)
 else()
     message(FATAL_ERROR "cmake is not configured for this OS")
 endif()
@@ -50,19 +50,36 @@ set(LIB_INCLUDE_PATHS)
 set(LIB_FILE_PATHS)
 # hdf5
 get_filename_component(HDF5_HEADER_PATHS ${LIB_DIR}/hdf5/include ABSOLUTE)
-get_filename_component(HDF5_LIB_DIR_PATH ${LIB_DIR}/hdf5/lib ABSOLUTE)
-set(HDF5_LIBRARIES
-        ${HDF5_LIB_DIR_PATH}/libhdf5_cpp-static.a
-        ${HDF5_LIB_DIR_PATH}/libhdf5-static.a)
+get_filename_component(HDF5_LIB_DIR_PATH ${LIB_DIR}/hdf5/lib-fPIC ABSOLUTE)
+if (${OS_MAC})
+    set(HDF5_LIBRARIES
+            ${HDF5_LIB_DIR_PATH}/libhdf5_cpp-static.a
+            ${HDF5_LIB_DIR_PATH}/libhdf5-static.a)
+elseif (${OS_LINUX})
+    find_package(HDF5 COMPONENTS C CXX HL REQUIRED)
+    link_directories(${HDF5_LIBRARY_DIRS})
+    include_directories(${HDF5_INCLUDE_DIRS})
+endif()
 # armadillo
 set(ARMADILLO_DEFINITIONS ARMA_DONT_USE_WRAPPER ARMA_64BIT_WORD ARMA_BLAS_LONG_LONG ARMA_USE_HDF5 ARMA_NO_DEBUG)
 get_filename_component(ARMADILLO_HEADER_PATHS ${LIB_DIR}/armadillo ABSOLUTE)
 get_filename_component(INTELMKL_LIB_DIR ${LIB_DIR}/Intel_MKL/lib ABSOLUTE)
-set(ARMADILLO_LIBRARIES
-        ${INTELMKL_LIB_DIR}/libmkl_intel_ilp64.a
-        ${INTELMKL_LIB_DIR}/libmkl_tbb_thread.a
-        ${INTELMKL_LIB_DIR}/libmkl_core.a
-        ${INTELMKL_LIB_DIR}/libtbb.a)
+if (${OS_MAC})
+    set(ARMADILLO_LIBRARIES
+            ${INTELMKL_LIB_DIR}/libmkl_intel_ilp64.a
+            ${INTELMKL_LIB_DIR}/libmkl_tbb_thread.a
+            ${INTELMKL_LIB_DIR}/libmkl_core.a
+            ${INTELMKL_LIB_DIR}/libtbb.a)
+elseif (${OS_LINUX})
+    set(ARMADILLO_LIBRARIES
+            -Wl,--start-group
+            ${INTELMKL_LIB_DIR}/static/libmkl_intel_ilp64.a
+            ${INTELMKL_LIB_DIR}/static/libmkl_tbb_thread.a
+            ${INTELMKL_LIB_DIR}/static/libmkl_core.a
+            -Wl,--end-group
+            ${INTELMKL_LIB_DIR}/static/libtbb.a
+            libpthread.so)
+endif()
 # opencv
 list(APPEND CMAKE_PREFIX_PATH ${LIB_DIR}/OpenCV/share/OpenCV)
 find_package(OpenCV 3.2.0 REQUIRED core imgproc video features2d)
@@ -75,15 +92,21 @@ set(LIBTIFF_LIBRARIES ${LIBTIFF_LIB_DIR_PATH}/libtiff.a)
 
 # add headers and libs to project target
 list(APPEND LIB_INCLUDE_PATHS
-        ${HDF5_HEADER_PATHS}
         ${ARMADILLO_HEADER_PATHS}
         ${OPENCV_HEADER_PATHS}
         ${LIBTIFF_HEADER_PATHS})
 list(APPEND LIB_FILE_PATHS
-        ${HDF5_LIBRARIES}
+        ${HDF5_INCLUDE_DIRS}
         ${ARMADILLO_LIBRARIES}
         ${OPENCV_LIBRARIES}
         ${LIBTIFF_LIBRARIES})
+if (${OS_MAC})
+    list(APPEND LIB_INCLUDE_PATHS ${HDF5_HEADER_PATHS})
+    list(APPEND LIB_FILE_PATHS ${HDF5_INCLUDE_DIRS})
+elseif (${OS_LINUX})
+    list(APPEND LIB_INCLUDE_PATHS ${HDF5_INCLUDE_DIRS})
+    list(APPEND LIB_FILE_PATHS ${HDF5_CXX_LIBRARIES})
+endif()
 target_include_directories(${CMAKE_PROJECT_NAME} PUBLIC ${HEADER_ONLY_LIB_PATHS} ${LIB_INCLUDE_PATHS} ${SRC_DIR})
 target_link_libraries(${CMAKE_PROJECT_NAME} PUBLIC ${LIB_FILE_PATHS})
 target_compile_definitions(${CMAKE_PROJECT_NAME} PUBLIC ${ARMADILLO_DEFINITIONS})
