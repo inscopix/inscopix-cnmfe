@@ -11,8 +11,8 @@ The first two steps of Inscopix CNMFe aim to determine how to efficiently proces
 
 ![CNMFe Modules Overview](img/cnmfe_modules_overview.png?raw=true "CNMFe Modules Overview")
 
-### Building Inscopix CNMFe as a Static Library
-This package can be compiled into a static library for use in any application.
+### Building and Using Inscopix CNMFe
+This package can be compiled into a static library for use in any application. A sample C++ project is also provided along with unit tests.
 
 #### Expected directory structure
 The build instructions assume the dependencies are located in a subdirectory called *lib* as shown below. This structure can be changed by updating the cmake files.
@@ -33,6 +33,7 @@ isx-cnmfe
 ```
 
 #### Building the static library
+Instructions for compiling CNMFe into a static library.
 ```
 mkdir build
 cd build
@@ -41,10 +42,15 @@ make
 ```
 
 #### Example code for using the CNMFe library
-An example C++ project using the Inscopix CNMFe library is available in the *example* directory.
+An example C++ project using the Inscopix CNMFe library is available in example.cpp and compiled into an executable when building the app. The following command will run CNMFe on a small movie recorded in the striatum. 
 ```
-cd example
-./build.sh
+./build/example
+```
+
+#### Running the unit tests
+Once the project is built, unit tests can be run using the following command.
+```
+./build/test/runTests
 ```
 
 ### Dependencies
