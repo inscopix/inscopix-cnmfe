@@ -14,7 +14,7 @@ TEST_CASE("CnmfeFullTest", "[cnmfe]")
     const std::string expTracesFile = outputDirPath + "/movie_128x128x100_traces.csv";
     isx::removeFiles({expFootprintsFile, expTracesFile});
 
-    const int outputFiletype = 0;
+    const int outputFiletype = 0;  // tiff for footprints, csv for traces
     const int averageCellDiameter = 7;
     const float minCorr = 0.8;
     const float minPnr = 10.0;

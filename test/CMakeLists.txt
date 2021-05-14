@@ -1,4 +1,4 @@
-set(TEST_CNMFE_NAME cnmfeTests)
+set(TEST_CNMFE_NAME runTests)
 
 file(GLOB TEST_SRC_FILES "*.cpp")
 add_executable(${TEST_CNMFE_NAME} ${TEST_SRC_FILES})
