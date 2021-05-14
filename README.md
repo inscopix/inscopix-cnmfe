@@ -53,6 +53,17 @@ Once the project is built, unit tests can be run using the following command.
 ./build/test/runTests
 ```
 
+#### Using Inscopix CNMFe within a docker container
+To compile the app in a containerized environment:
+```
+docker build -t inscopix/cnmfe .
+```
+
+To run CNMFe within the container:
+```
+docker run --rm -ti inscopix/cnmfe 
+```
+
 ### Dependencies
 Below is a list of all the dependencies used in Inscopix CNMFe. Note that it may be compatible with other versions of the libraries, but only the ones listed below were tested.
 
