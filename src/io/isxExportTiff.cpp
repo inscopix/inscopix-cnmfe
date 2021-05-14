@@ -64,7 +64,8 @@ namespace isx
 
     void TiffExporter::nextTiffDir()
     {
-        libtiff::TIFFWriteDirectoryFast(out, lastOffDir, &lastOffDir);
+        // libtiff::TIFFWriteDirectoryFast(out, lastOffDir, &lastOffDir);
+        libtiff::TIFFWriteDirectory(out);
         libtiff::TIFFFlush(out);
     }
 }

@@ -34,7 +34,10 @@ isx-cnmfe
 
 #### Building the static library
 ```
-./build.sh
+mkdir build
+cd build
+cmake ..
+make
 ```
 
 #### Example code for using the CNMFe library

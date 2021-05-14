@@ -79,7 +79,7 @@ namespace isx
         // Seek to the right directory
         if(1 != libtiff::TIFFSetDirectory(m_tif, libtiff::tdir_t(inFrameNumber)))
         {
-            throw std::runtime_error("The requested frame number doesn't exist.");
+            throw std::invalid_argument("The requested frame number doesn't exist.");
         }
 
         // Read the image

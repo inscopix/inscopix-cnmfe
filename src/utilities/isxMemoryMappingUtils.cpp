@@ -33,7 +33,7 @@ namespace isx
     {
         if (inFilenames.size() != inRois.size())
         {
-            throw std::runtime_error("The number of memory-mapped filenames must match the number of ROIs.");
+            throw std::invalid_argument("The number of memory-mapped filenames must match the number of ROIs.");
         }
 
         const size_t numPatches = inRois.size();
@@ -104,12 +104,12 @@ namespace isx
     {
         if (inMovie == nullptr)
         {
-            throw std::runtime_error("Movie not provided.");
+            throw std::invalid_argument("Movie not provided.");
         }
 
         if (inFilenames.empty())
         {
-            throw std::runtime_error("Filenames for memory mapped files not provided");
+            throw std::invalid_argument("Filenames for memory mapped files not provided");
         }
 
         const size_t numRows = inMovie->getFrameHeight();
