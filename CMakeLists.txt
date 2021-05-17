@@ -37,10 +37,10 @@ add_library(${CMAKE_PROJECT_NAME} STATIC ${SRC_FILES})
 # cnmfe unit tests
 add_subdirectory(test)
 
-# create example executable
-set(EXAMPLE_PROJECT example)
-add_executable(${EXAMPLE_PROJECT} example.cpp)
-target_link_libraries(${EXAMPLE_PROJECT} PRIVATE ${CMAKE_PROJECT_NAME})
+# create executable
+set(EXECUTABLE_NAME runCnmfe)
+add_executable(${EXECUTABLE_NAME} example.cpp)
+target_link_libraries(${EXECUTABLE_NAME} PRIVATE ${CMAKE_PROJECT_NAME})
 
 # header-only dependencies
 set(LIB_DIR lib)

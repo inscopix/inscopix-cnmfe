@@ -1,5 +1,5 @@
 # Inscopix CNMFe
-Constrained non-negative matrix factorization algorithm for automated source extraction from microendoscopic data. CNMFe is an algorithm used to perform automated source extraction from calcium imaging movies.
+Constrained non-negative matrix factorization algorithm for automated source extraction from microendoscopic data.
 
 ### Background
 CNMFe is an algorithm used to perform automated source extraction from calcium imaging movies. Specifically, it aims to retrieve the spatial location and temporal dynamics of cells in a movie. The CNMF algorithm was originally developed for two-photon data [Pnevmatikakis, 2016](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4881387/). The two-photon algorithm was modified with enhanced background subtraction routines to work in the one-photon setting [Zhou, 2018](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5871355/). The first version of CNMFe, originally developed in MATLAB, was ported to Python in the CaImAn package, described in [Giovannucci, 2018](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6342523/). CaImAn CNMFe was ported to C++ for implementation into Inscopix Data Processing Software, improved for performance, and extended to offer greater processing control and transparency.
@@ -12,7 +12,7 @@ The first two steps of Inscopix CNMFe aim to determine how to efficiently proces
 ![CNMFe Modules Overview](img/cnmfe_modules_overview.png?raw=true "CNMFe Modules Overview")
 
 ### Building and Using Inscopix CNMFe
-This package can be compiled into a static library for use in any application. A sample C++ project is also provided along with unit tests.
+This package can be compiled into a static library for use in any application. A sample C++ project and unit tests are provided.
 
 #### Expected directory structure
 The build instructions assume the dependencies are located in a subdirectory called *lib* as shown below. This structure can be changed by updating the cmake files.
@@ -42,15 +42,29 @@ make
 ```
 
 #### Example code for using the CNMFe library
-An example C++ project using the Inscopix CNMFe library is available in example.cpp and compiled into an executable when building the app. The following command will run CNMFe on a small movie recorded in the striatum. 
+An example C++ project using the Inscopix CNMFe library is available in *example.cpp* and compiled into an executable when building the app. The following command will run CNMFe on a small movie recorded in the striatum. 
 ```
-./build/example
+./build/runCnmfe data/movie.tif data/params.json output
 ```
 
 #### Running the unit tests
 Once the project is built, unit tests can be run using the following command.
 ```
 ./build/test/runTests
+```
+
+#### Using Inscopix CNMFe within a docker container
+To compile the app in a containerized environment:
+```
+docker build -t inscopix/cnmfe .
+```
+
+To run CNMFe within the container:
+```
+docker run --rm -ti \
+	-v $PWD/data:/input \
+	-v $PWD/output:/output \
+    inscopix/cnmfe /input/movie.tif /input/params.json /output
 ```
 
 ### Dependencies

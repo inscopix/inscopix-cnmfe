@@ -1,0 +1,16 @@
+{
+  "average_cell_diameter": 7,
+  "min_pixel_correlation": 0.8,
+  "min_peak_to_noise_ratio": 10.0,
+  "gaussian_kernel_size": 0,
+  "closing_kernel_size": 0,
+  "background_downsampling_factor": 2,
+  "ring_size_factor": 1.4,
+  "merge_threshold": 0.7,
+  "number_of_threads": 4,
+  "processing_mode": 2,
+  "patch_size": 80,
+  "patch_overlap": 20,
+  "output_units": 1,
+  "output_filetype": 0
+}
