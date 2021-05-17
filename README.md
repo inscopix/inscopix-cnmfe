@@ -44,7 +44,7 @@ make
 #### Example code for using the CNMFe library
 An example C++ project using the Inscopix CNMFe library is available in *example.cpp* and compiled into an executable when building the app. The following command will run CNMFe on a small movie recorded in the striatum. 
 ```
-./build/example
+./build/runCnmfe data/movie.tif data/params.json output
 ```
 
 #### Running the unit tests
@@ -61,7 +61,10 @@ docker build -t inscopix/cnmfe .
 
 To run CNMFe within the container:
 ```
-docker run --rm -ti inscopix/cnmfe 
+docker run --rm -ti \
+	-v $PWD/data:/input \
+	-v $PWD/output:/output \
+    inscopix/cnmfe /input/movie.tif /input/params.json /output
 ```
 
 ### Dependencies

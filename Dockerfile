@@ -13,4 +13,6 @@ RUN apt update \
     && ln -s /lib/x86_64-linux-gnu/libz.so.1 /lib64/libz.so \
     && cmake -H. -B$BUILD_DIR && make -C $BUILD_DIR
 
-ENTRYPOINT ["./build/example"]
+VOLUME ["/input", "/output"]
+
+ENTRYPOINT ["./build/runCnmfe"]

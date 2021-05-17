@@ -1,23 +1,30 @@
 #include "isx/cnmfe.h"
+#include "json.hpp"
+#include <fstream>
 
-int main() {
+int main(int argc, char* argv[]) {
+    const std::string inputMoviePath = std::string(argv[1]);
+    const std::string inputCnmfeParams = std::string(argv[2]);
+    const std::string outputDirPath = std::string(argv[3]);
 
-    const std::string inputMoviePath = "test/data/movie_128x128x100.tif";
-    const std::string outputDirPath = "isx-cnmfe_output";
-    const int outputFiletype = 0;  // tiff for footprints, csv for traces
-    const int averageCellDiameter = 7;
-    const float minCorr = 0.8;
-    const float minPnr = 10.0;
-    const int gaussianKernelSize = 0;  // auto estimate
-    const int closingKernelSize = 0;   // auto estimate
-    const int backgroundDownsamplingFactor = 2;
-    const float ringSizeFactor = 1.4;
-    const float mergeThreshold = 0.7;
-    const int numThreads = 4;
-    const int processingMode = 2;  // parallel patch mode
-    const int patchSize = 80;
-    const int patchOverlap = 20;
-    const int traceOutputUnits = 1;  // noise scaled
+    std::ifstream cnmfeParamsFile (inputCnmfeParams);
+    nlohmann::json params;
+    cnmfeParamsFile >> params;
+
+    const int averageCellDiameter = params["average_cell_diameter"].get<int>();
+    const float minCorr = params["min_pixel_correlation"].get<float>();
+    const float minPnr = params["min_peak_to_noise_ratio"].get<float>();
+    const int gaussianKernelSize = params["gaussian_kernel_size"].get<int>();
+    const int closingKernelSize = params["closing_kernel_size"].get<int>();
+    const int backgroundDownsamplingFactor = params["background_downsampling_factor"].get<int>();
+    const float ringSizeFactor = params["ring_size_factor"].get<float>();
+    const float mergeThreshold = params["merge_threshold"].get<float>();
+    const int numThreads = params["number_of_threads"].get<int>();
+    const int processingMode = params["processing_mode"].get<int>();
+    const int patchSize = params["patch_size"].get<int>();
+    const int patchOverlap = params["patch_overlap"].get<int>();
+    const int traceOutputUnits = params["output_units"].get<int>();
+    const int outputFiletype = params["output_filetype"].get<int>();
 
     isx::cnmfe(
         inputMoviePath,
