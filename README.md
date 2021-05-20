@@ -31,8 +31,8 @@ docker run --rm -ti \
     inscopix/cnmfe /input/movie.tif /input/params.json /output
 ```
 
-#### Description of Individual Parameters
-The CNMFe parameters used by the Docker image are listed below along with their respective descriptions.
+### Description of Individual Parameters
+The CNMFe parameters used in this package are listed below along with their respective descriptions.
 
 | Parameter  | Description |
 | ----------:|:-------------|
