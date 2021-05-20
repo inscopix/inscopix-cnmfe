@@ -28,7 +28,7 @@ Place the input movie and the CNMFe parameters stored in a json file in the same
 docker run --rm -ti \
 	-v $PWD/data:/input \
 	-v $PWD/output:/output \
-    inscopix/cnmfe /input/movie.tif /input/params.json /output
+    inscopix1/cnmfe /input/movie.tif /input/params.json /output
 ```
 
 ### Description of Individual Parameters
