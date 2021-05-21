@@ -22,14 +22,16 @@ set(SRC_DIR
         src/core
         src/oasis
         src/io
-        src/utilities)
+        src/utilities
+        src/log)
 file(GLOB SRC_FILES
         "src/*.cpp"
         "src/exposed/*.cpp"
         "src/core/*.cpp"
         "src/oasis/*.cpp"
         "src/io/*.cpp"
-        "src/utilities/*.cpp")
+        "src/utilities/*.cpp"
+        "src/log/*.cpp")
 
 # cnmfe static library
 add_library(${CMAKE_PROJECT_NAME} STATIC ${SRC_FILES})
