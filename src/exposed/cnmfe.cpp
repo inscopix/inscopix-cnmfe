@@ -3,6 +3,7 @@
 #include "isxCnmfeIO.h"
 #include "isxTiffMovie.h"
 #include "isxCnmfePatch.h"
+#include "isxLog.h"
 
 namespace isx
 {
@@ -24,6 +25,10 @@ namespace isx
         const int patchOverlap,
         const int traceOutputUnits)
     {
+        const std::string logFileName = outputDirPath + "/" + "Inscopix_CNMFe_Log.txt";
+        const std::string appName = "Inscopix CNMFe";
+        Logger::initialize(logFileName, appName);
+
         if (!pathExists(outputDirPath))
         {
             makeDirectory(outputDirPath);

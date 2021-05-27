@@ -1,5 +1,6 @@
 #include "isxCnmfeCore.h"
 #include "isxCnmfeGreedy.h"
+#include "isxLog.h"
 
 #include <thread>
 
@@ -33,7 +34,10 @@ namespace isx
 
     void Cnmfe::fit(const CubeFloat_t & inY)
     {
+        ISX_LOG_INFO(m_numThreads, m_numThreads > 1 ? " threads" : " thread", " assigned for fitting CNMFe model");
+
         // estimate noise in each pixel
+        ISX_LOG_INFO("Estimating individual pixel noise");
         isx::getNoiseFft(inY, m_noise, m_deconvParams.m_noiseRange, m_deconvParams.m_noiseMethod);
 
         // estimate spatiotemporal components using the greedy correlation approach

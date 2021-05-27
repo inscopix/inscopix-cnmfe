@@ -1,5 +1,6 @@
 #include "isxTiffMovie.h"
 #include "isxTiffBuffer.h"
+#include "isxLog.h"
 namespace libtiff {
     // placed in its own namespace to avoid
     // type redefinition conflict with OpenCV
@@ -11,6 +12,7 @@ namespace isx
 {
     TiffMovie::TiffMovie(const std::string & inFileName)
     {
+        ISX_LOG_INFO("Loading tiff input");
         initialize(inFileName);
         m_numFrames = size_t(libtiff::TIFFNumberOfDirectories(m_tif));
     }
@@ -29,6 +31,7 @@ namespace isx
 
         if(!m_tif)
         {
+            ISX_LOG_ERROR("Failed to open TIFF file: " +  m_fileName);
             throw std::runtime_error("Failed to open TIFF file: " +  m_fileName);
         }
 
@@ -37,6 +40,7 @@ namespace isx
         libtiff::TIFFGetField(m_tif, TIFFTAG_SAMPLESPERPIXEL, &channels);
         if (channels > 1)
         {
+            ISX_LOG_ERROR("Unsupported number of channels (" + std::to_string(channels) + "). Only single channel TIFF images are supported.");
             throw std::runtime_error("Unsupported number of channels (" + std::to_string(channels) + "). Only single channel TIFF images are supported.");
         }
 
@@ -61,6 +65,7 @@ namespace isx
             }
             default:
             {
+                ISX_LOG_ERROR("Unsupported number of bits (" + std::to_string(bits) + "). Only 8 (U8), 16 (U16), and 32 (F32) bit images are supported.");
                 throw std::runtime_error("Unsupported number of bits (" + std::to_string(bits) + "). Only 8 (U8), 16 (U16), and 32 (F32) bit images are supported.");
             }
         }
@@ -79,6 +84,7 @@ namespace isx
         // Seek to the right directory
         if(1 != libtiff::TIFFSetDirectory(m_tif, libtiff::tdir_t(inFrameNumber)))
         {
+            ISX_LOG_ERROR("Invalid frame number: the requested frame number does not exist");
             throw std::invalid_argument("The requested frame number doesn't exist.");
         }
 
@@ -94,6 +100,7 @@ namespace isx
         {
             if (libtiff::TIFFReadEncodedStrip(m_tif, strip, pBuf, size) == -1)
             {
+                ISX_LOG_ERROR("Failed to read strip from TIFF file: " + m_fileName);
                 throw std::runtime_error("Failed to read strip from TIFF file: " + m_fileName);
             }
             pBuf += size;
@@ -119,6 +126,7 @@ namespace isx
         }
         else
         {
+            ISX_LOG_ERROR("Tiff input datatype not supported. Only F32, U16, and U8 are supported.");
             throw std::runtime_error("Tiff input datatype not supported. Only F32, U16, and U8 are supported.");
         }
 

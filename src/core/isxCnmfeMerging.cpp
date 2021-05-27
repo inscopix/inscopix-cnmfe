@@ -1,5 +1,6 @@
 #include "isxCnmfeMerging.h"
 #include "isxCnmfeDeconv.h"
+//#include "isxLog.h"
 #include "ThreadPool.h"
 #include <stack>
 
@@ -159,6 +160,7 @@ namespace isx
 
         if (listConxcomp.n_elem == 0)
         {
+//            ISX_LOG_INFO("No more components to merge");
             return false;
         }
 

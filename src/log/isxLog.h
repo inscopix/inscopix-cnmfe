@@ -34,7 +34,7 @@ namespace isx
         /// Stopping condition for recursive streamVarArgs.
         ///
         /// \param  strm        The stream to which to append.
-        void streamVarArgs(std::ostringstream& strm)
+        inline void streamVarArgs(std::ostringstream& strm)
         {
         }
 

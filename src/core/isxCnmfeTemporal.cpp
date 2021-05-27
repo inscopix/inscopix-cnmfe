@@ -1,5 +1,6 @@
 #include "isxCnmfeTemporal.h"
 #include "isxCnmfeUtils.h"
+//#include "isxLog.h"
 #include "ThreadPool.h"
 
 namespace isx
@@ -130,6 +131,7 @@ namespace isx
 
             if (arma::norm(Ccopy - inOutC, "fro") <= 1e-3f * arma::norm(inOutC, "fro"))
             {
+//                ISX_LOG_INFO("Stopping temporal components update, not changing significantly");
                 break;
             }
             else
