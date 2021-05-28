@@ -1,9 +1,12 @@
 #include "isxLogger.h"
-#include "isxUtilities.h"
+
 #include <iostream>
 #include <fstream>
-#include <ctime>
 #include <string>
+#include <ctime>
+#include <chrono>
+#include <iomanip>
+#include <sstream>
 
 namespace isx {
 
@@ -49,14 +52,20 @@ namespace isx {
             std::string m_appname;
     };
 
-    // get current date & time, format is YYYY-MM-DD HH:mm:ss
-    const std::string currentDateTime() {
-        time_t now = time(0);
-        struct tm tstruct;
-        char buf[80];
-        tstruct = *localtime(&now);
-        strftime(buf, sizeof(buf), "%Y-%m-%d %H:%M:%S", &tstruct);
-        return buf;
+    // get current date & time, format is YYYY-MM-DD HH:mm:ss.xxx (xxx represents milliseconds)
+    std::string currentDateTime() {
+        using namespace std::chrono;
+
+        system_clock::time_point now = system_clock::now();
+        milliseconds ms = duration_cast<milliseconds>(now.time_since_epoch()) % 1000;
+
+        time_t timer = system_clock::to_time_t(now);
+        std::tm bt = *std::localtime(&timer);
+
+        std::ostringstream oss;
+        oss << std::put_time(&bt, "%Y-%m-%d %H:%M:%S"); // HH:MM:SS
+        oss << '.' << std::setfill('0') << std::setw(3) << ms.count();
+        return oss.str();
     }
 
     // pad string with spaces at the end
