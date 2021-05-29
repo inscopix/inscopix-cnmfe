@@ -13,7 +13,8 @@ namespace isx {
         INFO = 0,
         WARNING,
         ERROR,
-        DEBUG
+        DEBUG,
+        SYSTEM
     };
 
     /// Mapping from log types to log type names
@@ -22,7 +23,8 @@ namespace isx {
         {LogType_t::INFO, "INFO"},
         {LogType_t::WARNING, "WARN"},
         {LogType_t::ERROR, "ERROR"},
-        {LogType_t::DEBUG, "DEBUG"}
+        {LogType_t::DEBUG, "DEBUG"},
+        {LogType_t::SYSTEM, "SYSTEM"}
     };
 
     /// A class implementing a singleton Logger for application-wide logging
@@ -37,9 +39,10 @@ namespace isx {
             /// Singleton initializer
             /// \param inLogFileName if empty, nothing will be logged
             /// \param inAppName string representing the name of the app (will appear on every log message)
+            /// \param inAppVersion string representing the version of the app (will only appear when logging system info)
             static
             void
-            initialize(const std::string & inLogFileName, const std::string & inAppName);
+            initialize(const std::string & inLogFileName, const std::string & inAppName, const std::string & inAppVersion);
 
             /// Check if singleton has been initialized
             /// \return bool indicating the above
@@ -61,6 +64,11 @@ namespace isx {
             void
             log(const std::string & text, const LogType_t & logType);
 
+            /// Add system information to the log
+            static
+            void
+            logSystemInfo();
+
             /// \return log filename
             ///
             static
@@ -73,8 +81,14 @@ namespace isx {
             const std::string &
             getAppName();
 
+            /// \return app version
+            ///
+            static
+            const std::string &
+            getAppVersion();
+
         private:
-            Logger(const std::string & inLogFileName, const std::string & inAppName);
+            Logger(const std::string & inLogFileName, const std::string & inAppName, const std::string & inAppVersion);
             Logger(const Logger & other) = delete;
             const Logger & operator=(const Logger & other) = delete;
 

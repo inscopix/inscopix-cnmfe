@@ -7,6 +7,7 @@
 #include <chrono>
 #include <iomanip>
 #include <sstream>
+#include <thread>
 
 namespace isx {
 
@@ -15,10 +16,11 @@ namespace isx {
     class Logger::Impl : public std::enable_shared_from_this<Logger::Impl>
     {
         public:
-            Impl(const std::string & inLogFileName, const std::string & inAppName)
+            Impl(const std::string & inLogFileName, const std::string & inAppName, const std::string & inAppVersion)
             {
                 m_filename = inLogFileName;
-                m_appname = inAppName;
+                m_appName = inAppName;
+                m_appVersion = inAppVersion;
 
                 // remove previous log file if existent
                 std::remove(m_filename.c_str());
@@ -44,12 +46,19 @@ namespace isx {
             const std::string &
             getAppName() const
             {
-                return m_appname;
+                return m_appName;
+            }
+
+            const std::string &
+            getAppVersion() const
+            {
+                return m_appVersion;
             }
 
         private:
             std::string m_filename;
-            std::string m_appname;
+            std::string m_appName;
+            std::string m_appVersion;
     };
 
     // get current date & time, format is YYYY-MM-DD HH:mm:ss.xxx (xxx represents milliseconds)
@@ -77,9 +86,29 @@ namespace isx {
         }
     }
 
-    Logger::Logger(const std::string & inLogFileName, const std::string & inAppName)
+    // returns the name of the operating system
+    std::string getOsName()
     {
-        m_pImpl.reset(new Impl(inLogFileName, inAppName));
+        #ifdef _WIN32
+        return "Windows 32-bit";
+        #elif _WIN64
+        return "Windows 64-bit";
+        #elif __APPLE__ || __MACH__
+        return "Mac OSX";
+        #elif __linux__
+        return "Linux";
+        #elif __FreeBSD__
+        return "FreeBSD";
+        #elif __unix || __unix__
+        return "Unix";
+        #else
+        return "Other";
+        #endif
+    }
+
+    Logger::Logger(const std::string & inLogFileName, const std::string & inAppName, const std::string & inAppVersion)
+    {
+        m_pImpl.reset(new Impl(inLogFileName, inAppName, inAppVersion));
     }
 
     Logger::~Logger()
@@ -87,7 +116,7 @@ namespace isx {
     }
 
     void
-    Logger::initialize(const std::string & inLogFileName, const std::string & inAppName)
+    Logger::initialize(const std::string & inLogFileName, const std::string & inAppName, const std::string & inAppVersion)
     {
         if(inLogFileName.empty())
         {
@@ -96,8 +125,10 @@ namespace isx {
 
         if (!isInitialized())
         {
-            s_instance.reset(new Logger(inLogFileName, inAppName));
+            s_instance.reset(new Logger(inLogFileName, inAppName, inAppVersion));
         }
+
+        logSystemInfo();
     }
 
     bool
@@ -134,6 +165,24 @@ namespace isx {
         }
     }
 
+    void
+    Logger::logSystemInfo()
+    {
+        if (isInitialized())
+        {
+            try {
+                log(getAppName() + " version: " + getAppVersion() + '\n', LogType_t::SYSTEM);
+                log("Operating system: " + getOsName() + '\n', LogType_t::SYSTEM);
+                log("Number of cores: " + std::to_string(std::thread::hardware_concurrency())  + '\n', LogType_t::SYSTEM);
+            }
+            catch(...)
+            {
+                const std::string message = "System information could not be retrieved";
+                log(message + "\n", LogType_t::WARNING);
+            }
+        }
+    }
+
     const std::string &
     Logger::getLogFileName()
     {
@@ -152,6 +201,18 @@ namespace isx {
         if (isInitialized())
         {
             return instance()->m_pImpl->getAppName();
+        }
+
+        static std::string emptyString;
+        return emptyString;
+    }
+
+    const std::string &
+    Logger::getAppVersion()
+    {
+        if (isInitialized())
+        {
+            return instance()->m_pImpl->getAppVersion();
         }
 
         static std::string emptyString;

@@ -26,6 +26,11 @@
 /// Logs the arguments as strings in a debug message.
 #define ISX_LOG_DEBUG(...) isx::internal::log_(isx::LogType_t::DEBUG, __VA_ARGS__)
 
+/// \def ISX_LOG_SYSTEM(...)
+///
+/// Logs the arguments as strings in a system message.
+#define ISX_LOG_SYSTEM(...) isx::internal::log_(isx::LogType_t::SYSTEM, __VA_ARGS__)
+
 // DO NOT USE THESE FUNCTIONS DIRECTLY, USE MACROS ABOVE INSTEAD
 namespace isx
 {
