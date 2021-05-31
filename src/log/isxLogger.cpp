@@ -77,15 +77,6 @@ namespace isx {
         return oss.str();
     }
 
-    // pad string with spaces at the end
-    void padTo(std::string &str, const size_t num, const char paddingChar = ' ')
-    {
-        if(num > str.size())
-        {
-            str.insert(str.size(), num - str.size(), paddingChar);
-        }
-    }
-
     // returns the name of the operating system
     std::string getOsName()
     {
@@ -152,12 +143,9 @@ namespace isx {
     {
         if (isInitialized())
         {
-            std::string logTypeStr = "[" + isx::logTypeNameMap.at(logType) + "]";
-            padTo(logTypeStr, 7);
-
             const std::string message = "[" + currentDateTime() + "]"
                                       + "[" + instance()->m_pImpl->getAppName() + "]"
-                                      + logTypeStr
+                                      + "[" + isx::logTypeNameMap.at(logType) + "]"
                                       + " " +  text;
             std::cout << message;
             std::cout << std::flush;
