@@ -12,7 +12,7 @@ namespace isx
 {
     TiffMovie::TiffMovie(const std::string & inFileName)
     {
-        ISX_LOG_INFO("Loading tiff input");
+        ISX_LOG_INFO("Loading tiff input (file: ", inFileName, ")");
         initialize(inFileName);
         m_numFrames = size_t(libtiff::TIFFNumberOfDirectories(m_tif));
     }
