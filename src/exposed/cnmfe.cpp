@@ -4,6 +4,7 @@
 #include "isxTiffMovie.h"
 #include "isxCnmfePatch.h"
 #include "isxLog.h"
+#include "json.hpp"
 
 namespace isx
 {
@@ -25,10 +26,31 @@ namespace isx
         const int patchOverlap,
         const int traceOutputUnits)
     {
+        using nlohmann::json;
+
         const std::string logFileName = outputDirPath + "/" + "Inscopix_CNMFe_Log.txt";
         const std::string appName = "Inscopix CNMFe";
         const std::string appVersion = "1.0.0";
         Logger::initialize(logFileName, appName, appVersion);
+
+        nlohmann::json params;
+        params["inputMoviePath"] = inputMoviePath;
+        params["outputDirPath"] = outputDirPath;
+        params["outputFiletype"] = outputFiletype;
+        params["averageCellDiameter"] = averageCellDiameter;
+        params["minCorr"] = minCorr;
+        params["minPnr"] = minPnr;
+        params["gaussianKernelSize"] = gaussianKernelSize;
+        params["closingKernelSize"] = closingKernelSize;
+        params["backgroundDownsamplingFactor"] = backgroundDownsamplingFactor;
+        params["ringSizeFactor"] = ringSizeFactor;
+        params["mergeThreshold"] = mergeThreshold;
+        params["numThreads"] = numThreads;
+        params["processingMode"] = processingMode;
+        params["patchSize"] = patchSize;
+        params["patchOverlap"] = patchOverlap;
+        params["traceOutputUnits"] = traceOutputUnits;
+        ISX_LOG_INFO("CNMFe parameters:\n" + params.dump(4));
 
         if (!pathExists(outputDirPath))
         {
