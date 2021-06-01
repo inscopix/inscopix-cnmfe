@@ -34,7 +34,7 @@ namespace isx
     {
         if (inFilenames.size() != inRois.size())
         {
-//            ISX_LOG_ERROR("The number of memory-mapped filenames does not match the number of ROIs");
+            ISX_LOG_ERROR("The number of memory-mapped filenames does not match the number of ROIs");
             throw std::invalid_argument("The number of memory-mapped filenames must match the number of ROIs.");
         }
 

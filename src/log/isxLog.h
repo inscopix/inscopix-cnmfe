@@ -21,7 +21,7 @@
 /// Logs the arguments as strings in an error message.
 #define ISX_LOG_ERROR(...) isx::internal::log_(isx::LogType_t::ERROR, __VA_ARGS__)
 
-/// \def ISX_LOG_ERROR(...)
+/// \def ISX_LOG_DEBUG(...)
 ///
 /// Logs the arguments as strings in a debug message.
 #define ISX_LOG_DEBUG(...) isx::internal::log_(isx::LogType_t::DEBUG, __VA_ARGS__)
