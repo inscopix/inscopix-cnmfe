@@ -12,23 +12,20 @@ The first two steps of Inscopix CNMFe aim to determine how to efficiently proces
 ![CNMFe Modules Overview](img/cnmfe_modules_overview.png?raw=true "CNMFe Modules Overview")
 
 ### How to Use Inscopix CNMFe
-The simplest and quickest way to use Inscopix CNMFe is to follow the 3 steps outlined below.
+The simplest and quickest way to use Inscopix CNMFe is to follow the steps outlined below.
 
 **Step 1: Install [Docker](https://docs.docker.com/get-docker/)**
 
-**Step 2: Pull the Inscopix CNMFe docker image**
-```
-docker pull inscopix1/cnmfe
-```
+**Step 2: Run Inscopix CNMFe within a docker container**
 
-**Step 3: Run Inscopix CNMFe within a docker container**
-
-Place the input movie and the CNMFe parameters stored in a json file in the same folder. Note that only tiff movies are currently supported.
+Place the input movie and the CNMFe parameters stored in a json file in the same folder.
+Note that only tiff movies are currently supported.
+The docker image will automatically be downloaded the first time you run the command.
 ```
 docker run --rm -ti \
 	-v $PWD/data:/input \
 	-v $PWD/output:/output \
-    inscopix1/cnmfe /input/movie.tif /input/params.json /output
+	public.ecr.aws/inscopix/cnmfe /input/movie.tif /input/params.json /output
 ```
 
 ### Description of Individual Parameters
@@ -97,7 +94,7 @@ Once the project is built, unit tests can be run using the following command.
 #### Building and Using the Inscopix CNMFe Docker Container Locally
 To compile the app in a containerized environment:
 ```
-docker build -t inscopix1/cnmfe .
+docker build -t inscopix/cnmfe .
 ```
 
 To run CNMFe within the container:
@@ -105,7 +102,7 @@ To run CNMFe within the container:
 docker run --rm -ti \
 	-v $PWD/data:/input \
 	-v $PWD/output:/output \
-    inscopix1/cnmfe /input/movie.tif /input/params.json /output
+    inscopix/cnmfe /input/movie.tif /input/params.json /output
 ```
 
 ### Dependencies
