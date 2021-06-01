@@ -334,6 +334,8 @@ namespace isx
         MatrixFloat_t tmpC;
         removeEmptyComponents(outA, outRawC, tmpC);
 
+        ISX_LOG_INFO(outRawC.n_rows, " components were extracted");
+
         ISX_LOG_INFO("Scaling spatiotemporal components");
         scaleSpatialTemporalComponents(outA, outRawC, outputType, inDeconvParams);
     }

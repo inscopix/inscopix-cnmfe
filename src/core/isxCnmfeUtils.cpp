@@ -1,6 +1,6 @@
 #include "isxCnmfeUtils.h"
 #include "isxLassoLars.h"
-//#include "isxLog.h"
+#include "isxLog.h"
 #include <opencv2/core/core.hpp>
 #include <opencv2/imgproc/imgproc.hpp>
 #include <map>
@@ -244,7 +244,7 @@ namespace isx
             {
                 inOutCRaw.shed_rows(emptyCompInd);
             }
-//            ISX_LOG_INFO("Removed ", emptyCompInd.size(), " empty components");
+            ISX_LOG_INFO("Removed ", emptyCompInd.size(), " empty components");
         }
     }
 
@@ -294,7 +294,7 @@ namespace isx
                 }
                 else
                 {
-//                    ISX_LOG_WARNING("Temporal trace ", k, " has an estimated noise level of zero, stopping scaling to prevent division by zero");
+                    ISX_LOG_WARNING("Temporal trace ", k, " has an estimated noise level of zero, stopping scaling to prevent division by zero");
                 }
             }
         }

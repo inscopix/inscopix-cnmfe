@@ -3,7 +3,7 @@
 #include "isxCnmfeNoise.h"
 #include "isxCnmfeUtils.h"
 #include "isxCnmfeDeconv.h"
-//#include "isxLog.h"
+#include "isxLog.h"
 
 #include <opencv2/core/core.hpp>
 #include <opencv2/imgproc/imgproc.hpp>
@@ -455,7 +455,7 @@ namespace isx
         outC = outC.head_rows(numNeurons);
         outS = outS.head_rows(numNeurons);
 
-//        ISX_LOG_INFO(numNeurons, " neurons were initialized");
+        ISX_LOG_INFO(numNeurons, " neurons were initialized");
     }
 
 } // namespace isx
