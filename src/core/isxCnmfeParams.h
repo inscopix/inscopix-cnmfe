@@ -13,6 +13,13 @@ namespace isx
         PATCH_PARALLEL
     };
 
+    const static std::map<CnmfeMode_t, std::string> cnmfeModeNameMap =
+    {
+        {CnmfeMode_t::ALL_IN_MEMORY, "all in memory"},
+        {CnmfeMode_t::PATCH_SEQUENTIAL, "sequential patches"},
+        {CnmfeMode_t::PATCH_PARALLEL, "parallel patches"}
+    };
+
     /// Output type for spatial and temporal components
     enum CnmfeOutputType_t
     {

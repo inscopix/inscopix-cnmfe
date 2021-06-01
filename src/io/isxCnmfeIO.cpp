@@ -2,6 +2,7 @@
 #include "isxCnmfeParams.h"
 #include "isxExportTiff.h"
 #include "isxUtilities.h"
+#include "isxLog.h"
 #include "json.hpp"
 #include <fstream>
 #include <iomanip>
@@ -15,6 +16,7 @@ namespace isx
         const std::string & footprintsKey,
         const std::string & tracesKey)
     {
+        ISX_LOG_INFO("Saving components to h5 file (file: ", outputFilename, ")");
         // data is transposed since armadillo elements are stored in column-major ordering
         footprints.save(arma::hdf5_name(outputFilename, footprintsKey, arma::hdf5_opts::trans + arma::hdf5_opts::append));
         traces.save(arma::hdf5_name(outputFilename, tracesKey, arma::hdf5_opts::trans + arma::hdf5_opts::append));
@@ -66,6 +68,7 @@ namespace isx
     {
         if (traces.n_rows > 0)
         {
+            ISX_LOG_INFO("Saving temporal traces to csv file (file: ", outputFilename, ")");
             std::ofstream outFile(outputFilename);
             writeHeaders(outFile, cellNamePrefix, traces.n_rows);
             writeTraces(outFile, traces);
@@ -77,6 +80,7 @@ namespace isx
         const CubeFloat_t & footprints,
         const std::string & outputFilename)
     {
+        ISX_LOG_INFO("Saving footprints to tiff file (file: ", outputFilename, ")");
         std::unique_ptr<TiffExporter> out(new TiffExporter(outputFilename, true));
         for (size_t i = 0; i < footprints.n_slices; ++i)
         {

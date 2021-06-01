@@ -1,5 +1,6 @@
 #include "isxExportTiff.h"
 #include "isxTiffBuffer.h"
+#include "isxLog.h"
 
 namespace isx
 {
@@ -10,6 +11,7 @@ namespace isx
 
         if (!out)
         {
+            ISX_LOG_ERROR("TiffExporter: unable to open file for writing");
             throw std::runtime_error("Unable to open file for writing.");
         }
     }
@@ -57,6 +59,7 @@ namespace isx
 
             if (libtiff::TIFFWriteScanline(out, buf.get(), row, 0) < 0)
             {
+                ISX_LOG_ERROR("TiffExporter: error writing to output file");
                 throw std::runtime_error("Error writing to output file.");
             }
         }

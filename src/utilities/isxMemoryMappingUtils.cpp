@@ -1,5 +1,6 @@
 #include "isxMemoryMappingUtils.h"
 #include "isxUtilities.h"
+#include "isxLog.h"
 
 namespace isx
 {
@@ -33,6 +34,7 @@ namespace isx
     {
         if (inFilenames.size() != inRois.size())
         {
+            ISX_LOG_ERROR("The number of memory-mapped filenames does not match the number of ROIs");
             throw std::invalid_argument("The number of memory-mapped filenames must match the number of ROIs.");
         }
 
@@ -77,6 +79,7 @@ namespace isx
             mmap.map(inFilenames[i], error);
             if (error)
             {
+                ISX_LOG_ERROR("Failed to memory map movie: ", error.message());
                 throw std::runtime_error("Failed to memory map movie " + error.message());
             }
 
@@ -92,7 +95,8 @@ namespace isx
         expectedSize *= sizeof(float);
         if (actualSize != expectedSize)
         {
-            throw std::runtime_error("Memory mapped file is not the same size as ROIs.");
+            ISX_LOG_ERROR("The memory mapped file does not have the same dimensions as the ROIs");
+            throw std::runtime_error("Memory mapped file does not have the same dimensions as the ROIs.");
         }
     }
 
@@ -104,11 +108,13 @@ namespace isx
     {
         if (inMovie == nullptr)
         {
+            ISX_LOG_ERROR("Input movie not provided to memory mapping function");
             throw std::invalid_argument("Movie not provided.");
         }
 
         if (inFilenames.empty())
         {
+            ISX_LOG_ERROR("Memory-mapped filenames not provided to memory mapping function");
             throw std::invalid_argument("Filenames for memory mapped files not provided");
         }
 
@@ -124,12 +130,14 @@ namespace isx
                 || std::get<2>(roi) >= numCols
                 || std::get<3>(roi) >= numCols)
             {
-                throw std::runtime_error("ROI out of range of input movie");
+                ISX_LOG_ERROR("ROI out of range of input movie dimensions");
+                throw std::runtime_error("ROI out of range of input movie dimensions");
             }
 
             if (std::get<0>(roi) >= std::get<1>(roi)
                 || std::get<2>(roi) >= std::get<3>(roi))
             {
+                ISX_LOG_ERROR("Invalid ROI definition, ROI is not in the correct form");
                 throw std::runtime_error("ROI is not in the correct form");
             }
         }
@@ -155,6 +163,7 @@ namespace isx
             }
             catch (std::exception)
             {
+                ISX_LOG_WARNING("Encountered incomplete or corrupt memory-mapped file, deleting and recreating the files");
                 outMemoryMappedMovies.clear();
                 removeFiles(inFilenames);
                 writeMemoryMapOfMovie(inMovie, inFilenames, inOutRois);

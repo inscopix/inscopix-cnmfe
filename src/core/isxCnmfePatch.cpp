@@ -4,7 +4,9 @@
 #include "isxCnmfeNoise.h"
 #include "isxMemoryMappingUtils.h"
 #include "isxCnmfeUtils.h"
+#include "isxCnmfeParams.h"
 #include "isxUtilities.h"
+#include "isxLog.h"
 
 #include "ThreadPool.h"
 
@@ -70,6 +72,10 @@ namespace isx
             || (patchSize >= inNumRows && patchSize >= inNumCols))
         {
             patchCoordinates.emplace_back(std::make_tuple(0, inNumRows - 1, 0, inNumCols - 1));
+            if (inMode != CnmfeMode_t::ALL_IN_MEMORY)
+            {
+                ISX_LOG_INFO("Patch size larger than field of view, using single patch");
+            }
             return;
         }
 
@@ -207,6 +213,8 @@ namespace isx
         const size_t numThreads,
         const CnmfeOutputType_t outputType)
     {
+        ISX_LOG_INFO("Using ", cnmfeModeNameMap.at(inPatchParams.m_mode), " processing mode");
+
         const size_t numRows = inMovie->getFrameHeight();
         const size_t numCols = inMovie->getFrameWidth();
         size_t numFrames = inMovie->getNumFrames();
@@ -222,6 +230,7 @@ namespace isx
             inPatchParams.m_patchSize,
             inPatchParams.m_overlap,
             inInitParams.m_boundaryDist);
+        ISX_LOG_INFO("Field of view divided into ", patchCoordinates.size(), patchCoordinates.size() > 1 ? " patches" : " patch");
 
         if (patchCenters.size() > 200)
         {
@@ -232,6 +241,7 @@ namespace isx
             //     For a field of view of size 800x1280 pixels and 200 patches, this gives us 1280/200 = 6.4.
             //     Thus, in this example by enforcing a max number of patches of 200 we are indirectly
             //     enforcing a minimum patch size of 7 pixels for non-overlapping patches.
+            ISX_LOG_ERROR("Number of patches exceed limit of 200");
             throw std::runtime_error("There are too many patches. Try increasing the patch size, decreasing the patch overlap, or spatially downsampling the data to reduce the number of patches.");
         }
 
@@ -248,6 +258,7 @@ namespace isx
             memoryMapFilePaths.push_back(inMemoryMapDir + "/" + memoryMapBaseName + "-patch_" + std::to_string(patchId) + ".bin");
         }
 
+        ISX_LOG_INFO("Memory mapping input movie");
         std::vector<SpMemoryMappedMovie_t> mappedFovs;
         memoryMapMovie(
             inMovie,
@@ -265,6 +276,7 @@ namespace isx
         const size_t numThreadsOverride = (inPatchParams.m_mode == CnmfeMode_t::PATCH_PARALLEL) ? 1 : numThreads;
         const bool outputFinalTraces = (inPatchParams.m_mode != CnmfeMode_t::ALL_IN_MEMORY);
 
+        ISX_LOG_INFO("Launching CNMFe workers");
         size_t numComponents = 0;
         size_t numPatches = patchCoordinates.size();
         std::vector<Cnmfe> cnmfes(numPatches);
@@ -314,6 +326,7 @@ namespace isx
             numComponents += cnmfes[patchId].getNumNeurons();
         }
 
+        ISX_LOG_INFO("Merging patch results");
         mergePatchResults(
             outA, outRawC, numRows, numCols, numFrames, patchCoordinates, cnmfes,
             inDeconvParams, mergeThresh, numThreads, numComponents);
@@ -321,6 +334,9 @@ namespace isx
         MatrixFloat_t tmpC;
         removeEmptyComponents(outA, outRawC, tmpC);
 
+        ISX_LOG_INFO(outRawC.n_rows, " components were extracted");
+
+        ISX_LOG_INFO("Scaling spatiotemporal components");
         scaleSpatialTemporalComponents(outA, outRawC, outputType, inDeconvParams);
     }
 }

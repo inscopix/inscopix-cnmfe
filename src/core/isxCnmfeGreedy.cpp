@@ -4,7 +4,7 @@
 #include "isxCnmfeTemporal.h"
 #include "isxCnmfeMerging.h"
 #include "isxCnmfeUtils.h"
-
+#include "isxLog.h"
 #include "ThreadPool.h"
 
 
@@ -378,6 +378,7 @@ namespace isx
 
         if (inOutNoise.empty())
         {
+            ISX_LOG_INFO("Estimating individual pixel noise");
             isx::getNoiseFft(inY, inOutNoise, inDeconvParams.m_noiseRange, inDeconvParams.m_noiseMethod);
         }
 
@@ -395,6 +396,7 @@ namespace isx
         const bool isFirstOrderAr = inDeconvParams.m_firstOrderAR;        
         inDeconvParams.m_firstOrderAR = true;
 
+        ISX_LOG_INFO("Initializing neurons");
         {
             MatrixFloat_t outCRaw, tmpS;
             initNeuronsCorrPNR(inY, outA, outC, outCRaw, tmpS, inDeconvParams, inInitParams, maxNumNeurons);
@@ -410,7 +412,8 @@ namespace isx
             inY.n_slices,
             false,
             true);
-        
+
+        ISX_LOG_INFO("Estimating background");
         {
             arma::SpMat<float> W;
             ColumnFloat_t B0;
@@ -423,8 +426,10 @@ namespace isx
             cubeB += inY;
         }
 
+        ISX_LOG_INFO("Updating spatial components");
         updateSpatialComponents(cubeB, outA, outC, inOutNoise, inSpatialParams.m_closingKSize, inSpatialParams.m_pixelsPerProc, inNumThreads);
 
+        ISX_LOG_INFO("Updating temporal components");
         {
             // temporary variables not needed beyond this step
             ColumnFloat_t tmpBl, tmpC1, tmpSn;
@@ -435,6 +440,7 @@ namespace isx
                 inDeconvParams, 2, inNumThreads);
         }
 
+        ISX_LOG_INFO("Searching for more neurons in the residuals");
         for (size_t iter = 0; iter < numIterations - 1; ++iter)
         {
             // maxNumNeurons is the global allowable number of neurons
@@ -456,6 +462,7 @@ namespace isx
             }
         }
 
+        ISX_LOG_INFO("Merging components");
         {
             MatrixFloat_t tmpRawC;
             MatrixFloat_t matA = cubeToMatrixBySlice(outA);
@@ -463,8 +470,10 @@ namespace isx
             outA = matrixToCubeByCol(matA, inY.n_rows, inY.n_cols);
         }
 
+        ISX_LOG_INFO("Updating spatial components");
         updateSpatialComponents(cubeB, outA, outC, inOutNoise, inSpatialParams.m_closingKSize, inSpatialParams.m_pixelsPerProc, inNumThreads);
 
+        ISX_LOG_INFO("Updating temporal components");
         {
             // temporary variables not needed beyond this step
             ColumnFloat_t tmpBl, tmpC1, tmpSn;
@@ -475,6 +484,7 @@ namespace isx
                 inDeconvParams, 2, inNumThreads);
         }
 
+        ISX_LOG_INFO("Updating background estimation");
         {
             arma::SpMat<float> W;
             ColumnFloat_t B0;
@@ -489,6 +499,7 @@ namespace isx
             cubeB += inY;
         }
 
+        ISX_LOG_INFO("Merging components");
         {
             MatrixFloat_t tmpRawC;
             MatrixFloat_t matA = cubeToMatrixBySlice(outA);
@@ -496,8 +507,10 @@ namespace isx
             outA = matrixToCubeByCol(matA, inY.n_rows, inY.n_cols);
         }
 
+        ISX_LOG_INFO("Updating spatial components");
         updateSpatialComponents(cubeB, outA, outC, inOutNoise, 1, inSpatialParams.m_pixelsPerProc, inNumThreads);
 
+        ISX_LOG_INFO("Extracting raw temporal traces");
         {
             // Compute trace residual YrA
             MatrixFloat_t matA = cubeToMatrixBySlice(outA);
@@ -518,13 +531,15 @@ namespace isx
             // temporary variables not needed beyond this step
             ColumnFloat_t tmpBl, tmpC1, tmpSn;
             MatrixFloat_t tmpG, tmpYrA, tmpS;
-            
+
+            ISX_LOG_INFO("Updating temporal components");
             updateTemporalComponents(
                 matB, cubeToMatrixBySlice(outA), outC, tmpBl, tmpC1, tmpG, tmpSn, tmpS, tmpYrA,
                 inDeconvParams, 2, inNumThreads);
         }
 
         // remove empty components
+        ISX_LOG_INFO("Removing empty components");
         removeEmptyComponents(outA, outC, outRawC);
     }
 

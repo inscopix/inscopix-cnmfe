@@ -38,7 +38,7 @@ namespace isx
 
         /// The offset of the last TIFF directory written.
         /// Note that uint64 is a typedef defined by libtiff and comes from including tiffio.
-        libtiff::uint64 lastOffDir = 0;
+        // libtiff::uint64 lastOffDir = 0;
     };
 } // namespace isx
 
