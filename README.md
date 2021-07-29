@@ -36,7 +36,7 @@ The CNMFe parameters used in this package are listed below along with their resp
 | average_cell_diameter | the average cell diameter of a representative cell in pixels |
 | min_pixel_correlation | the minimum correlation of a pixel with its immediate neighbors when searching for new cell centers |
 | min_peak_to_noise_ratio | the minimum peak-to-noise ratio of a pixel when searching for new cell centers |
-| gaussian_kernel_size | he width in pixels of the Gaussian kernel used for spatial filtering of the movie before cell initialization |
+| gaussian_kernel_size | the width in pixels of the Gaussian kernel used for spatial filtering of the movie before cell initialization |
 | closing_kernel_size | the size in pixels of the morphological closing kernel used for removing small disconnected components and connecting small cracks within individual cell footprints |
 | background_downsampling_factor | the spatial downsampling factor to use when estimating the background activity |
 | ring_size_factor | the multiple of the average cell diameter to use for computing the radius of the ring model used for estimating the background activity |
