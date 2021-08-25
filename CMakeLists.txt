@@ -44,6 +44,12 @@ set(EXECUTABLE_NAME runCnmfe)
 add_executable(${EXECUTABLE_NAME} example.cpp)
 target_link_libraries(${EXECUTABLE_NAME} PRIVATE ${CMAKE_PROJECT_NAME})
 
+# python bindings
+set(PYTHON_MODULE_NAME inscopix_cnmfe)
+add_subdirectory(pybind11)
+pybind11_add_module(${PYTHON_MODULE_NAME} pythonAPI.cpp)
+target_link_libraries(${PYTHON_MODULE_NAME} PRIVATE ${CMAKE_PROJECT_NAME})
+
 # header-only dependencies
 set(LIB_DIR lib)
 set(HEADER_ONLY_LIB_PATHS)
