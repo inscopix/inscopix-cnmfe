@@ -7,10 +7,13 @@ set(CMAKE_CXX_STANDARD 11)
 # identify operating system
 set(OS_MAC FALSE)
 set(OS_LINUX FALSE)
+set(OS_WINDOWS FALSE)
 if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
     set(OS_MAC TRUE)
 elseif(UNIX AND NOT APPLE)
     set(OS_LINUX TRUE)
+elseif(WIN32)
+    set(OS_WINDOWS TRUE)
 else()
     message(FATAL_ERROR "cmake is not configured for this OS")
 endif()
@@ -66,6 +69,10 @@ elseif (${OS_LINUX})
     find_package(HDF5 COMPONENTS C CXX HL REQUIRED)
     link_directories(${HDF5_LIBRARY_DIRS})
     include_directories(${HDF5_INCLUDE_DIRS})
+elseif (${OS_WINDOWS})
+    set(HDF5_LIBRARIES
+            ${HDF5_LIB_DIR_PATH}/libhdf5_cpp.lib
+            ${HDF5_LIB_DIR_PATH}/libhdf5.lib)
 endif()
 # armadillo
 set(ARMADILLO_DEFINITIONS ARMA_DONT_USE_WRAPPER ARMA_64BIT_WORD ARMA_BLAS_LONG_LONG ARMA_USE_HDF5 ARMA_NO_DEBUG)
@@ -86,9 +93,21 @@ elseif (${OS_LINUX})
             -Wl,--end-group
             ${INTELMKL_LIB_DIR}/libtbb.a
             libpthread.so)
+elseif (${OS_WINDOWS})
+    set(ARMADILLO_LIBRARIES
+            ${INTELMKL_LIB_DIR}/mkl_intel_ilp64.lib
+            ${INTELMKL_LIB_DIR}/mkl_tbb_thread.lib
+            ${INTELMKL_LIB_DIR}/mkl_core.lib
+            ${INTELMKL_LIB_DIR}/tbb.lib)
 endif()
 # opencv
-list(APPEND CMAKE_PREFIX_PATH ${LIB_DIR}/OpenCV/share/OpenCV)
+if (${OS_WINDOWS})
+    set(OpenCV_DIR ${LIB_DIR}/OpenCV/x64/vc14/staticlib)
+    set(OpenCV_STATIC ON)
+    list(APPEND CMAKE_PREFIX_PATH ${LIB_DIR}/OpenCV)
+else()
+    list(APPEND CMAKE_PREFIX_PATH ${LIB_DIR}/OpenCV/share/OpenCV)
+endif()
 find_package(OpenCV 3.2.0 REQUIRED core imgproc video features2d)
 set(OPENCV_HEADER_PATHS ${OpenCV_INCLUDE_DIRS})
 set(OPENCV_LIBRARIES ${OpenCV_LIBS})
@@ -112,6 +131,9 @@ if (${OS_MAC})
 elseif (${OS_LINUX})
     list(APPEND LIB_INCLUDE_PATHS ${HDF5_INCLUDE_DIRS})
     list(APPEND LIB_FILE_PATHS ${HDF5_CXX_LIBRARIES})
+elseif (${OS_WINDOWS})
+    list(APPEND LIB_INCLUDE_PATHS ${HDF5_HEADER_PATHS})
+    list(APPEND LIB_FILE_PATHS ${HDF5_LIBRARIES})
 endif()
 target_include_directories(${CMAKE_PROJECT_NAME} PUBLIC ${HEADER_ONLY_LIB_PATHS} ${LIB_INCLUDE_PATHS} ${SRC_DIR})
 target_link_libraries(${CMAKE_PROJECT_NAME} PUBLIC ${LIB_FILE_PATHS})
