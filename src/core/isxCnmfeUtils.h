@@ -65,8 +65,7 @@ namespace isx
         CubeFloat_t & inOutA,
         MatrixFloat_t & inOutC,
         const CnmfeOutputType_t inOutputType = CnmfeOutputType_t::NON_NORMALIZED,
-        const DeconvolutionParams inDeconvParams = DeconvolutionParams(),
-        const float inPercentile = 0.5f);
+        const DeconvolutionParams inDeconvParams = DeconvolutionParams());
 }
 
 #endif //ISX_CNMFE_UTILS_H

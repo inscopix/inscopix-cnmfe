@@ -355,3 +355,72 @@ TEST_CASE("LassoLars", "[cnmfe-utils]")
         REQUIRE(arma::approx_equal(expectedBeta, outBeta, "reldiff", 1e-5f));
     }
 }
+
+TEST_CASE("CnmfeUtilsScaleSpatialTemporalComponents")
+{
+    const std::string inputFile = "test/data/movie_128x128x100_output_non_normalized.h5";
+
+    isx::CubeFloat_t actA;
+    isx::MatrixFloat_t actC;
+
+    actA.load(arma::hdf5_name(inputFile, "footprints", arma::hdf5_opts::trans));
+    actC.load(arma::hdf5_name(inputFile, "traces", arma::hdf5_opts::trans));
+
+    isx::DeconvolutionParams deconvParams;
+
+    SECTION("Normalized")
+    {
+        isx::scaleSpatialTemporalComponents(actA, actC, isx::CnmfeOutputType_t::DF);
+
+        const std::string outputFile = "test/data/movie_128x128x100_output_df.h5";
+    
+        isx::CubeFloat_t expA;
+        isx::MatrixFloat_t expC;
+
+        expA.load(arma::hdf5_name(outputFile, "footprints", arma::hdf5_opts::trans));
+        expC.load(arma::hdf5_name(outputFile, "traces", arma::hdf5_opts::trans));
+
+        REQUIRE(arma::approx_equal(actA, expA, "reldiff", 1e-5f));
+        REQUIRE(arma::approx_equal(actC, expC, "reldiff", 1e-5f));
+
+        // Spatial footprints should be unit vectors (i.e., have a magnitude of one)
+        isx::ColumnFloat_t actNorm(actA.n_slices);
+        for (size_t k = 0; k < actA.n_slices; k++)
+        {
+            actNorm(k) = arma::norm(actA.slice(k), "fro");
+        }
+
+        isx::ColumnFloat_t expNorm(actA.n_slices);
+        expNorm.fill(1.0f);
+
+        REQUIRE(arma::approx_equal(actNorm, expNorm, "reldiff", 1e-5f));
+    }
+
+    SECTION("Noise scaled")
+    {
+        isx::scaleSpatialTemporalComponents(actA, actC, isx::CnmfeOutputType_t::NOISE_SCALED, deconvParams);
+
+        const std::string outputFile = "test/data/movie_128x128x100_output_df_noise.h5";
+
+        isx::CubeFloat_t expA;
+        isx::MatrixFloat_t expC;
+
+        expA.load(arma::hdf5_name(outputFile, "footprints", arma::hdf5_opts::trans));
+        expC.load(arma::hdf5_name(outputFile, "traces", arma::hdf5_opts::trans));
+
+        REQUIRE(arma::approx_equal(actA, expA, "reldiff", 1e-5f));
+        REQUIRE(arma::approx_equal(actC, expC, "reldiff", 1e-5f));
+
+        // Spatial footprints should be unit vectors (i.e., have a magnitude of one)
+        isx::ColumnFloat_t actNorm(actA.n_slices);
+        for (size_t k = 0; k < actA.n_slices; k++)
+        {
+            actNorm(k) = arma::norm(actA.slice(k), "fro");
+        }
+
+        isx::ColumnFloat_t expNorm(actA.n_slices);
+        expNorm.fill(1.0f);
+
+        REQUIRE(arma::approx_equal(actNorm, expNorm, "reldiff", 1e-5f));
+    }
+}
