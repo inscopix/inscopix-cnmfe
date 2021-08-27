@@ -4,6 +4,7 @@
 #include "H5Cpp.h"
 #include <armadillo>
 #include "opencv2/core.hpp"
+#include <QFile>
 namespace libtiff {
     // placed in its own namespace to avoid
     // type redefinition conflict with OpenCV
@@ -88,5 +89,22 @@ TEST_CASE("LibTiffDependency", "[cnmfe-dependencies]")
     libtiff::TIFF * tiffFile = libtiff::TIFFOpen(filename.c_str(), mode);
     REQUIRE(tiffFile != nullptr);
     TIFFClose(tiffFile);
+    std::remove(filename.c_str());
+}
+
+TEST_CASE("QtDependency", "[cnmfe-dependencies]")
+{
+    const std::string filename = "dsahkafafbjcvha.bin";
+    const char * msg = "hello";
+
+    QFile file(QString::fromStdString(filename));
+    bool success = file.open(QIODevice::ReadWrite);
+    REQUIRE(success);
+
+    auto numBytes = qstrlen(msg);
+    auto bytesWritten = file.write(msg, numBytes);
+    REQUIRE(bytesWritten == numBytes);
+
+    file.close();
     std::remove(filename.c_str());
 }
