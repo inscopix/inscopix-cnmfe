@@ -96,7 +96,7 @@ get_filename_component(LIBTIFF_HEADER_PATHS ${LIB_DIR}/libtiff/include ABSOLUTE)
 get_filename_component(LIBTIFF_LIB_DIR_PATH ${LIB_DIR}/libtiff/lib ABSOLUTE)
 set(LIBTIFF_LIBRARIES ${LIBTIFF_LIB_DIR_PATH}/libtiff.a)
 set(QT_VERSION "5.8")
-find_package(Qt5Core ${QT_VERSION} REQUIRED PATHS ${LIB_DIR}/Qt/lib/cmake/Qt5Core)
+find_package(Qt5Core ${QT_VERSION} REQUIRED PATHS ${LIB_DIR}/Qt/lib/cmake/Qt5Core NO_DEFAULT_PATH)
 set(QT_CORE_HEADER_PATHS ${Qt5Core_INCLUDE_DIRS})
 set(QT_CORE_LIBRARIES ${Qt5Core_LIBRARIES})
 
