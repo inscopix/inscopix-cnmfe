@@ -1,6 +1,5 @@
 #include "catch.hpp"
 #include "ThreadPool.h"
-#include "mio.hpp"
 #include "H5Cpp.h"
 #include <armadillo>
 #include "opencv2/core.hpp"
@@ -33,17 +32,6 @@ TEST_CASE("ThreadPoolDependency", "[cnmfe-dependencies]")
     REQUIRE(sums[0] == 1);
     REQUIRE(sums[1] == 0);
     REQUIRE(sums[2] == 14);
-}
-
-TEST_CASE("MioDependency", "[cnmfe-dependencies]")
-{
-    const std::string filename = "myfile_X9Fa1nahda8had.txt";
-    std::error_code error;
-    mio::shared_mmap_source mmap;
-    mmap.map(filename, error);
-
-    REQUIRE(error);
-    REQUIRE(error.message() == "No such file or directory");
 }
 
 TEST_CASE("HDF5Dependency", "[cnmfe-dependencies]")
