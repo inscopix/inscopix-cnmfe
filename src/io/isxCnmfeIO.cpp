@@ -89,26 +89,11 @@ namespace isx
         }
     }
 
-    std::string getMemoryMapDirPath(
+    std::string getMemoryMapPath(
         const std::string & inputMoviePath,
-        const std::string & outputDir,
-        const int processingMode,
-        const int patchSize,
-        const int patchOverlap)
+        const std::string & outputDir)
     {
-        nlohmann::json params;
-        params["absoluteFilepath"] = inputMoviePath;
-        if (static_cast<isx::CnmfeMode_t>(processingMode) != CnmfeMode_t::ALL_IN_MEMORY)
-        {
-            // patch size and patch overlap don't matter for all-in-memory mode
-            params["patchSize"] = patchSize;
-            params["patchOverlap"] = patchOverlap;
-        }
-
-        // construct unique hash based on input parameters to uniquely identify memory map files
-        std::stringstream id;
-        id << std::hex << std::hash<std::string>{}(params.dump());
-        return outputDir + "/" + getBaseName(inputMoviePath) + "-" + id.str();
+        return outputDir + "/" + getBaseName(inputMoviePath) + "_tmp.bin";
     }
 
     std::string getH5OutputFilename(const std::string & inputMoviePath, const std::string & outputDir)
