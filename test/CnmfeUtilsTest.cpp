@@ -358,13 +358,23 @@ TEST_CASE("LassoLars", "[cnmfe-utils]")
 
 TEST_CASE("CnmfeUtilsScaleSpatialTemporalComponents")
 {
-    const std::string inputFile = "test/data/movie_128x128x100_output_non_normalized.h5";
+    const size_t d1 = 3;
+    const size_t d2 = 3;
+    const size_t K = 2;
 
     isx::CubeFloat_t actA;
-    isx::MatrixFloat_t actC;
-
-    actA.load(arma::hdf5_name(inputFile, "footprints", arma::hdf5_opts::trans));
-    actC.load(arma::hdf5_name(inputFile, "traces", arma::hdf5_opts::trans));
+    {
+        const float data[18] = {
+            0.0f, 0.0f, 0.0f, 0.0f, 100.0f, 0.0f, 0.0f, 0.0f, 0.0f,
+            0.0f, 0.0f, 1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 0.0f, 0.0f,
+        };
+        actA = isx::CubeFloat_t(data, d1, d2, K);
+    }
+    
+    isx::MatrixFloat_t actC = {
+        {1.0f, 2.0f, 3.0f, 4.0f, 5.0f},
+        {1.0f, 2.0f, 3.0f, 4.0f, 5.0f},
+    };
 
     isx::DeconvolutionParams deconvParams;
 
@@ -372,20 +382,26 @@ TEST_CASE("CnmfeUtilsScaleSpatialTemporalComponents")
     {
         isx::scaleSpatialTemporalComponents(actA, actC, isx::CnmfeOutputType_t::DF);
 
-        const std::string outputFile = "test/data/movie_128x128x100_output_df.h5";
-    
         isx::CubeFloat_t expA;
-        isx::MatrixFloat_t expC;
-
-        expA.load(arma::hdf5_name(outputFile, "footprints", arma::hdf5_opts::trans));
-        expC.load(arma::hdf5_name(outputFile, "traces", arma::hdf5_opts::trans));
+        {
+            const float data[18] = {
+                0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f,
+                0.0f, 0.0f, 0.13483997f, 0.26967994f, 0.40451991f, 0.53935989f, 0.67419986f, 0.0f, 0.0f,
+            };
+            expA = isx::CubeFloat_t(data, d1, d2, K);
+        }
+        
+        isx::MatrixFloat_t expC = {
+            {100.0f, 200.0f, 300.0f, 400.0f, 500.0f},
+            {7.41619848f, 14.83239697f, 22.24859546f, 29.66479394f, 37.08099243f},
+        };
 
         REQUIRE(arma::approx_equal(actA, expA, "reldiff", 1e-5f));
         REQUIRE(arma::approx_equal(actC, expC, "reldiff", 1e-5f));
 
         // Spatial footprints should be unit vectors (i.e., have a magnitude of one)
         isx::ColumnFloat_t actNorm(actA.n_slices);
-        for (size_t k = 0; k < actA.n_slices; k++)
+        for (size_t k = 0; k < K; k++)
         {
             actNorm(k) = arma::norm(actA.slice(k), "fro");
         }
@@ -400,20 +416,26 @@ TEST_CASE("CnmfeUtilsScaleSpatialTemporalComponents")
     {
         isx::scaleSpatialTemporalComponents(actA, actC, isx::CnmfeOutputType_t::NOISE_SCALED, deconvParams);
 
-        const std::string outputFile = "test/data/movie_128x128x100_output_df_noise.h5";
-
         isx::CubeFloat_t expA;
-        isx::MatrixFloat_t expC;
-
-        expA.load(arma::hdf5_name(outputFile, "footprints", arma::hdf5_opts::trans));
-        expC.load(arma::hdf5_name(outputFile, "traces", arma::hdf5_opts::trans));
+        {
+            const float data[18] = {
+                0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f,
+                0.0f, 0.0f, 0.13483997f, 0.26967994f, 0.40451991f, 0.53935989f, 0.67419986f, 0.0f, 0.0f,
+            };
+            expA = isx::CubeFloat_t(data, d1, d2, K);
+        }
+        
+        isx::MatrixFloat_t expC = {
+            {0.85065117f, 1.70130234f, 2.55195352f, 3.40260469f, 4.25325586f},
+            {0.85065117f, 1.70130234f, 2.55195352f, 3.40260469f, 4.25325586f},
+        };
 
         REQUIRE(arma::approx_equal(actA, expA, "reldiff", 1e-5f));
         REQUIRE(arma::approx_equal(actC, expC, "reldiff", 1e-5f));
 
         // Spatial footprints should be unit vectors (i.e., have a magnitude of one)
         isx::ColumnFloat_t actNorm(actA.n_slices);
-        for (size_t k = 0; k < actA.n_slices; k++)
+        for (size_t k = 0; k < K; k++)
         {
             actNorm(k) = arma::norm(actA.slice(k), "fro");
         }
