@@ -2,6 +2,8 @@
 #include "isxMemoryMappedFileUtils.h"
 #include "isxCnmfeIO.h"
 
+#include <QFile>
+
 namespace {
     void convertMovieToCube(
         const isx::SpTiffMovie_t & inMovie,
@@ -184,5 +186,48 @@ TEST_CASE("MemoryMapMovieOddDimensions", "[cnmfe-utils]")
     }
 
     std::remove(inputMoviePath.c_str());
+    std::remove(outputMemoryMapPath.c_str());
+}
+
+TEST_CASE("MemoryMapMovieDeleteFile", "[cnmfe-utils]")
+{
+    const std::string inputMoviePath = "test/data/movie_128x128x100.tif";
+    const std::string outputMemoryMapPath = "test/data/mmap.bin";
+
+    const isx::SpTiffMovie_t movie = std::shared_ptr<isx::TiffMovie>(new isx::TiffMovie(inputMoviePath));
+    const size_t numRows = movie->getFrameHeight();
+    const size_t numCols = movie->getFrameWidth();
+    const size_t numFrames = movie->getNumFrames();
+    const isx::DataType dataType = movie->getDataType();
+    
+    isx::CubeFloat_t movieCube;
+    convertMovieToCube(movie, movieCube);
+
+    // write something random to mmap file before calling mmap module
+    {
+        const char * msg = "hello";
+
+        QFile file(QString::fromStdString(outputMemoryMapPath));
+        bool success = file.open(QIODevice::ReadWrite);
+        REQUIRE(success);
+
+        auto numBytes = qstrlen(msg);
+        auto bytesWritten = file.write(msg, numBytes);
+        REQUIRE(bytesWritten == numBytes);
+
+        file.close();
+    }
+
+    SECTION("Full FOV")
+    {
+        isx::writeMemoryMappedFileMovie(movie, outputMemoryMapPath);
+
+        const std::tuple<size_t, size_t, size_t, size_t> roi = std::make_tuple(0, numRows - 1, 0, numCols - 1);
+        isx::CubeFloat_t patch;
+        isx::readMemoryMappedFileMovie(outputMemoryMapPath, numRows, numCols, numFrames, dataType, roi, patch);
+
+        REQUIRE(arma::approx_equal(patch, movieCube, "reldiff", 1e-5f));
+    }
+
     std::remove(outputMemoryMapPath.c_str());
 }

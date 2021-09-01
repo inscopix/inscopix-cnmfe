@@ -27,6 +27,13 @@ namespace isx
             throw std::runtime_error("Failed memory mapped file write. No conversion specified from data type to float");
         }
 
+        // In case the tmp file was not removed successfully on a previous run of CNMFe
+        // Remove the file if it exists
+        if (pathExists(inFilename))
+        {
+            std::remove(inFilename.c_str());
+        }
+
         QFile file(QString::fromStdString(inFilename));
         if (!file.open(QIODevice::ReadWrite))
         {
