@@ -245,7 +245,7 @@ namespace isx
             inInitParams.m_boundaryDist);
         ISX_LOG_INFO("Field of view divided into ", patchCoordinates.size(), patchCoordinates.size() > 1 ? " patches" : " patch");
 
-        ISX_LOG_INFO("Creating temporary binary file for memory mapping movie: ", inMemoryMapPath);
+        ISX_LOG_INFO("Creating temporary binary file for memory mapping movie (file: ", inMemoryMapPath, ")");
         writeMemoryMappedFileMovie(
             inMovie,
             inMemoryMapPath);
@@ -331,7 +331,7 @@ namespace isx
         ISX_LOG_INFO("Scaling spatiotemporal components");
         scaleSpatialTemporalComponents(outA, outRawC, outputType, inDeconvParams);
 
-        ISX_LOG_INFO("Removing temporary binary file for memory mapping movie: ", inMemoryMapPath);
+        ISX_LOG_INFO("Removing temporary binary file for memory mapping movie (file:", inMemoryMapPath, ")");
         std::remove(inMemoryMapPath.c_str());
     }
 }

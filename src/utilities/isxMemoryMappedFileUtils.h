@@ -6,24 +6,26 @@
 
 namespace isx
 {
-    /// Memory map writes a new binary file representing a movie
-    /// The binary file stores raw data of each frame of the movie stored continguously in column-major form
+    /// Memory maps a new binary file
+    /// Writes raw frame data of a movie to the binary file
+    /// Each frame of the movie is stored contingously in memory and in column-major form
     ///
     /// \param inMovies                 Movie with raw frame data to write
-    /// \param inFilename               Filename of new binary file to memory map write
+    /// \param inFilename               Filename of new binary file
     void writeMemoryMappedFileMovie(
         const SpTiffMovie_t & inMovie,
         const std::string inFilename);
 
-    /// Constructs a patch of a movie by memory map reading a binary file representing the movie
+    /// Memory maps a binary file representing a movie
+    /// Contructs a patch of the movie by reading binary file
     /// The binary file should be created with writeMemoryMappedFileMovie(...)
     ///
-    /// \param inFilename               Filename of binary file to memory map read
+    /// \param inFilename               Filename of binary file
     /// \param inNumRows                Number of rows in a movie frame
     /// \param inNumCols                Number of columns in a movie frame
     /// \param inNumFrame               Number of frames in movie
     /// \param inDataType               Data type representing a pixel in movie
-    /// \param inRoi                    ROI of movie to read
+    /// \param inRoi                    Rectangular region of interest defined as (start row index, end row index, start col index, end col index) to read from the movie
     /// \param outPatch                 Armadillo structure to store ROI of movie
     void readMemoryMappedFileMovie(
         const std::string inFilename,

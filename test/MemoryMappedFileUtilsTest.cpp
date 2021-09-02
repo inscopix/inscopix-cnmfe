@@ -114,16 +114,19 @@ TEST_CASE("MemoryMapMovieInvalid", "[cnmfe-utils]")
         std::tuple<size_t,size_t,size_t,size_t> roi = std::make_tuple(0, numRows, 0, numCols);
         REQUIRE_THROWS_WITH(
             isx::readMemoryMappedFileMovie(outputMemoryMapPath, numRows, numCols, numFrames, dataType, roi, patch),
-            "Failed memory mapped file read. ROI out of range of input movie");
+            "Failed memory mapped file read. Roi(0, 128, 0, 128) out of range of input movie.");
     }
 
-    SECTION("ROI in incorrect form")
+    SECTION("ROI range is non-increasing")
     {
+        // The bounds defined for both rows and columns of a region of interest must be listed in increasing order
+        // For instance here the ROI is incorrectly formatted like so: (end row index, start row index, end col index, start col index)
+        // However the correct format of an ROI is: (start row index, end row index, start col index, end col index)
         isx::CubeFloat_t patch;
         std::tuple<size_t,size_t,size_t,size_t> roi = std::make_tuple(numRows - 1, 0, numCols - 1, 0);
         REQUIRE_THROWS_WITH(
             isx::readMemoryMappedFileMovie(outputMemoryMapPath, numRows, numCols, numFrames, dataType, roi, patch),
-            "Failed memory mapped file read. ROI is not in the correct form");
+            "Failed memory mapped file read. Roi(127, 0, 127, 0) range is non-increasing.");
     }
 }
 
