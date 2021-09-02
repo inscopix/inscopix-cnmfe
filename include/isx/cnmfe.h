@@ -22,7 +22,7 @@ namespace isx
     /// \param processingMode               Processing mode for Cnmfe (0: all in memory, 1: sequential patches, 2: parallel patches)
     /// \param patchSize                    Size of a single patch in pixels
     /// \param patchOverlap                 Amount of overlap between patches in pixels
-    /// \param traceOutputUnits             Output units for temporal components (0: DF, 1: noise scaled, 2: scaled DF)
+    /// \param traceOutputUnits             Output units for temporal components (0: DF, 1: noise scaled)
     void cnmfe(
         const std::string & inputMoviePath,
         const std::string & outputDirPath,
