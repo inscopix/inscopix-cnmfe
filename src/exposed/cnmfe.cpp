@@ -59,8 +59,8 @@ namespace isx
 
         const SpTiffMovie_t movie = std::shared_ptr<TiffMovie>(new TiffMovie(inputMoviePath));
 
-        // dir where memory-mapped files will be stored
-        const std::string memoryMapDir = getMemoryMapDirPath(inputMoviePath, outputDirPath, processingMode, patchSize, patchOverlap);
+        // path where tmp memory-mapped file will be stored
+        const std::string memoryMapPath = getMemoryMapPath(inputMoviePath, outputDirPath);
 
         // prepare cnmfe parameters
         InitializationParams initParams;
@@ -88,7 +88,7 @@ namespace isx
         // run cnmfe
         CubeFloat_t footprints;  // spatial footprints
         MatrixFloat_t traces;    // raw temporal traces
-        patchCnmfe(movie, memoryMapDir, footprints, traces, deconvParams, initParams, spatialParams, patchParams,
+        patchCnmfe(movie, memoryMapPath, footprints, traces, deconvParams, initParams, spatialParams, patchParams,
            maxNumNeurons, ringSizeFactor, mergeThreshold, numIterations, numThreads, outputType);
 
         // save output to disk

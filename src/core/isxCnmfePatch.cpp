@@ -2,7 +2,7 @@
 #include "isxCnmfeCore.h"
 #include "isxCnmfeMerging.h"
 #include "isxCnmfeNoise.h"
-#include "isxMemoryMappingUtils.h"
+#include "isxMemoryMappedFileUtils.h"
 #include "isxCnmfeUtils.h"
 #include "isxCnmfeParams.h"
 #include "isxUtilities.h"
@@ -134,14 +134,26 @@ namespace isx
     }
 
     void patchCnmfeParallel(
-        const SpMemoryMappedMovie_t & inMappedFov,
         Cnmfe & cnmfe,
         const std::vector<std::tuple<size_t,size_t,size_t,size_t>> & patchCoordinates,
         const std::vector<std::pair<float,float>> & patchCenters,
-        const size_t patchId)
+        const size_t patchId,
+        const std::string memoryMapFilename,
+        const size_t numRows,
+        const size_t numCols,
+        const size_t numFrames,
+        const DataType dataType)
     {
-        auto cubePtr = inMappedFov->asCube();
-        const CubeFloat_t & fov = (*cubePtr);
+        CubeFloat_t fov;
+        readMemoryMappedFileMovie(
+            memoryMapFilename,
+            numRows,
+            numCols,
+            numFrames,
+            dataType,
+            patchCoordinates[patchId],
+            fov);
+        
         cnmfe.fit(fov);
 
         if (patchCoordinates.size() > 1)
@@ -199,7 +211,7 @@ namespace isx
 
     void patchCnmfe(
         const SpTiffMovie_t & inMovie,
-        const std::string inMemoryMapDir,
+        const std::string inMemoryMapPath,
         CubeFloat_t & outA,
         MatrixFloat_t & outRawC,
         const DeconvolutionParams inDeconvParams,
@@ -217,7 +229,8 @@ namespace isx
 
         const size_t numRows = inMovie->getFrameHeight();
         const size_t numCols = inMovie->getFrameWidth();
-        size_t numFrames = inMovie->getNumFrames();
+        const size_t numFrames = inMovie->getNumFrames();
+        const DataType dataType = inMovie->getDataType();
 
         std::vector<std::tuple<size_t, size_t, size_t, size_t>> patchCoordinates;
         std::vector<std::pair<float,float>> patchCenters;
@@ -232,39 +245,10 @@ namespace isx
             inInitParams.m_boundaryDist);
         ISX_LOG_INFO("Field of view divided into ", patchCoordinates.size(), patchCoordinates.size() > 1 ? " patches" : " patch");
 
-        if (patchCenters.size() > 200)
-        {
-            // - The number of files created during memory mapping is not bounded, however since these files are written to in parallel
-            //   they must all be opened at the same time and there are OS limits on the number of files that can be simultaneously open.
-            // - On Mac the max number of files appears to hover around 230-250.
-            // - Note the relationship between the max number of patches and the minimum patch size:
-            //     For a field of view of size 800x1280 pixels and 200 patches, this gives us 1280/200 = 6.4.
-            //     Thus, in this example by enforcing a max number of patches of 200 we are indirectly
-            //     enforcing a minimum patch size of 7 pixels for non-overlapping patches.
-            ISX_LOG_ERROR("Number of patches exceed limit of 200");
-            throw std::runtime_error("There are too many patches. Try increasing the patch size, decreasing the patch overlap, or spatially downsampling the data to reduce the number of patches.");
-        }
-
-        // create directory to store memory mapped files
-        if (!pathExists(inMemoryMapDir))
-        {
-            makeDirectory(inMemoryMapDir);
-        }
-
-        const std::string memoryMapBaseName = getBaseName(inMemoryMapDir);
-        std::vector<std::string> memoryMapFilePaths;
-        for (size_t patchId = 0; patchId < patchCoordinates.size(); patchId++)
-        {
-            memoryMapFilePaths.push_back(inMemoryMapDir + "/" + memoryMapBaseName + "-patch_" + std::to_string(patchId) + ".bin");
-        }
-
-        ISX_LOG_INFO("Memory mapping input movie");
-        std::vector<SpMemoryMappedMovie_t> mappedFovs;
-        memoryMapMovie(
+        ISX_LOG_INFO("Creating temporary binary file for memory mapping movie (file: ", inMemoryMapPath, ")");
+        writeMemoryMappedFileMovie(
             inMovie,
-            memoryMapFilePaths,
-            patchCoordinates,
-            mappedFovs);
+            inMemoryMapPath);
 
         // border applied to whole FOV, therefore set to 0 for patches
         if (inPatchParams.m_mode == CnmfeMode_t::PATCH_PARALLEL || inPatchParams.m_mode == CnmfeMode_t::PATCH_SEQUENTIAL)
@@ -295,11 +279,15 @@ namespace isx
             {
                 results[patchId] = pool.enqueue(
                     patchCnmfeParallel,
-                    std::cref(mappedFovs[patchId]),
                     std::ref(cnmfes[patchId]),
                     std::cref(patchCoordinates),
                     std::cref(patchCenters),
-                    patchId);
+                    patchId,
+                    inMemoryMapPath,
+                    numRows,
+                    numCols,
+                    numFrames,
+                    dataType);
             }
 
             for (size_t patchId = 0; patchId < numPatches; ++patchId)
@@ -313,11 +301,15 @@ namespace isx
             for (size_t patchId=0; patchId < numPatches; patchId++)
             {
                 patchCnmfeParallel(
-                    mappedFovs[patchId],
                     cnmfes[patchId],
                     patchCoordinates,
                     patchCenters,
-                    patchId);
+                    patchId,
+                    inMemoryMapPath,
+                    numRows,
+                    numCols,
+                    numFrames,
+                    dataType);
             }
         }
 
@@ -338,5 +330,8 @@ namespace isx
 
         ISX_LOG_INFO("Scaling spatiotemporal components");
         scaleSpatialTemporalComponents(outA, outRawC, outputType, inDeconvParams);
+
+        ISX_LOG_INFO("Removing temporary binary file for memory mapping movie (file:", inMemoryMapPath, ")");
+        std::remove(inMemoryMapPath.c_str());
     }
 }
