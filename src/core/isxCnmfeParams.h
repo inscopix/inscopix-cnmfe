@@ -23,9 +23,8 @@ namespace isx
     /// Output type for spatial and temporal components
     enum CnmfeOutputType_t
     {
-        DF = 0,        // Components are normalized and temporal traces are scaled by the average pixel intensity value of the nth percentile brightest pixels
+        DF = 0,        // Spatial footprints normalized to unit vectors, temporal traces scaled by the magnitude of spatial footprints
         NOISE_SCALED,  // Components are normalized and temporal traces are scaled by noise estimate
-        NORMALIZED,    // Spatial footprints normalized to unit vectors, temporal traces scaled by the magnitude of spatial footprints
         NON_NORMALIZED // No normalization, components are output as is from greedyCorr
     };
 

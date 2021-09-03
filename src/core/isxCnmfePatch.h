@@ -9,7 +9,7 @@ namespace isx
     /// Run Cnmfe in patches through spatial division of the field of view
     ///
     /// \param inMovie              Input movie (d1 x d2 x T)
-    /// \param inMemoryMapDir       Path to the directory where memory map files will be stored
+    /// \param inMemoryMapPath      Path to the temporary memory map file
     /// \param outA                 Spatial footprints (d1 x d2 x K)
     /// \param outRawC              Raw temporal activity traces (K x T)
     /// \param inDeconvParams       Deconvolution parameters
@@ -24,7 +24,7 @@ namespace isx
     /// \param outputType           Output type for spatial and temporal components
     void patchCnmfe(
         const SpTiffMovie_t & inMovie,
-        const std::string inMemoryMapDir,
+        const std::string inMemoryMapPath,
         CubeFloat_t & outA,
         MatrixFloat_t & outRawC,
         const DeconvolutionParams inDeconvParams,
