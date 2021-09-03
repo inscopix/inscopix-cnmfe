@@ -1,7 +1,7 @@
 #include "isxUtilities.h"
-#include <sys/stat.h>
-#include <unistd.h>
-#include <string>
+#include <QFileInfo>
+#include <QDir>
+
 
 namespace isx
 {
@@ -28,6 +28,21 @@ namespace isx
         }
     }
 
+    std::string
+    getFileName(const std::string & inPath)
+    {
+        QFileInfo pathInfo(QString::fromStdString(inPath));
+        return pathInfo.fileName().toStdString();
+    }
+
+    std::string
+    getDirName(const std::string & inPath)
+    {
+        QFileInfo pathInfo(QString::fromStdString(inPath));
+        QDir pathDir = pathInfo.dir();
+        return pathDir.path().toStdString();
+    }
+
     void removeFiles(const std::vector<std::string> & inFilePaths)
     {
         for (const auto & f : inFilePaths)
@@ -36,33 +51,27 @@ namespace isx
         }
     }
 
-    bool pathExists (const std::string & filename)
+    bool pathExists(const std::string & filename)
     {
-        struct stat buffer;
-        return (stat (filename.c_str(), &buffer) == 0);
+        QFileInfo pathInfo(QString::fromStdString(filename));
+        return pathInfo.exists();
     }
 
     bool makeDirectory(const std::string & path)
     {
-        if (mkdir(path.c_str(), 0777) == -1)
-        {
-            return false;
-        }
-        return true;
+        QDir dir(QString::fromStdString(getDirName(path)));
+        return dir.mkdir(QString::fromStdString(getFileName(path)));
     }
 
     bool removeDirectory(const std::string & path)
     {
-        if (rmdir(path.c_str()) == -1)
-        {
-            return false;
-        }
-        return true;
+        QDir dir(QString::fromStdString(path));
+        return dir.removeRecursively();
     }
 
     std::string getBaseName(const std::string & path)
     {
-        const std::string filename = path.substr(path.find_last_of("/\\") + 1);
-        return filename.substr(0, filename.find_last_of('.'));
+        QFileInfo pathInfo(QString::fromStdString(path));
+        return pathInfo.baseName().toStdString();
     }
 }
