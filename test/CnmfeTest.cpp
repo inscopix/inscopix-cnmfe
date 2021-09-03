@@ -2,8 +2,6 @@
 #include "catch.hpp"
 #include "isx/cnmfe.h"
 #include "isxUtilities.h"
-#include <unistd.h>
-
 
 TEST_CASE("CnmfeFullTest", "[cnmfe]")
 {
