@@ -112,7 +112,11 @@ set(OPENCV_LIBRARIES ${OpenCV_LIBS})
 # libtiff
 get_filename_component(LIBTIFF_HEADER_PATHS ${LIB_DIR}/libtiff/include ABSOLUTE)
 get_filename_component(LIBTIFF_LIB_DIR_PATH ${LIB_DIR}/libtiff/lib ABSOLUTE)
-set(LIBTIFF_LIBRARIES ${LIBTIFF_LIB_DIR_PATH}/libtiff.a)
+if (${OS_WINDOWS})
+    set(LIBTIFF_LIBRARIES ${LIBTIFF_LIB_DIR_PATH}/tiff.lib)
+else()
+    set(LIBTIFF_LIBRARIES ${LIBTIFF_LIB_DIR_PATH}/libtiff.a)
+endif()
 # Qt
 set(QT_VERSION "5.8")
 find_package(Qt5Core ${QT_VERSION} REQUIRED PATHS ${LIB_DIR}/Qt/lib/cmake/Qt5Core NO_DEFAULT_PATH)
