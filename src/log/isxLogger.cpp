@@ -70,7 +70,7 @@ namespace isx {
 
         time_t timer = system_clock::to_time_t(now);
         std::ostringstream oss;
-        char timeStr[100];
+        char timeStr[20];
         if (std::strftime(timeStr, sizeof(timeStr), "%Y-%m-%d %H:%M:%S", std::localtime(&timer))) {
             oss << timeStr; // HH:MM:SS
         }
