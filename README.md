@@ -145,3 +145,20 @@ Below is a list of all the dependencies used in Inscopix CNMFe. Note that it may
 | [Qt](https://www.qt.io/) | 5.8.0 |
 | [json](https://github.com/nlohmann/json) | 2.0.1 |
 | [Catch](https://github.com/catchorg/Catch2) | 1.4.0 |
+
+### Tested Systems
+Below is a list of systems which Inscopix CNMFe has been built on. Note that it may be compatible with other systems, but only the ones listed below were tested.
+| Operating System       | Compiler       |
+| ------------- |:-------------:|
+| macOS 10.15.7 | Apple Clang 8.0.0 (clang-800.0.38); XCode 8.0 |
+| Ubuntu 18.04 LTS | GCC 4.8.5 (Ubuntu 4.8.5-4ubuntu8) |
+| Windows 10 | Visual Studio 14 2015 Win64 (MSVC 19.0.24215.1) |
+
+### Troubleshooting
+
+**Build fails on Ubuntu with error: No rule to make target '/lib64/libz.so'**
+
+Ensure you have a symlink in /lib64 to libz.so. Something like the following:
+```
+sudo ln -s /lib/x86_64-linux-gnu/libz.so.1 libz.so
+```
