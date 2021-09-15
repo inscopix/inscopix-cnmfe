@@ -60,7 +60,7 @@ set(LIB_FILE_PATHS)
 # hdf5
 get_filename_component(HDF5_HEADER_PATHS ${LIB_DIR}/hdf5/include ABSOLUTE)
 get_filename_component(HDF5_LIB_DIR_PATH ${LIB_DIR}/hdf5/lib ABSOLUTE)
-if (${OS_MAC})            
+if (${OS_MAC})
     set(HDF5_LIBRARIES
             ${HDF5_LIB_DIR_PATH}/libhdf5_cpp-static.a
             ${HDF5_LIB_DIR_PATH}/libhdf5-static.a)
@@ -129,13 +129,13 @@ list(APPEND LIB_INCLUDE_PATHS
         ${OPENCV_HEADER_PATHS}
         ${LIBTIFF_HEADER_PATHS}
         ${QT_CORE_HEADER_PATHS}
-	${HDF5_HEADER_PATHS})
+	    ${HDF5_HEADER_PATHS})
 list(APPEND LIB_FILE_PATHS
         ${ARMADILLO_LIBRARIES}
         ${OPENCV_LIBRARIES}
         ${LIBTIFF_LIBRARIES}
         ${QT_CORE_LIBRARIES}
-	${HDF5_LIBRARIES})
+        ${HDF5_LIBRARIES})
 target_include_directories(${CMAKE_PROJECT_NAME} PUBLIC ${HEADER_ONLY_LIB_PATHS} ${LIB_INCLUDE_PATHS} ${SRC_DIR})
 target_link_libraries(${CMAKE_PROJECT_NAME} PUBLIC ${LIB_FILE_PATHS})
 target_compile_definitions(${CMAKE_PROJECT_NAME} PUBLIC ${ARMADILLO_DEFINITIONS})
