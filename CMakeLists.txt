@@ -59,16 +59,18 @@ set(LIB_INCLUDE_PATHS)
 set(LIB_FILE_PATHS)
 # hdf5
 get_filename_component(HDF5_HEADER_PATHS ${LIB_DIR}/hdf5/include ABSOLUTE)
-get_filename_component(HDF5_LIB_DIR_PATH ${LIB_DIR}/hdf5/lib ABSOLUTE)
-if (${OS_MAC})
+if (${OS_MAC})    
+    get_filename_component(HDF5_LIB_DIR_PATH ${LIB_DIR}/hdf5/lib ABSOLUTE)    
     set(HDF5_LIBRARIES
             ${HDF5_LIB_DIR_PATH}/libhdf5_cpp-static.a
             ${HDF5_LIB_DIR_PATH}/libhdf5-static.a)
 elseif (${OS_LINUX})
-    find_package(HDF5 COMPONENTS C CXX HL REQUIRED)
-    link_directories(${HDF5_LIBRARY_DIRS})
-    include_directories(${HDF5_INCLUDE_DIRS})
+    get_filename_component(HDF5_LIB_DIR_PATH ${LIB_DIR}/hdf5/lib-fPIC ABSOLUTE) 
+    set(HDF5_LIBRARIES
+            ${HDF5_LIB_DIR_PATH}/libhdf5_cpp.a
+            ${HDF5_LIB_DIR_PATH}/libhdf5.a)
 elseif (${OS_WINDOWS})
+    get_filename_component(HDF5_LIB_DIR_PATH ${LIB_DIR}/hdf5/lib ABSOLUTE) 
     set(HDF5_LIBRARIES
             ${HDF5_LIB_DIR_PATH}/libhdf5_cpp.lib
             ${HDF5_LIB_DIR_PATH}/libhdf5.lib)
@@ -128,22 +130,14 @@ list(APPEND LIB_INCLUDE_PATHS
         ${ARMADILLO_HEADER_PATHS}
         ${OPENCV_HEADER_PATHS}
         ${LIBTIFF_HEADER_PATHS}
-        ${QT_CORE_HEADER_PATHS})
+        ${QT_CORE_HEADER_PATHS}
+	${HDF5_HEADER_PATHS})
 list(APPEND LIB_FILE_PATHS
         ${ARMADILLO_LIBRARIES}
         ${OPENCV_LIBRARIES}
         ${LIBTIFF_LIBRARIES}
-        ${QT_CORE_LIBRARIES})
-if (${OS_MAC})
-    list(APPEND LIB_INCLUDE_PATHS ${HDF5_HEADER_PATHS})
-    list(APPEND LIB_FILE_PATHS ${HDF5_LIBRARIES})
-elseif (${OS_LINUX})
-    list(APPEND LIB_INCLUDE_PATHS ${HDF5_INCLUDE_DIRS})
-    list(APPEND LIB_FILE_PATHS ${HDF5_CXX_LIBRARIES})
-elseif (${OS_WINDOWS})
-    list(APPEND LIB_INCLUDE_PATHS ${HDF5_HEADER_PATHS})
-    list(APPEND LIB_FILE_PATHS ${HDF5_LIBRARIES})
-endif()
+        ${QT_CORE_LIBRARIES}
+	${HDF5_LIBRARIES})
 target_include_directories(${CMAKE_PROJECT_NAME} PUBLIC ${HEADER_ONLY_LIB_PATHS} ${LIB_INCLUDE_PATHS} ${SRC_DIR})
 target_link_libraries(${CMAKE_PROJECT_NAME} PUBLIC ${LIB_FILE_PATHS})
 target_compile_definitions(${CMAKE_PROJECT_NAME} PUBLIC ${ARMADILLO_DEFINITIONS})
