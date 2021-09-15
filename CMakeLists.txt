@@ -59,18 +59,16 @@ set(LIB_INCLUDE_PATHS)
 set(LIB_FILE_PATHS)
 # hdf5
 get_filename_component(HDF5_HEADER_PATHS ${LIB_DIR}/hdf5/include ABSOLUTE)
-if (${OS_MAC})    
-    get_filename_component(HDF5_LIB_DIR_PATH ${LIB_DIR}/hdf5/lib ABSOLUTE)    
+get_filename_component(HDF5_LIB_DIR_PATH ${LIB_DIR}/hdf5/lib ABSOLUTE)
+if (${OS_MAC})            
     set(HDF5_LIBRARIES
             ${HDF5_LIB_DIR_PATH}/libhdf5_cpp-static.a
             ${HDF5_LIB_DIR_PATH}/libhdf5-static.a)
 elseif (${OS_LINUX})
-    get_filename_component(HDF5_LIB_DIR_PATH ${LIB_DIR}/hdf5/lib-fPIC ABSOLUTE) 
     set(HDF5_LIBRARIES
             ${HDF5_LIB_DIR_PATH}/libhdf5_cpp.a
             ${HDF5_LIB_DIR_PATH}/libhdf5.a)
 elseif (${OS_WINDOWS})
-    get_filename_component(HDF5_LIB_DIR_PATH ${LIB_DIR}/hdf5/lib ABSOLUTE) 
     set(HDF5_LIBRARIES
             ${HDF5_LIB_DIR_PATH}/libhdf5_cpp.lib
             ${HDF5_LIB_DIR_PATH}/libhdf5.lib)
