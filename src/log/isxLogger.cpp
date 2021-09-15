@@ -69,10 +69,11 @@ namespace isx {
         milliseconds ms = duration_cast<milliseconds>(now.time_since_epoch()) % 1000;
 
         time_t timer = system_clock::to_time_t(now);
-        std::tm bt = *std::localtime(&timer);
-
         std::ostringstream oss;
-        oss << std::put_time(&bt, "%Y-%m-%d %H:%M:%S"); // HH:MM:SS
+        char timeStr[100];
+        if (std::strftime(timeStr, sizeof(timeStr), "%Y-%m-%d %H:%M:%S", std::localtime(&timer))) {
+            oss << timeStr; // HH:MM:SS
+        }
         oss << '.' << std::setfill('0') << std::setw(3) << ms.count();
         return oss.str();
     }
