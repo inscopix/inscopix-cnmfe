@@ -72,6 +72,7 @@ isx-cnmfe
 
 #### Building the static library
 Instructions for compiling CNMFe into a static library.
+The target platform can be specified using the CMake generator flag (-G).
 
 Mac & Linux
 ```
