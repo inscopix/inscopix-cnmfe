@@ -160,5 +160,5 @@ Below is a list of systems which Inscopix CNMFe has been built on. Note that it 
 
 Ensure you have a symlink in /lib64 to libz.so. Something like the following:
 ```
-sudo ln -s /lib/x86_64-linux-gnu/libz.so.1 libz.so
+sudo ln -s /lib/x86_64-linux-gnu/libz.so.1 /lib64/libz.so
 ```
