@@ -41,7 +41,6 @@ class CMakeBuild(build_ext):
             cmake_generator = os.environ.get("CMAKE_GENERATOR", "")
 
             # Set Python_EXECUTABLE instead if you use PYBIND11_FINDPYTHON
-            # EXAMPLE_VERSION_INFO shows you how to pass a value into the C++ code
             # from Python.
             cmake_args = [
                   "-DCMAKE_LIBRARY_OUTPUT_DIRECTORY={}".format(extdir),
@@ -53,11 +52,6 @@ class CMakeBuild(build_ext):
             # (needed e.g. to build for ARM OSx on conda-forge)
             if "CMAKE_ARGS" in os.environ:
                   cmake_args += [item for item in os.environ["CMAKE_ARGS"].split(" ") if item]
-
-            # In this example, we pass in the version to C++. You might not need to.
-            cmake_args += [
-                  "-DEXAMPLE_VERSION_INFO={}".format(self.distribution.get_version())
-            ]
 
             if self.compiler.compiler_type != "msvc":
                   # Using Ninja-build since it a) is available as a wheel and b)

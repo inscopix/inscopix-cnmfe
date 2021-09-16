@@ -155,8 +155,6 @@ By default the wheel file will be located in the distribution folder (`dist`).
 The wheel filename may differ depending on the system and environment used to create it.
 ```
 pip install dist/inscopix_cnmfe-1.0.0-cp39-cp39-macosx_10_12_x86_64.whl
-
-pip install dist/inscopix_cnmfe-1.0.0-py3-none-any.whl
 ```
 You are now ready to use Inscopix CNMFe using Python.
 

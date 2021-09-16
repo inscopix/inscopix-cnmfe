@@ -50,7 +50,7 @@ target_link_libraries(${EXECUTABLE_NAME} PRIVATE ${CMAKE_PROJECT_NAME})
 # python bindings
 set(PYTHON_MODULE_NAME inscopix_cnmfe)
 add_subdirectory(pybind11)
-pybind11_add_module(${PYTHON_MODULE_NAME} pythonAPI.cpp)
+pybind11_add_module(${PYTHON_MODULE_NAME} src/api/pythonAPI.cpp)
 target_link_libraries(${PYTHON_MODULE_NAME} PRIVATE ${CMAKE_PROJECT_NAME})
 
 # header-only dependencies
