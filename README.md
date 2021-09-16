@@ -148,6 +148,7 @@ Below is a list of all the dependencies used in Inscopix CNMFe. Note that it may
 
 ### Tested Systems
 Below is a list of systems which Inscopix CNMFe has been built on. Note that it may be compatible with other systems, but only the ones listed below were tested.
+
 | Operating System       | Compiler       |
 | ------------- |:-------------:|
 | macOS 10.15.7 | Apple Clang 8.0.0 (clang-800.0.38); XCode 8.0 |
