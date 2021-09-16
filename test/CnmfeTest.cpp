@@ -5,11 +5,11 @@
 
 TEST_CASE("CnmfeFullTest", "[cnmfe]")
 {
-    const std::string inputMoviePath = "test/data/movie_128x128x100.tif";
+    const std::string inputMoviePath = "test/data/movie.tif";  // movie dims: 128x128x100 (width * height * num_frames)
     const std::string outputDirPath = "test/output";
 
-    const std::string expFootprintsFile = outputDirPath + "/movie_128x128x100_footprints.tiff";
-    const std::string expTracesFile = outputDirPath + "/movie_128x128x100_traces.csv";
+    const std::string expFootprintsFile = outputDirPath + "/movie_footprints.tiff";
+    const std::string expTracesFile = outputDirPath + "/movie_traces.csv";
     isx::removeFiles({expFootprintsFile, expTracesFile});
 
     const int outputFiletype = 0;  // tiff for footprints, csv for traces

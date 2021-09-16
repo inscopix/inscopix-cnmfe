@@ -23,7 +23,7 @@ Note that only tiff movies are currently supported.
 The docker image will automatically be downloaded the first time you run the command.
 ```
 docker run --rm -ti \
-	-v $PWD/data:/input \
+	-v $PWD/test/data:/input \
 	-v $PWD/output:/output \
 	public.ecr.aws/inscopix/cnmfe /input/movie.tif /input/params.json /output
 ```
@@ -82,7 +82,7 @@ make
 #### Example code for using the CNMFe library
 An example C++ project using the Inscopix CNMFe library is available in *example.cpp* and compiled into an executable when building the app. The following command will run CNMFe on a small movie recorded in the striatum. 
 ```
-./build/runCnmfe data/movie.tif data/params.json output
+./build/runCnmfe test/data/movie.tif test/data/params.json test/output
 ```
 
 #### Running the unit tests
@@ -100,7 +100,7 @@ docker build -t inscopix/cnmfe .
 To run CNMFe within the container:
 ```
 docker run --rm -ti \
-	-v $PWD/data:/input \
+	-v $PWD/test/data:/input \
 	-v $PWD/output:/output \
     inscopix/cnmfe /input/movie.tif /input/params.json /output
 ```

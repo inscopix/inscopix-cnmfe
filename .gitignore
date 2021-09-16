@@ -8,4 +8,5 @@ cmake-build-debug/
 
 build/
 lib/
+output/
 test/output/
