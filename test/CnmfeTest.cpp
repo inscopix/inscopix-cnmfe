@@ -7,10 +7,14 @@ TEST_CASE("CnmfeFullTest", "[cnmfe]")
 {
     const std::string inputMoviePath = "test/data/movie.tif";  // movie dims: 128x128x100 (width * height * num_frames)
     const std::string outputDirPath = "test/output";
+    if (isx::pathExists(outputDirPath))
+    {
+        isx::removeDirectory(outputDirPath);
+    }
+    isx::makeDirectory(outputDirPath);
 
     const std::string expFootprintsFile = outputDirPath + "/movie_footprints.tiff";
     const std::string expTracesFile = outputDirPath + "/movie_traces.csv";
-    isx::removeFiles({expFootprintsFile, expTracesFile});
 
     const int outputFiletype = 0;  // tiff for footprints, csv for traces
     const int averageCellDiameter = 7;
@@ -49,5 +53,5 @@ TEST_CASE("CnmfeFullTest", "[cnmfe]")
     // here we just check for the existence of the output files
     REQUIRE(isx::pathExists(expFootprintsFile));
     REQUIRE(isx::pathExists(expTracesFile));
-    isx::removeFiles({expFootprintsFile, expTracesFile});
+    isx::removeDirectory(outputDirPath);
 }

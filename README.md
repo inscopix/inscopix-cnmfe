@@ -72,6 +72,9 @@ isx-cnmfe
 
 #### Building the static library
 Instructions for compiling CNMFe into a static library.
+The target platform can be specified using the CMake generator flag (-G).
+
+Mac & Linux
 ```
 mkdir build
 cd build
@@ -79,16 +82,40 @@ cmake ..
 make
 ```
 
+Windows
+```
+mkdir build
+cd build
+cmake -G "Visual Studio 14 2015 Win64" ..
+# open build/cnmfe.sln in Visual Studio to build the project
+```
+
 #### Example code for using the CNMFe library
-An example C++ project using the Inscopix CNMFe library is available in *example.cpp* and compiled into an executable when building the app. The following command will run CNMFe on a small movie recorded in the striatum. 
+An example C++ project using the Inscopix CNMFe library is available in *example.cpp* and 
+compiled into an executable when building the app.
+The following command will run CNMFe on a small movie recorded in the striatum. 
+
+Mac & Linux
 ```
 ./build/runCnmfe test/data/movie.tif test/data/params.json test/output
 ```
 
+Windows
+```
+./build/Release/runCnmfe.exe data/movie.tif data/params.json output
+```
+
 #### Running the unit tests
 Once the project is built, unit tests can be run using the following command.
+
+Mac & Linux
 ```
 ./build/test/runTests
+```
+
+Windows
+```
+./build/test/Release/runTests.exe
 ```
 
 #### Building and Using the Inscopix CNMFe Docker Container Locally
@@ -119,3 +146,19 @@ Below is a list of all the dependencies used in Inscopix CNMFe. Note that it may
 | [Qt](https://www.qt.io/) | 5.8.0 |
 | [json](https://github.com/nlohmann/json) | 2.0.1 |
 | [Catch](https://github.com/catchorg/Catch2) | 1.4.0 |
+
+### Tested Systems
+Below is a list of systems which Inscopix CNMFe has been built on. Note that it may be compatible with other systems, but only the ones listed below were tested.
+
+| Operating System       | Compiler       |
+| ------------- |:-------------:|
+| macOS 10.15.7 | Apple Clang 8.0.0 (clang-800.0.38); XCode 8.0 |
+| Ubuntu 18.04 LTS | GCC 4.8.5 (Ubuntu 4.8.5-4ubuntu8) |
+| Windows 10 | Visual Studio 14 2015 Win64 (MSVC 19.0.24215.1) |
+
+### Troubleshooting
+
+| Operating System | Error   | Solution       |
+| ------------- |:------------------:| :-------------:|
+| Ubuntu | No rule to make target '/lib64/libz.so' | Create a symlink in /lib64 to libz.so <br> ```sudo ln -s /lib/x86_64-linux-gnu/libz.so.1 /lib64/libz.so``` |
+
