@@ -101,7 +101,7 @@ To run CNMFe within the container:
 ```
 docker run --rm -ti \
 	-v $PWD/test/data:/input \
-	-v $PWD/output:/output \
+	-v $PWD/test/output:/output \
     inscopix/cnmfe /input/movie.tif /input/params.json /output
 ```
 
