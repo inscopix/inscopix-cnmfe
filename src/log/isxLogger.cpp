@@ -1,4 +1,5 @@
 #include "isxLogger.h"
+#include "isxUtilities.h"
 
 #include <iostream>
 #include <fstream>
@@ -21,6 +22,12 @@ namespace isx {
                 m_filename = inLogFileName;
                 m_appName = inAppName;
                 m_appVersion = inAppVersion;
+
+                // Ensure the path exists
+                if (!isx::pathExists(isx::getDirName(m_filename)))
+                {
+                    isx::makeDirectory(isx::getDirName(m_filename));
+                }
 
                 // remove previous log file if existent
                 std::remove(m_filename.c_str());
