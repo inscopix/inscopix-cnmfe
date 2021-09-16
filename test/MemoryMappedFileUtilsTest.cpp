@@ -144,7 +144,7 @@ TEST_CASE("MemoryMapMovieOddDimensions", "[cnmfe-utils]")
         isx::saveFootprintsToTiffFile(movieCube(arma::span(0, 18), arma::span(0, 24), arma::span::all), inputMoviePath);
     }
 
-    const isx::SpTiffMovie_t movie = std::shared_ptr<isx::TiffMovie>(new isx::TiffMovie(inputMoviePath));
+    isx::SpTiffMovie_t movie = std::shared_ptr<isx::TiffMovie>(new isx::TiffMovie(inputMoviePath));
     const size_t numRows = movie->getFrameHeight();
     const size_t numCols = movie->getFrameWidth();
     const size_t numFrames = movie->getNumFrames();
@@ -188,6 +188,7 @@ TEST_CASE("MemoryMapMovieOddDimensions", "[cnmfe-utils]")
         }
     }
 
+    movie.reset();
     std::remove(inputMoviePath.c_str());
     std::remove(outputMemoryMapPath.c_str());
 }
