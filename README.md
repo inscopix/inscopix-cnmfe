@@ -156,9 +156,7 @@ Below is a list of systems which Inscopix CNMFe has been built on. Note that it 
 
 ### Troubleshooting
 
-**Build fails on Ubuntu with error: No rule to make target '/lib64/libz.so'**
+| Operating System | Error   | Solution       |
+| ------------- |:------------------:| :-------------:|
+| Ubuntu | No rule to make target '/lib64/libz.so' | Create a symlink in /lib64 to libz.so <br> ```sudo ln -s /lib/x86_64-linux-gnu/libz.so.1 /lib64/libz.so``` |
 
-Ensure you have a symlink in /lib64 to libz.so. Something like the following:
-```
-sudo ln -s /lib/x86_64-linux-gnu/libz.so.1 /lib64/libz.so
-```
