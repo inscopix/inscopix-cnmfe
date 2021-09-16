@@ -5,17 +5,21 @@ import subprocess
 from setuptools import setup, Extension
 from setuptools.command.build_ext import build_ext
 
-# Convert distutils Windows platform specifiers to CMake -A arguments
-PLAT_TO_CMAKE = {
+"""
+This file was adapted from the pybind cmake examples:
+https://github.com/pybind/cmake_example/blob/master/setup.py
+"""
+
+# convert distutils Windows platform specifiers to CMake -A arguments
+WIN_PLATFORM_TO_CMAKE = {
       "win32": "Win32",
       "win-amd64": "x64",
       "win-arm32": "ARM",
       "win-arm64": "ARM64",
 }
 
-# A CMakeExtension needs a sourcedir instead of a file list.
-# The name must be the _single_ output extension from the CMake build.
-# If you need multiple extensions, see scikit-build.
+# A CMakeExtension needs a source directory instead of a file list.
+# The name must be the single output extension from the CMake build.
 class CMakeExtension(Extension):
       def __init__(self, name, sourcedir=""):
             Extension.__init__(self, name, sources=[])
@@ -78,7 +82,7 @@ class CMakeBuild(build_ext):
                   # contain a backward-compatibility arch spec already in the
                   # generator name.
                   if not single_config and not contains_arch:
-                        cmake_args += ["-A", PLAT_TO_CMAKE[self.plat_name]]
+                        cmake_args += ["-A", WIN_PLATFORM_TO_CMAKE[self.plat_name]]
 
                   # Multi-config generators have a different way to specify configs
                   if not single_config:

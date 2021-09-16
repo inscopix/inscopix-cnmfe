@@ -132,6 +132,58 @@ docker run --rm -ti \
     inscopix/cnmfe /input/movie.tif /input/params.json /output
 ```
 
+#### Using Inscopix CNMFe in Python
+##### Step 1: Prerequisites
+In order to build and use the Python API, you must first download a copy of [pybind](https://github.com/pybind/pybind11)
+directly into the isx-cnmfe repository.
+
+##### Step 2: Create a Python virtual environment
+```
+conda create -n inscopix-cnmfe python=3.9
+conda activate inscopix-cnmfe
+```
+
+##### Step 3: Build the wheel file from within the isx-cnmfe directory
+
+```
+python setup.py bdist_wheel
+```
+By default the wheel file will be located in the distribution folder (`dist`).
+
+##### Step 4: Install the inscopix_cnmfe package using the wheel file
+
+The wheel filename may differ depending on the system and environment used to create it.
+```
+pip install dist/inscopix_cnmfe-1.0.0-cp39-cp39-macosx_10_12_x86_64.whl
+
+pip install dist/inscopix_cnmfe-1.0.0-py3-none-any.whl
+```
+You are now ready to use Inscopix CNMFe using Python.
+
+##### Usage in Python
+```
+import inscopix_cnmfe
+
+inscopix_cnmfe.run_cnmfe(
+	input_movie_path='test/data/movie.tif', 
+	output_dir_path='output', 
+	output_filetype=0,
+	average_cell_diameter=7,
+	min_corr=0.8,
+	min_pnr=10.0,
+	gaussian_kernel_size=0,
+	closing_kernel_size=0,
+	background_downsampling_factor=2,
+	ring_size_factor=1.4,
+	merge_threshold=0.7,
+	num_threads=4,
+	processing_mode=2,
+	patch_size=80,
+	patch_overlap=20,
+	trace_output_units=1
+)
+```
+
 ### Dependencies
 Below is a list of all the dependencies used in Inscopix CNMFe. Note that it may be compatible with other versions of the libraries, but only the ones listed below were tested.
 
