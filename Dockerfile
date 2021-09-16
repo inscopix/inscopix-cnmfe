@@ -2,9 +2,13 @@ FROM ubuntu:18.04
 
 ARG BUILD_DIR="build"
 
-COPY . /isx-cnmfe
-
 WORKDIR /isx-cnmfe
+
+COPY include /isx-cnmfe/include
+COPY src /isx-cnmfe/src
+COPY test /isx-cnmfe/test
+COPY lib /isx-cnmfe/lib
+COPY CMakeLists.txt example.cpp /isx-cnmfe/
 
 RUN apt update \
     && apt install -y build-essential libhdf5-dev libglib2.0-0 \
