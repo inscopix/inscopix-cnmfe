@@ -38,21 +38,15 @@ namespace isx
         const CubeFloat_t & footprints,
         const std::string & outputFilename);
 
-    /// Generates a unique directory name to store memory-mapped files
+    /// Generates an output filepath to store memory-mapped file
     ///
     /// \param inputMoviePath
     /// \param outputDir
-    /// \param processingMode
-    /// \param patchSize
-    /// \param patchOverlap
     ///
-    /// \return directory name to store memory-mapped files
-    std::string getMemoryMapDirPath(
+    /// \return filepath name to store memory-mapped file
+    std::string getMemoryMapPath(
         const std::string & inputMoviePath,
-        const std::string & outputDir,
-        const int processingMode,
-        const int patchSize,
-        const int patchOverlap);
+        const std::string & outputDir);
 
     /// Generates an output filepath to store both footprints and traces (.h5)
     ///

@@ -266,10 +266,9 @@ namespace isx
         CubeFloat_t & inOutA,
         MatrixFloat_t & inOutC,
         const CnmfeOutputType_t inOutputType,
-        const DeconvolutionParams inDeconvParams,
-        const float inPercentile)
+        const DeconvolutionParams inDeconvParams)
     {
-        if (inOutputType == CnmfeOutputType_t::NORMALIZED)
+        if (inOutputType == CnmfeOutputType_t::DF)
         {
             normalizeSpatialTemporalComponents(inOutA, inOutC);
         }
@@ -296,24 +295,6 @@ namespace isx
                 {
                     ISX_LOG_WARNING("Temporal trace ", k, " has an estimated noise level of zero, stopping scaling to prevent division by zero");
                 }
-            }
-        }
-        else if (inOutputType == CnmfeOutputType_t::DF)
-        {
-            normalizeSpatialTemporalComponents(inOutA, inOutC);
-
-            // scale the temporal traces by the average pixel intensity of the nth brightest pixels in each footprint
-            for (size_t k = 0; k < inOutA.n_slices; k++)
-            {
-                isx::ColumnFloat_t a(inOutA.slice(k).memptr(), inOutA.n_rows * inOutA.n_cols);
-                a = arma::sort(a);
-
-                isx::ColumnFloat_t a2 = arma::square(a);
-                a2 = arma::sqrt(arma::cumsum(a2));
-
-                arma::uvec ind = arma::find(a2 > inPercentile);
-                float pixelContrib = arma::mean(a.elem(ind));
-                inOutC.row(k) *= pixelContrib;
             }
         }
     }

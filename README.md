@@ -45,7 +45,7 @@ The CNMFe parameters used in this package are listed below along with their resp
 | processing_mode | the processing mode to use to run CNMFe (0: all in memory, 1: sequential patches, 2: parallel patches) <br/><br/><ul><li>All in memory: processes the entire field of view at once.</li><li>Sequential patches: breaks the field of view into overlapping patches and processes them one at a time using the specified number of threads where parallelization is possible.</li><li>Parallel patches:  breaks the field of view into overlapping patches and processes them in parallel using a single thread for each.</li></ul>|
 | patch_size | the side length of an individual square patch of the field of view in pixels |
 | patch_overlap | the amount of overlap between adjacent patches in pixels |
-| output_units | the units of the output temporal traces (0: dF, 1: dF over noise, 2: Scaled dF) <br/><br/><ul><li>dF: temporal traces are on the same scale of pixel intensity as the original movie. This is an estimate of the “true” dF that is calculated as the scaled dF divided by the average pixel intensity of the 50th percentile of brightest pixels in the spatial footprint.</li><li>dF over noise: temporal traces divided by their respective estimated noise level. This can be interpreted similarly to a z-score, with the added benefit that the noise is a more robust measure of the variance in a temporal trace compared to the standard deviation.</li><li>Scaled dF: temporal traces represent the average fluorescence activity of all the pixels in the cell, scaled so that each spatial footprint has a magnitude of 1.</li></ul> |
+| output_units | the units of the output temporal traces (0: dF, 1: dF over noise) <br/><br/><ul><li>dF: temporal traces on the same scale of pixel intensity as the original movie. dF is calculated as the average fluorescence activity of all pixels in a cell, scaled so that each spatial footprint has a magnitude of 1.</li><li>dF over noise: temporal traces divided by their respective estimated noise level. This can be interpreted similarly to a z-score, with the added benefit that the noise is a more robust measure of the variance in a temporal trace compared to the standard deviation.</li></ul> |
 | output_filetype | the file types into which the output will be saved (0: footprints saved to a tiff file and traces saved to a csv file, 1: output saved to a h5 file under the keys footprints and traces) |
 
 ### Building and Contributing to Inscopix CNMFe (for developers)
@@ -65,13 +65,16 @@ isx-cnmfe
          -- Intel_MKL
          -- json
          -- libtiff
-         -- mio
          -- OpenCV
+         -- Qt
          -- ThreadPool
 ```
 
 #### Building the static library
 Instructions for compiling CNMFe into a static library.
+The target platform can be specified using the CMake generator flag (-G).
+
+Mac & Linux
 ```
 mkdir build
 cd build
@@ -79,16 +82,40 @@ cmake ..
 make
 ```
 
+Windows
+```
+mkdir build
+cd build
+cmake -G "Visual Studio 14 2015 Win64" ..
+# open build/cnmfe.sln in Visual Studio to build the project
+```
+
 #### Example code for using the CNMFe library
-An example C++ project using the Inscopix CNMFe library is available in *example.cpp* and compiled into an executable when building the app. The following command will run CNMFe on a small movie recorded in the striatum. 
+An example C++ project using the Inscopix CNMFe library is available in *example.cpp* and 
+compiled into an executable when building the app.
+The following command will run CNMFe on a small movie recorded in the striatum. 
+
+Mac & Linux
 ```
 ./build/runCnmfe data/movie.tif data/params.json output
 ```
 
+Windows
+```
+./build/Release/runCnmfe.exe data/movie.tif data/params.json output
+```
+
 #### Running the unit tests
 Once the project is built, unit tests can be run using the following command.
+
+Mac & Linux
 ```
 ./build/test/runTests
+```
+
+Windows
+```
+./build/test/Release/runTests.exe
 ```
 
 #### Building and Using the Inscopix CNMFe Docker Container Locally
@@ -116,6 +143,6 @@ Below is a list of all the dependencies used in Inscopix CNMFe. Note that it may
 | [hdf5](https://support.hdfgroup.org/HDF5/doc/cpplus_RM/index.html) | 1.10 |
 | [libtiff](https://libtiff.gitlab.io/libtiff/) | 4.0.8 |
 | [ThreadPool](https://github.com/progschj/ThreadPool) | 1.0 |
-| [mio](https://github.com/mandreyel/mio) | commit 8c0d3c7|
+| [Qt](https://www.qt.io/) | 5.8.0 |
 | [json](https://github.com/nlohmann/json) | 2.0.1 |
 | [Catch](https://github.com/catchorg/Catch2) | 1.4.0 |
