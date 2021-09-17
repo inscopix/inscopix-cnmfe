@@ -107,7 +107,7 @@ The following command will run CNMFe on a small movie recorded in the striatum.
 
 Mac & Linux
 ```
-./build/runCnmfe test/data/movie.tif test/data/params.json test/output
+./build/runCnmfe test/data/movie.tif test/data/params.json output
 ```
 
 Windows
@@ -149,12 +149,11 @@ conda create -n inscopix-cnmfe python=3.9
 conda activate inscopix-cnmfe
 ```
 
-##### Step 2: Build the wheel file from within the isx-cnmfe directory
-
+##### Step 2: Build the wheel file
+By default the wheel file will be located in the distribution folder (`dist`).
 ```
 python setup.py bdist_wheel
 ```
-By default the wheel file will be located in the distribution folder (`dist`).
 
 ##### Step 3: Install the inscopix_cnmfe package using the wheel file
 
