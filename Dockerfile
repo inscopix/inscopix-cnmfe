@@ -11,10 +11,11 @@ COPY lib /isx-cnmfe/lib
 COPY CMakeLists.txt example.cpp /isx-cnmfe/
 
 RUN apt update \
-    && apt install -y build-essential libhdf5-dev libglib2.0-0 \
+    && apt install -y build-essential libglib2.0-0 \
     && apt install -y cmake \
+    && apt install -y g++-4.8 gcc-4.8 \
     && ln -s /lib/x86_64-linux-gnu/libz.so.1 /lib64/libz.so \
-    && cmake -H. -B$BUILD_DIR && make -C $BUILD_DIR
+    && cmake -DCMAKE_C_COMPILER=gcc-4.8 -DCMAKE_CXX_COMPILER=g++-4.8 -H. -B$BUILD_DIR && make -C $BUILD_DIR
 
 VOLUME ["/input", "/output"]
 
