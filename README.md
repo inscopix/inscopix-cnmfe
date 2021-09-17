@@ -74,21 +74,15 @@ isx-cnmfe
 #### Building the static library
 Instructions for compiling CNMFe into a static library.
 The target platform can be specified using the CMake generator flag (-G).
-The specific compilers to use can be specified using the CMake flags (CMAKE_C_COMPILER, CMAKE_CXX_COMPILER).
+The specific compilers to use can be specified by setting the CMake flags (CMAKE_C_COMPILER, CMAKE_CXX_COMPILER) in the CMakeLists.txt.
+Note that the default Linux build instructions will use gcc-4.8 and g++-4.8.
+You can install these specific version using the following command on Ubuntu: `sudo apt install -y g++-4.8 gcc-4.8`
 
-Mac
+Mac & Linux
 ```
 mkdir build
 cd build
 cmake ..
-make
-```
-
-Linux
-```
-mkdir build
-cd build
-cmake -DCMAKE_C_COMPILER=gcc-4.8 -DCMAKE_CXX_COMPILER=g++-4.8 ..
 make
 ```
 
