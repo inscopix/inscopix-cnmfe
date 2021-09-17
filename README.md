@@ -68,6 +68,7 @@ isx-cnmfe
          -- OpenCV
          -- Qt
          -- ThreadPool
+         -- pybind11
 ```
 
 #### Building the static library
@@ -133,24 +134,20 @@ docker run --rm -ti \
 ```
 
 #### Using Inscopix CNMFe in Python
-##### Step 1: Prerequisites
-In order to build and use the Python API, you must first download a copy of [pybind](https://github.com/pybind/pybind11)
-directly into the isx-cnmfe repository.
-
-##### Step 2: Create a Python virtual environment
+##### Step 1: Create a Python virtual environment
 ```
 conda create -n inscopix-cnmfe python=3.9
 conda activate inscopix-cnmfe
 ```
 
-##### Step 3: Build the wheel file from within the isx-cnmfe directory
+##### Step 2: Build the wheel file from within the isx-cnmfe directory
 
 ```
 python setup.py bdist_wheel
 ```
 By default the wheel file will be located in the distribution folder (`dist`).
 
-##### Step 4: Install the inscopix_cnmfe package using the wheel file
+##### Step 3: Install the inscopix_cnmfe package using the wheel file
 
 The wheel filename may differ depending on the system and environment used to create it.
 ```
@@ -196,6 +193,7 @@ Below is a list of all the dependencies used in Inscopix CNMFe. Note that it may
 | [Qt](https://www.qt.io/) | 5.8.0 |
 | [json](https://github.com/nlohmann/json) | 2.0.1 |
 | [Catch](https://github.com/catchorg/Catch2) | 1.4.0 |
+| [pybind11](https://github.com/pybind/pybind11) | 2.8.0 |
 
 ### Tested Systems
 Below is a list of systems which Inscopix CNMFe has been built on. Note that it may be compatible with other systems, but only the ones listed below were tested.
