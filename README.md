@@ -180,7 +180,9 @@ inscopix_cnmfe.run_cnmfe(
 ```
 
 ### Dependencies
-Below is a list of all the dependencies used in Inscopix CNMFe. Note that it may be compatible with other versions of the libraries, but only the ones listed below were tested.
+Below is a list of all the dependencies used in Inscopix CNMFe. 
+Note that it may be compatible with other versions of the libraries, but only the ones listed below were tested.
+pybind11 is only needed if you intend to build the Python API.
 
 | Package       | Version       |
 | ------------- |:-------------:|
