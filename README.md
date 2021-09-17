@@ -23,7 +23,7 @@ Note that only tiff movies are currently supported.
 The docker image will automatically be downloaded the first time you run the command.
 ```
 docker run --rm -ti \
-	-v $PWD/data:/input \
+	-v $PWD/test/data:/input \
 	-v $PWD/output:/output \
 	public.ecr.aws/inscopix/cnmfe /input/movie.tif /input/params.json /output
 ```
@@ -73,12 +73,21 @@ isx-cnmfe
 #### Building the static library
 Instructions for compiling CNMFe into a static library.
 The target platform can be specified using the CMake generator flag (-G).
+The specific compilers to use can be specified using the CMake flags (CMAKE_C_COMPILER, CMAKE_CXX_COMPILER).
 
-Mac & Linux
+Mac
 ```
 mkdir build
 cd build
 cmake ..
+make
+```
+
+Linux
+```
+mkdir build
+cd build
+cmake -DCMAKE_C_COMPILER=gcc-4.8 -DCMAKE_CXX_COMPILER=g++-4.8 ..
 make
 ```
 
@@ -97,7 +106,7 @@ The following command will run CNMFe on a small movie recorded in the striatum.
 
 Mac & Linux
 ```
-./build/runCnmfe data/movie.tif data/params.json output
+./build/runCnmfe test/data/movie.tif test/data/params.json test/output
 ```
 
 Windows
@@ -127,7 +136,7 @@ docker build -t inscopix/cnmfe .
 To run CNMFe within the container:
 ```
 docker run --rm -ti \
-	-v $PWD/data:/input \
+	-v $PWD/test/data:/input \
 	-v $PWD/output:/output \
     inscopix/cnmfe /input/movie.tif /input/params.json /output
 ```

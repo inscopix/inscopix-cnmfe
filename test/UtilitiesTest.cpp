@@ -23,7 +23,7 @@ TEST_CASE("UtilitiesPathExists", "[utilities]")
 {
     SECTION("The path exists")
     {
-        const std::string path = "test/data/movie_128x128x100.tif";
+        const std::string path = "test/data/movie.tif";
         REQUIRE(isx::pathExists(path));
     }
 

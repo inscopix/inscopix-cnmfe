@@ -21,7 +21,7 @@ namespace {
 
 TEST_CASE("MemoryMapMovie", "[cnmfe-utils]")
 {
-    const std::string inputMoviePath = "test/data/movie_128x128x100.tif";
+    const std::string inputMoviePath = "test/data/movie.tif";  // movie dims: 128x128x100 (width * height * num_frames)
     const std::string outputMemoryMapPath = "test/data/mmap.bin";
 
     const isx::SpTiffMovie_t movie = std::shared_ptr<isx::TiffMovie>(new isx::TiffMovie(inputMoviePath));
@@ -137,7 +137,7 @@ TEST_CASE("MemoryMapMovieOddDimensions", "[cnmfe-utils]")
     
     // resize movie to have odd dimensions
     {
-        const std::string originalMoviePath = "test/data/movie_128x128x100.tif";
+        const std::string originalMoviePath = "test/data/movie.tif";  // movie dims: 128x128x100 (width * height * num_frames)
         const isx::SpTiffMovie_t movie = std::shared_ptr<isx::TiffMovie>(new isx::TiffMovie(originalMoviePath));
         isx::CubeFloat_t movieCube;
         convertMovieToCube(movie, movieCube);
@@ -195,7 +195,7 @@ TEST_CASE("MemoryMapMovieOddDimensions", "[cnmfe-utils]")
 
 TEST_CASE("MemoryMapMovieDeleteFile", "[cnmfe-utils]")
 {
-    const std::string inputMoviePath = "test/data/movie_128x128x100.tif";
+    const std::string inputMoviePath = "test/data/movie.tif";  // movie dims: 128x128x100 (width * height * num_frames)
     const std::string outputMemoryMapPath = "test/data/mmap.bin";
 
     const isx::SpTiffMovie_t movie = std::shared_ptr<isx::TiffMovie>(new isx::TiffMovie(inputMoviePath));
