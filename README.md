@@ -106,7 +106,7 @@ Mac & Linux
 
 Windows
 ```
-./build/Release/runCnmfe.exe data/movie.tif data/params.json output
+./build/Release/runCnmfe.exe test/data/movie.tif test/data/params.json output
 ```
 
 #### Running the unit tests
