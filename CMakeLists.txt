@@ -20,7 +20,6 @@ project(cnmfe)
 set(CMAKE_CXX_FLAGS "-Wall -fPIC")
 set(CMAKE_CXX_STANDARD 11)
 
-
 set(SRC_DIR
         include
         src
