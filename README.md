@@ -56,19 +56,17 @@ A sample C++ project and unit tests are provided.
 The build instructions assume the dependencies are located in a subdirectory called *lib* as shown below. This structure can be changed by updating the cmake files.
 ```
 isx-cnmfe
-    |
-     -- lib
-        |
-         -- armadillo
-         -- catch
-         -- hdf5
-         -- Intel_MKL
-         -- json
-         -- libtiff
-         -- OpenCV
-         -- Qt
-         -- ThreadPool
-         -- pybind11
+ └── lib
+      ├── armadillo
+      ├── catch
+      ├── hdf5
+      ├── Intel_MKL
+      ├── json
+      ├── libtiff
+      ├── OpenCV
+      ├── Qt
+      ├── ThreadPool
+      └── pybind11
 ```
 
 #### Building the static library
