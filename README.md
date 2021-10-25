@@ -149,6 +149,11 @@ conda create -n inscopix-cnmfe python=3.9
 conda activate inscopix-cnmfe
 ```
 
+Note that on Windows the environment must be created with the `anaconda` package:
+```
+conda create -n inscopix-cnmfe python=3.9 anaconda
+```
+
 ##### Step 2: Build the wheel file
 By default the wheel file will be located in the distribution folder (`dist`).
 ```
