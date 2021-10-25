@@ -1,3 +1,9 @@
+cmake_minimum_required(VERSION 3.5)
+project(cnmfe)
+
+set(CMAKE_CXX_FLAGS "-Wall -fPIC")
+set(CMAKE_CXX_STANDARD 11)
+
 # identify operating system
 set(OS_MAC FALSE)
 set(OS_LINUX FALSE)
@@ -6,20 +12,11 @@ if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
     set(OS_MAC TRUE)
 elseif(UNIX AND NOT APPLE)
     set(OS_LINUX TRUE)
-    set(CMAKE_C_COMPILER "/usr/bin/gcc-4.8")
-    set(CMAKE_CXX_COMPILER "/usr/bin/g++-4.8")
 elseif(WIN32)
     set(OS_WINDOWS TRUE)
 else()
     message(FATAL_ERROR "cmake is not configured for this OS")
 endif()
-
-cmake_minimum_required(VERSION 3.5)
-project(cnmfe)
-
-set(CMAKE_CXX_FLAGS "-Wall -fPIC")
-set(CMAKE_CXX_STANDARD 11)
-
 
 set(SRC_DIR
         include

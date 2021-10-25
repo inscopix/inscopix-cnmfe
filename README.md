@@ -76,11 +76,19 @@ The specific compilers to use can be specified by setting the CMake flags (CMAKE
 Note that the default Linux build instructions will use gcc-4.8 and g++-4.8.
 You can install these specific version using the following command on Ubuntu: `sudo apt install -y g++-4.8 gcc-4.8`
 
-Mac & Linux
+Mac
 ```
 mkdir build
 cd build
 cmake ..
+make
+```
+
+Linux
+```
+mkdir build
+cd build
+cmake -DCMAKE_C_COMPILER=/usr/bin/gcc-4.8 -DCMAKE_CXX_COMPILER=/usr/bin/g++-4.8 ..
 make
 ```
 

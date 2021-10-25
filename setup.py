@@ -18,6 +18,10 @@ WIN_PLATFORM_TO_CMAKE = {
       "win-arm64": "ARM64",
 }
 
+# compilers to use on Linux
+LINUX_C_COMPILER = '/usr/bin/gcc-4.8'
+LINUX_CXX_COMPILER = '/usr/bin/g++-4.8'
+
 # A CMakeExtension needs a source directory instead of a file list.
 # The name must be the single output extension from the CMake build.
 class CMakeExtension(Extension):
@@ -95,6 +99,11 @@ class CMakeBuild(build_ext):
                   archs = re.findall(r"-arch (\S+)", os.environ.get("ARCHFLAGS", ""))
                   if archs:
                         cmake_args += ["-DCMAKE_OSX_ARCHITECTURES={}".format(";".join(archs))]
+            elif sys.platform.startswith("linux"):
+                  cmake_args += [
+                        "-DCMAKE_C_COMPILER={}".format(LINUX_C_COMPILER),
+                        "-DCMAKE_CXX_COMPILER={}".format(LINUX_CXX_COMPILER)
+                  ]
 
             # Set CMAKE_BUILD_PARALLEL_LEVEL to control the parallel build level
             # across all generators.
