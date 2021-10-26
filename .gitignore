@@ -7,6 +7,9 @@
 cmake-build-debug/
 
 build/
+dist/
 lib/
 output/
 test/output/
+
+*.egg-info

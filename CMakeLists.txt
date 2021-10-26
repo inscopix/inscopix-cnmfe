@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.5)
 project(cnmfe)
 
-set(CMAKE_CXX_FLAGS "-Wall")
+set(CMAKE_CXX_FLAGS "-Wall -fPIC")
 set(CMAKE_CXX_STANDARD 11)
 
 # identify operating system
@@ -46,6 +46,14 @@ add_subdirectory(test)
 set(EXECUTABLE_NAME runCnmfe)
 add_executable(${EXECUTABLE_NAME} example.cpp)
 target_link_libraries(${EXECUTABLE_NAME} PRIVATE ${CMAKE_PROJECT_NAME})
+
+# python bindings
+if (${BUILD_PYTHON_API})
+    set(PYTHON_MODULE_NAME inscopix_cnmfe)
+    add_subdirectory(lib/pybind11)
+    pybind11_add_module(${PYTHON_MODULE_NAME} src/api/pythonAPI.cpp)
+    target_link_libraries(${PYTHON_MODULE_NAME} PRIVATE ${CMAKE_PROJECT_NAME})
+endif()
 
 # header-only dependencies
 set(LIB_DIR lib)

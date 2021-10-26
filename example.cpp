@@ -44,5 +44,5 @@ int main(int argc, char* argv[]) {
         patchOverlap,
         traceOutputUnits);
 
-	return 0;
+    return 0;
 }
