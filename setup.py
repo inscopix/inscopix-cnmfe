@@ -126,7 +126,9 @@ class CMakeBuild(build_ext):
 
 setup(name='inscopix-cnmfe',
       version='1.0.0',
-      author='Inscopix',
+      author='Inscopix, Inc.',
+      author_email="support@inscopix.com",
+      url="https://github.com/inscopix/isx-cnmfe",
       description='Inscopix CNMFe for automated source extraction',
       classifiers=[
             'Operating System :: MacOS',
