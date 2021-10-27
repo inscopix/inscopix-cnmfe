@@ -52,7 +52,6 @@ inscopix_cnmfe.run_cnmfe(
 ```
 
 ### Using Docker
-The simplest and quickest way to use Inscopix CNMFe is to follow the steps outlined below.
 
 **Step 1: Install [Docker](https://docs.docker.com/get-docker/)**
 
