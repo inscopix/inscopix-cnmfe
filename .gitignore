@@ -13,3 +13,5 @@ output/
 test/output/
 
 *.egg-info
+
+.ipynb_checkpoints/
