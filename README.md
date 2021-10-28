@@ -15,7 +15,6 @@ Inscopix CNMFe can be installed directly into your Python environment using the 
 These commands assume you have pre-installed [Anaconda](https://www.anaconda.com/products/individual), which can be used to create and manage Python environments.
 Note that Inscopix CNMFe is currently available only for Python version 3.6 or higher on 64-bit machines,
 with the exception of Python 3.10 on Windows which isn't compatible yet.
-A demo Jupyter Notebook that runs Inscopix CNMFe on a small movie and displays spatial footprints and temporal traces side by side is also provided.
 
 ```
 conda create -n inscopix-cnmfe python=3.9
@@ -51,6 +50,10 @@ inscopix_cnmfe.run_cnmfe(
 	trace_output_units=1
 )
 ```
+
+#### Example Notebook
+A demo Jupyter Notebook that runs Inscopix CNMFe on a small movie and displays spatial footprints 
+and temporal traces side by side is available [here](Inscopix_CNMFe_Demo.ipynb).
 
 ### Using Docker
 
