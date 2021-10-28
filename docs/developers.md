@@ -1,11 +1,14 @@
 # Building and Contributing to Inscopix CNMFe (for developers)
-This section provides the necessary information for developers interested in contributing to the Inscopix CNMFe project to set up
-their development environment, to compile the code into a static C++ library, to package it into a Python installable wheel file,
-as well as instructions for building a Docker image that can be used to reproducibly run Inscopix CNMFe. 
-A sample C++ project and unit tests are provided as well.
+This section provides the necessary information for developers interested in contributing to the Inscopix CNMFe project.
+This includes instructions for setting up the development environment, compiling the project into a static C++ library, 
+packaging the project into a Python installable wheel file, and building a Docker image for the project.
+A sample C++ program and unit tests are provided as well.
 
-## Expected directory structure
-The build instructions assume the dependencies are located in a subdirectory called *lib* as shown below. 
+## Project structure
+This section outlines the expected project structure and dependencies required to build Inscopix CNMFe.
+
+### Libraries directory
+The build instructions assume the dependencies are located in a subdirectory called *lib* as shown below.
 This structure can be changed by updating the cmake files.
 ```
 isx-cnmfe
@@ -22,33 +25,64 @@ isx-cnmfe
       └── pybind11
 ```
 
+### Dependencies
+Below is a list of all the dependencies and corresponding versions used in Inscopix CNMFe.
+Note that it may be compatible with other versions of the libraries, but only the ones listed here were tested.
+pybind11 is only needed if you intend to build the Python API.
+
+| Package       | Version       |
+| ------------- |:-------------:|
+| [armadillo](http://arma.sourceforge.net/) | 9.900.1 |
+| [Intel MKL](https://software.intel.com/content/www/us/en/develop/tools/oneapi/components/onemkl.html#gs.1020r93) | 2017.2 |
+| [OpenCV](https://opencv.org/) | 3.2.0 |
+| [hdf5](https://support.hdfgroup.org/HDF5/doc/cpplus_RM/index.html) | 1.10 |
+| [libtiff](https://libtiff.gitlab.io/libtiff/) | 4.0.8 |
+| [ThreadPool](https://github.com/progschj/ThreadPool) | 1.0 |
+| [Qt](https://www.qt.io/) | 5.8.0 |
+| [json](https://github.com/nlohmann/json) | 2.0.1 |
+| [Catch](https://github.com/catchorg/Catch2) | 1.4.0 |
+| [pybind11](https://github.com/pybind/pybind11) | 2.8.0 |
+
+### Tested Systems
+Below is a list of systems that were used to build and test Inscopix CNMFe along with its dependencies.
+Note that it may be compatible with other systems, but only the ones listed below were tested.
+
+| Operating System       | Compiler       |
+| ------------- |:-------------:|
+| macOS 10.15.7 | Apple Clang 8.0.0 (clang-800.0.38); XCode 8.0 |
+| Ubuntu 18.04 LTS | GCC 4.8.5 (Ubuntu 4.8.5-4ubuntu8) |
+| Windows 10 | Visual Studio 14 2015 Win64 (MSVC 19.0.24215.1) |
+
 ## Building Inscopix CNMFe as a static library
 Below are platform-specific instructions for compiling CNMFe into a static C++ library.
 The target platform can be specified using the CMake generator flag (-G).
 The specific compilers to use can be specified by setting the appropriate CMake flags (CMAKE_C_COMPILER, CMAKE_CXX_COMPILER).
-Note that the default Linux build instructions will use gcc-4.8 and g++-4.8.
-You can install these specific version using the following command on Ubuntu: `sudo apt install -y g++-4.8 gcc-4.8`
 
-Mac
+### Step 1: Create the build directory
+From the root directory of the project, run the following commands to create a build directory and browse into it.
 ```
 mkdir build
 cd build
+```
+
+### Step 2: Build the project
+Instructions for building the project on different operating systems are provided below.
+These commands must be executed from within the build directory created in the previous step.
+
+Mac
+```
 cmake ..
 make
 ```
 
 Linux
 ```
-mkdir build
-cd build
 cmake -DCMAKE_C_COMPILER=/usr/bin/gcc-4.8 -DCMAKE_CXX_COMPILER=/usr/bin/g++-4.8 ..
 make
 ```
 
 Windows
 ```
-mkdir build
-cd build
 cmake -G "Visual Studio 14 2015 Win64" ..
 # open build/cnmfe.sln in Visual Studio to build the project
 ```
@@ -143,33 +177,6 @@ inscopix_cnmfe.run_cnmfe(
 	trace_output_units=1
 )
 ```
-
-## Dependencies
-Below is a list of all the dependencies used in Inscopix CNMFe.
-Note that it may be compatible with other versions of the libraries, but only the ones listed below were tested.
-pybind11 is only needed if you intend to build the Python API.
-
-| Package       | Version       |
-| ------------- |:-------------:|
-| [armadillo](http://arma.sourceforge.net/) | 9.900.1 |
-| [Intel MKL](https://software.intel.com/content/www/us/en/develop/tools/oneapi/components/onemkl.html#gs.1020r93) | 2017.2 |
-| [OpenCV](https://opencv.org/) | 3.2.0 |
-| [hdf5](https://support.hdfgroup.org/HDF5/doc/cpplus_RM/index.html) | 1.10 |
-| [libtiff](https://libtiff.gitlab.io/libtiff/) | 4.0.8 |
-| [ThreadPool](https://github.com/progschj/ThreadPool) | 1.0 |
-| [Qt](https://www.qt.io/) | 5.8.0 |
-| [json](https://github.com/nlohmann/json) | 2.0.1 |
-| [Catch](https://github.com/catchorg/Catch2) | 1.4.0 |
-| [pybind11](https://github.com/pybind/pybind11) | 2.8.0 |
-
-## Tested Systems
-Below is a list of systems which Inscopix CNMFe has been built on. Note that it may be compatible with other systems, but only the ones listed below were tested.
-
-| Operating System       | Compiler       |
-| ------------- |:-------------:|
-| macOS 10.15.7 | Apple Clang 8.0.0 (clang-800.0.38); XCode 8.0 |
-| Ubuntu 18.04 LTS | GCC 4.8.5 (Ubuntu 4.8.5-4ubuntu8) |
-| Windows 10 | Visual Studio 14 2015 Win64 (MSVC 19.0.24215.1) |
 
 ## Troubleshooting
 Below is a list of common issues you may run into while setting up your development environment
