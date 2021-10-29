@@ -1,5 +1,7 @@
 #include "catch.hpp"
 #include "isxUtilities.h"
+#include "isxTest.h"
+#include "isxTiffMovie.h"
 
 #include <QFile>
 
@@ -76,4 +78,41 @@ TEST_CASE("UtilitiesGetBaseName", "[utilities]")
     const std::string expectedBasename = "movie_128x128x100";
     const std::string actualBasename = isx::getBaseName(path);
     REQUIRE(expectedBasename == actualBasename);
+}
+
+TEST_CASE("TestingUtilitiesSaveCubeToTiffFileFloat32", "[testing-utilities]")
+{
+    const float data[60] = {
+        1.03741539f, 21.85586756f, 16.67763465f, 57.27598156f, 38.64771696f,
+        80.373977f, 64.95404632f, 87.34008431f, 61.05377408f, 18.73586471f,
+        64.71167135f, 16.95314142f, 50.18745921f, 41.85081805f, 87.85590855f,
+        89.80071182f, 69.44386778f, 98.33592482f, 86.08319232f, 90.62772769f,
+        49.62817177f, 68.76740932f, 63.80539847f, 79.4547887f, 49.57732931f,
+        24.81011684f, 95.09640316f, 66.68989729f, 82.48704645f, 16.96362576f,
+        97.08460121f, 75.82779868f, 47.79740135f, 70.35291738f, 46.16976625f,
+        16.26060466f, 13.3829529f,  8.40596512f,  3.87483758f, 54.7837783f,
+        46.56684754f, 52.10847115f, 18.55416869f, 34.69019538f, 43.55554648f,
+        92.52000773f,  5.30594245f, 13.87386998f, 14.21110855f, 34.54986401f,
+        69.91073914f, 70.24274241f, 94.05244095f, 94.5517417f, 24.31156753f,
+        46.3534714f, 87.04082964f,  3.94548177f,  3.85709232f, 35.29169532f
+    };
+    const isx::CubeFloat_t inputData(data, 4, 3, 5);
+
+    const std::string outputFilename = "test/data/tmp_movie_float32.tif";;
+    saveCubeToTiffFile(inputData, outputFilename);
+
+    // ensure file exists
+    REQUIRE(isx::pathExists(outputFilename));
+
+    // validate content of the file
+    const isx::SpTiffMovie_t movie = std::shared_ptr<isx::TiffMovie>(new isx::TiffMovie(outputFilename));
+    for (size_t frameIndex = 0; frameIndex < movie->getNumFrames(); frameIndex++)
+    {
+        isx::MatrixFloat_t frame;
+        movie->getFrame(frameIndex, frame);
+        REQUIRE(arma::approx_equal(frame, frame, "reldiff", 1e-5f));
+    }
+
+    // delete file
+    isx::removeFiles({outputFilename});
 }
