@@ -26,8 +26,13 @@ namespace isx
 
         /// writes image to current Tiff directory
         ///
-        /// \param inImage       pointer to image matrix
+        /// \param inImage       pointer to float image matrix
         void toTiffOut(const MatrixFloat_t & inImage);
+
+        /// writes image to current Tiff directory
+        ///
+        /// \param inImage       pointer to uint16 image matrix
+        void toTiffOut(const arma::Mat<uint16_t> & inImage);
 
         /// switch to next TIFF Directory/Frame
         ///

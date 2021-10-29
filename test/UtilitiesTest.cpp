@@ -116,3 +116,41 @@ TEST_CASE("TestingUtilitiesSaveCubeToTiffFileFloat32", "[testing-utilities]")
     // delete file
     isx::removeFiles({outputFilename});
 }
+
+TEST_CASE("TestingUtilitiesSaveCubeToTiffFileUint16", "[testing-utilities]")
+{
+    const uint16_t data[60] = {
+        1, 21, 16, 57, 38,
+        80, 64, 87, 61, 18,
+        64, 16, 50, 41, 87,
+        89, 69, 98, 86, 90,
+        49, 68, 63, 79, 49,
+        24, 95, 66, 82, 16,
+        97, 75, 47, 70, 46,
+        16, 13,  8,  3, 54,
+        46, 52, 18, 34, 43,
+        92, 5, 13, 14, 34,
+        69, 70, 94, 94, 24,
+        46, 87,  3,  3, 35
+    };
+    const arma::Cube<uint16_t> inputData(data, 4, 3, 5);
+
+    const std::string outputFilename = "test/data/tmp_movie_uint16.tif";;
+    saveCubeToTiffFile(inputData, outputFilename);
+
+    // ensure file exists
+    REQUIRE(isx::pathExists(outputFilename));
+
+    // validate content of the file
+    const isx::SpTiffMovie_t movie = std::shared_ptr<isx::TiffMovie>(new isx::TiffMovie(outputFilename));
+    for (size_t frameIndex = 0; frameIndex < movie->getNumFrames(); frameIndex++)
+    {
+        arma::Mat<uint16_t> frame;
+        // TODO: uncomment below when getFrame returns the frame in the right datatype
+        // movie->getFrame(frameIndex, frame);
+        // REQUIRE(arma::approx_equal(frame, frame, "reldiff", 1e-5f));
+    }
+
+    // delete file
+    isx::removeFiles({outputFilename});
+}
