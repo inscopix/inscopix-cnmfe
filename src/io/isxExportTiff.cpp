@@ -1,7 +1,6 @@
 #include "isxExportTiff.h"
 #include "isxTiffBuffer.h"
 #include "isxLog.h"
-#include <iostream>
 
 namespace isx
 {
