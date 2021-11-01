@@ -36,8 +36,6 @@ TEST_CASE("TiffMovie-GetF32Frame", "[tiff-movie]")
             REQUIRE(arma::all(arma::vectorise(frame == expectedCube.slice(i))));
         }
     }
-
-    
 }
 
 TEST_CASE("TiffMovie-GetU16Frame", "[tiff-movie]")
@@ -52,7 +50,6 @@ TEST_CASE("TiffMovie-GetU16Frame", "[tiff-movie]")
 
     arma::Col<uint16_t> data = arma::regspace<arma::Col<uint16_t>>(0, 1, numRows * numCols * numFrames);
     arma::Cube<uint16_t> expectedCube(data.memptr(), numRows, numCols, numFrames);
-
 
     SECTION("As F32 frame")
     {
