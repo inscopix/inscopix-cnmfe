@@ -26,11 +26,23 @@ namespace isx
         ///
         ~TiffMovie();
 
-        /// Get a movie frame
+        /// Get a movie frame (as bytes)
+        /// \param inFrameNumber frame index
+        /// \param outBuffer     buffer storing bytes of frame
+        /// \throw  isx::ExceptionDataIO    If inFrameNumber is out of range.
+        void getFrameBytes(size_t inFrameNumber, arma::Col<char> & outBuffer);
+
+        /// Get a movie frame (as float)
         /// \param inFrameNumber frame index
         /// \param frame         output frame
         /// \throw  isx::ExceptionDataIO    If inFrameNumber is out of range.
         void getFrame(size_t inFrameNumber, MatrixFloat_t & frame);
+
+        /// Get a movie frame (as uint16_t)
+        /// \param inFrameNumber frame index
+        /// \param frame         output frame
+        /// \throw  isx::ExceptionDataIO    If inFrameNumber is out of range.
+        void getFrame(size_t inFrameNumber, arma::Mat<uint16_t> & frame);
 
         /// \return the total number of frames in the movie
         ///

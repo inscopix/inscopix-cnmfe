@@ -235,3 +235,58 @@ TEST_CASE("MemoryMapMovieDeleteFile", "[cnmfe-utils]")
 
     std::remove(outputMemoryMapPath.c_str());
 }
+
+TEST_CASE("MemoryMapMovieU16", "[cnmfe-utils]")
+{
+    const std::string inputMoviePath = "test/data/synthetic_movie_uint16.tif";  // movie dims: 3x4x5 (width * height * num_frames)
+    const std::string outputMemoryMapPath = "test/data/mmap.bin";
+
+    const isx::SpTiffMovie_t movie = std::shared_ptr<isx::TiffMovie>(new isx::TiffMovie(inputMoviePath));
+    const size_t numRows = movie->getFrameHeight();
+    const size_t numCols = movie->getFrameWidth();
+    const size_t numFrames = movie->getNumFrames();
+    const isx::DataType dataType = movie->getDataType();
+    
+    isx::CubeFloat_t movieCube;
+    convertMovieToCube(movie, movieCube);
+
+    SECTION("Full FOV")
+    {
+        isx::writeMemoryMappedFileMovie(movie, outputMemoryMapPath);
+
+        const std::tuple<size_t, size_t, size_t, size_t> roi = std::make_tuple(0, numRows - 1, 0, numCols - 1);
+        isx::CubeFloat_t patch;
+        isx::readMemoryMappedFileMovie(outputMemoryMapPath, numRows, numCols, numFrames, dataType, roi, patch);
+
+        std::cout << patch(arma::span(0, 2), arma::span(0, 2), arma::span(1)) << std::endl;
+        std::cout << movieCube(arma::span(0, 2), arma::span(0, 2), arma::span(1)) << std::endl;
+
+        REQUIRE(arma::approx_equal(patch, movieCube, "reldiff", 1e-5f));
+    }
+
+    SECTION("Patches")
+    {
+        isx::writeMemoryMappedFileMovie(movie, outputMemoryMapPath);
+
+        std::vector<std::tuple<size_t,size_t,size_t,size_t>> rois = {
+            std::make_tuple(0, 2, 0, 2),
+            std::make_tuple(1, 3, 1, 2),
+        };
+
+        for (size_t i = 0; i < rois.size(); i++)
+        {
+            const isx::CubeFloat_t expectedPatch = movieCube(
+                arma::span(std::get<0>(rois[i]), std::get<1>(rois[i])),
+                arma::span(std::get<2>(rois[i]), std::get<3>(rois[i])),
+                arma::span::all
+            );
+
+            isx::CubeFloat_t patch;
+            isx::readMemoryMappedFileMovie(outputMemoryMapPath, numRows, numCols, numFrames, dataType, rois[i], patch);
+
+            REQUIRE(arma::approx_equal(patch, expectedPatch, "reldiff", 1e-5f));
+        }
+    }
+
+    std::remove(outputMemoryMapPath.c_str());
+}

@@ -58,15 +58,16 @@ namespace isx
 
         for (size_t frameIndex = 0; frameIndex < numFrames; frameIndex++)
         {
-            MatrixFloat_t frame;
-            inMovie->getFrame(frameIndex, frame);
-
             if (dataType == DataType::U16)
             {
+                arma::Mat<uint16_t> frame;
+                inMovie->getFrame(frameIndex, frame);
                 file.write((char*)frame.memptr(), frame.n_elem * sizeof(uint16_t));
             }
             else
             {
+                MatrixFloat_t frame;
+                inMovie->getFrame(frameIndex, frame);
                 file.write((char*)frame.memptr(), frame.n_elem * sizeof(float));
             }
         }
