@@ -25,7 +25,7 @@ namespace isx
     /// \param traceOutputUnits             Output units for temporal components (0: DF, 1: noise scaled)
     void cnmfe(
         const std::string & inputMoviePath,
-        const std::string & outputDirPath,
+        const std::string & outputDirPath = "output",
         const int outputFiletype = 0,
         const int averageCellDiameter = 7,
         const float minCorr = 0.8,
