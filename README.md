@@ -3,13 +3,13 @@ Inscopix-CNMFe is a constrained non-negative matrix factorization (CNMF) algorit
 
 ![CNMFe Workflow Example](img/inscopix_cnmfe_workflow.png?raw=true "CNMFe Workflow Example")
 
-Inscopix-CNMFe is implemented in C++, and can be used out of the box in Python via pip install or with a Docker container. The C++ source code is open and available to developers who wish to further evaluate, modify, and improve the algorithm.
+Inscopix-CNMFe is implemented in C++, and can be used out of the box in Python via `pip install` or with a Docker container. The source code is open and available to developers who wish to further evaluate, modify, and improve the algorithm.
 
 ## Background
 The CNMF algorithm was originally developed for two-photon data by [Pnevmatikakis, 2016](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4881387/). 
 The two-photon algorithm was modified with enhanced background subtraction routines to work in the one-photon setting by [Zhou, 2018](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5871355/). 
 The first version of CNMFe, originally developed in MATLAB as [CNMF_E](https://github.com/zhoupc/CNMF_E), was ported to Python in the [CaImAn](https://github.com/flatironinstitute/CaImAn) package, described in [Giovannucci, 2018](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6342523/). 
-The Inscopix Data Products and Analytics team then reimplemented the constrained non-negative matrix factorization approach in C++ (Inscopix-CNMFe) to offer in the Inscopix Data Processing Software GUI as well as its Python and MATLAB APIs. 
+The Inscopix Data Products and Analytics team then reimplemented the constrained non-negative matrix factorization approach in C++ (Inscopix-CNMFe) to offer in the Inscopix Data Processing Software GUI as well as its Python and MATLAB APIs. Here we've packaged Inscopix-CNMFe into a standalone open source software for use by the entire neuroscience community.
 
 ## Installation & Usage
 
