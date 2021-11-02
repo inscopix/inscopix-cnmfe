@@ -110,7 +110,7 @@ TEST_CASE("TestingUtilitiesSaveCubeToTiffFileFloat32", "[testing-utilities]")
     {
         isx::MatrixFloat_t frame;
         movie->getFrame(frameIndex, frame);
-        REQUIRE(arma::approx_equal(frame, frame, "reldiff", 1e-5f));
+        REQUIRE(arma::approx_equal(frame, inputData.slice(frameIndex), "reldiff", 1e-5f));
     }
 
     // delete file
@@ -146,9 +146,8 @@ TEST_CASE("TestingUtilitiesSaveCubeToTiffFileUint16", "[testing-utilities]")
     for (size_t frameIndex = 0; frameIndex < movie->getNumFrames(); frameIndex++)
     {
         arma::Mat<uint16_t> frame;
-        // TODO: uncomment below when getFrame returns the frame in the right datatype
-        // movie->getFrame(frameIndex, frame);
-        // REQUIRE(arma::approx_equal(frame, frame, "reldiff", 1e-5f));
+        movie->getFrame(frameIndex, frame);
+        REQUIRE(arma::approx_equal(frame, inputData.slice(frameIndex), "abs_tol", 0));
     }
 
     // delete file
