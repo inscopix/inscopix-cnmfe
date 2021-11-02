@@ -258,9 +258,6 @@ TEST_CASE("MemoryMapMovieU16", "[cnmfe-utils]")
         isx::CubeFloat_t patch;
         isx::readMemoryMappedFileMovie(outputMemoryMapPath, numRows, numCols, numFrames, dataType, roi, patch);
 
-        std::cout << patch(arma::span(0, 2), arma::span(0, 2), arma::span(1)) << std::endl;
-        std::cout << movieCube(arma::span(0, 2), arma::span(0, 2), arma::span(1)) << std::endl;
-
         REQUIRE(arma::approx_equal(patch, movieCube, "reldiff", 1e-5f));
     }
 

@@ -3,6 +3,7 @@
 
 #include "isxArmaUtils.h"
 #include "isxUtilities.h"
+#include "isxLog.h"
 #include <string>
 #include <memory>
 
@@ -32,17 +33,12 @@ namespace isx
         /// \throw  isx::ExceptionDataIO    If inFrameNumber is out of range.
         void getFrameBytes(size_t inFrameNumber, arma::Col<char> & outBuffer);
 
-        /// Get a movie frame (as float)
+        /// Get a movie frame
         /// \param inFrameNumber frame index
         /// \param frame         output frame
         /// \throw  isx::ExceptionDataIO    If inFrameNumber is out of range.
-        void getFrame(size_t inFrameNumber, MatrixFloat_t & frame);
-
-        /// Get a movie frame (as uint16_t)
-        /// \param inFrameNumber frame index
-        /// \param frame         output frame
-        /// \throw  isx::ExceptionDataIO    If inFrameNumber is out of range.
-        void getFrame(size_t inFrameNumber, arma::Mat<uint16_t> & frame);
+        template<typename T>
+        void getFrame(size_t inFrameNumber, arma::Mat<T> & frame);
 
         /// \return the total number of frames in the movie
         ///
@@ -78,6 +74,68 @@ namespace isx
     };
 
     using SpTiffMovie_t = std::shared_ptr<TiffMovie>;
+
+
+    template<typename T>
+    void
+    TiffMovie::getFrame(size_t inFrameNumber, arma::Mat<T> & frame)
+    {
+        arma::Col<char> buf;
+        getFrameBytes(inFrameNumber, buf);
+        size_t nbytes = m_frameWidth * m_frameHeight * getDataTypeSizeInBytes(m_dataType);
+
+        // Copy the data to the frame buffer
+        if (m_dataType == DataType::F32)
+        {
+            if (std::is_same<T, float>::value)
+            {
+                frame = arma::Mat<T>(m_frameWidth, m_frameHeight);
+                std::memcpy(frame.memptr(), (T *)buf.memptr(), nbytes);
+            }
+            else
+            {
+                arma::Mat<float> tmpFrame(m_frameWidth, m_frameHeight);
+                std::memcpy(tmpFrame.memptr(), (float *)buf.memptr(), nbytes);
+                frame = arma::conv_to<arma::Mat<T>>::from(tmpFrame);
+            }
+        }
+        else if (m_dataType == DataType::U16)
+        {
+            if (std::is_same<T, uint16_t>::value)
+            {
+                frame = arma::Mat<T>(m_frameWidth, m_frameHeight);
+                std::memcpy(frame.memptr(), (T *)buf.memptr(), nbytes);
+            }
+            else
+            {
+                arma::Mat<uint16_t> tmpFrame(m_frameWidth, m_frameHeight);
+                std::memcpy(tmpFrame.memptr(), (uint16_t *)buf.memptr(), nbytes);
+                frame = arma::conv_to<arma::Mat<T>>::from(tmpFrame);
+            }
+
+        }
+        else if (m_dataType == DataType::U8)
+        {
+            if (std::is_same<T, uint8_t>::value)
+            {
+                frame = arma::Mat<T>(m_frameWidth, m_frameHeight);
+                std::memcpy(frame.memptr(), (T *)buf.memptr(), nbytes);
+            }
+            else
+            {
+                arma::Mat<uint8_t> tmpFrame(m_frameWidth, m_frameHeight);
+                std::memcpy(tmpFrame.memptr(), (uint8_t *)buf.memptr(), nbytes);
+                frame = arma::conv_to<arma::Mat<T>>::from(tmpFrame);
+            }
+        }
+        else
+        {
+            ISX_LOG_ERROR("Tiff input datatype not supported. Only F32, U16, and U8 are supported.");
+            throw std::runtime_error("Tiff input datatype not supported. Only F32, U16, and U8 are supported.");
+        }
+
+        frame = frame.t();
+    }
 }
 
 #endif //ISX_TIFF_MOVIE
