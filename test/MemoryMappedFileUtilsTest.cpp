@@ -1,6 +1,7 @@
 #include "catch.hpp"
 #include "isxMemoryMappedFileUtils.h"
 #include "isxCnmfeIO.h"
+#include "isxTest.h"
 
 #include <QFile>
 
@@ -238,14 +239,21 @@ TEST_CASE("MemoryMapMovieDeleteFile", "[cnmfe-utils]")
 
 TEST_CASE("MemoryMapMovieU16", "[cnmfe-utils]")
 {
-    const std::string inputMoviePath = "test/data/synthetic_movie_uint16.tif";  // movie dims: 3x4x5 (width * height * num_frames)
-    const std::string outputMemoryMapPath = "test/data/mmap.bin";
+    const size_t numRows = 4;
+    const size_t numCols = 3;
+    const size_t numFrames = 5;
+    const isx::DataType dataType = isx::DataType::U16;
+
+    // Create a synthetic movie with regularly spaced element values
+    const std::string inputMoviePath = "test/data/tmp_synthetic_movie_uint16.tif"; // movie dims: 3x4x5 (width * height * num_frames)
+    {
+        const arma::Col<uint16_t> data = arma::regspace<arma::Col<uint16_t>>(0, 1, numRows * numCols * numFrames);
+        const arma::Cube<uint16_t> cube(data.memptr(), numRows, numCols, numFrames);
+        saveCubeToTiffFile(cube, inputMoviePath);
+    }
 
     const isx::SpTiffMovie_t movie = std::shared_ptr<isx::TiffMovie>(new isx::TiffMovie(inputMoviePath));
-    const size_t numRows = movie->getFrameHeight();
-    const size_t numCols = movie->getFrameWidth();
-    const size_t numFrames = movie->getNumFrames();
-    const isx::DataType dataType = movie->getDataType();
+    const std::string outputMemoryMapPath = "test/data/mmap.bin";
     
     isx::CubeFloat_t movieCube;
     convertMovieToCube(movie, movieCube);
@@ -286,4 +294,5 @@ TEST_CASE("MemoryMapMovieU16", "[cnmfe-utils]")
     }
 
     std::remove(outputMemoryMapPath.c_str());
+    std::remove(inputMoviePath.c_str());
 }
