@@ -1,12 +1,15 @@
-# Inscopix CNMFe
-CNMFe is a constrained non-negative matrix factorization algorithm used to perform automated source extraction from microendoscopic calcium imaging movies. 
-Specifically, it aims to retrieve the spatial location and temporal dynamics of neurons in a movie. 
-The CNMF algorithm was originally developed for two-photon data [Pnevmatikakis, 2016](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4881387/). 
-The two-photon algorithm was modified with enhanced background subtraction routines to work in the one-photon setting [Zhou, 2018](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5871355/). 
-The first version of CNMFe, originally developed in MATLAB as [CNMF_E](https://github.com/zhoupc/CNMF_E), was ported to Python in the [CaImAn](https://github.com/flatironinstitute/CaImAn) package, described in [Giovannucci, 2018](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6342523/). 
-CaImAn CNMFe was ported to C++ for implementation into Inscopix Data Processing Software, improved for performance, and extended to offer greater processing control and transparency.
+# Inscopix-CNMFe
+Inscopix-CNMFe is a constrained non-negative matrix factorization (CNMF) algorithm used to perform automated source extraction from microendoscopic calcium imaging movies (the 'e' stands for endoscope). Specifically, it aims to retrieve the spatial location and temporal dynamics of neurons in a fluorescent 1-photon calcium imaging movie. 
 
 ![CNMFe Workflow Example](img/inscopix_cnmfe_workflow.png?raw=true "CNMFe Workflow Example")
+
+Inscopix-CNMFe is implemented in C++, and can be used out of the box in Python via `pip install` or with a Docker container. The source code is open and available to developers who wish to further evaluate, modify, and improve the algorithm.
+
+## Background
+The CNMF algorithm was originally developed for two-photon data by [Pnevmatikakis, 2016](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4881387/). 
+The two-photon algorithm was modified with enhanced background subtraction routines to work in the one-photon setting by [Zhou, 2018](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5871355/). 
+The first version of CNMFe, originally developed in MATLAB as [CNMF_E](https://github.com/zhoupc/CNMF_E), was ported to Python in the [CaImAn](https://github.com/flatironinstitute/CaImAn) package, described in [Giovannucci, 2018](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6342523/). 
+The Inscopix Data Products and Analytics team then reimplemented the constrained non-negative matrix factorization approach in C++ (Inscopix-CNMFe) to offer in the Inscopix Data Processing Software GUI as well as its Python and MATLAB APIs. Here we've packaged Inscopix-CNMFe into a standalone open source software for anyone to use.
 
 ## Installation & Usage
 
@@ -104,3 +107,6 @@ Note that the default values may not be optimal for all scenarios and should be 
 
 ## Contribute to Inscopix CNMFe
 For those interested in contributing to this project, please consult our documentation for developers [here](docs/developers.md).
+
+## License
+This program is free software; you can use, redistribute, and/or modify it under the terms of the GNU Affero General Public License. Note that the software is provided 'as is', without warranty of any kind. See the Affero General Public License for more details. 
