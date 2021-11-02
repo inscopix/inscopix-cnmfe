@@ -29,7 +29,7 @@ PYBIND11_MODULE(inscopix_cnmfe, handle)
     trace_output_units (int): Output units for temporal components (0: DF, 1: noise scaled)
     )mydelimiter",
     py::arg("input_movie_path"),
-    py::arg("output_dir_path"),
+    py::arg("output_dir_path") = 'output',
     py::arg("output_filetype") = 0,
     py::arg("average_cell_diameter") = 7,
     py::arg("min_corr") = 0.8,

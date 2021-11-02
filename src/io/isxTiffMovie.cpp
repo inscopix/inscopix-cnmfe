@@ -1,6 +1,5 @@
 #include "isxTiffMovie.h"
 #include "isxTiffBuffer.h"
-#include "isxLog.h"
 namespace libtiff {
     // placed in its own namespace to avoid
     // type redefinition conflict with OpenCV
@@ -79,7 +78,7 @@ namespace isx
     }
 
     void
-    TiffMovie::getFrame(size_t inFrameNumber, MatrixFloat_t & frame)
+    TiffMovie::getFrameBytes(size_t inFrameNumber, arma::Col<char> & outBuffer)
     {
         // Seek to the right directory
         if(1 != libtiff::TIFFSetDirectory(m_tif, libtiff::tdir_t(inFrameNumber)))
@@ -106,31 +105,8 @@ namespace isx
             pBuf += size;
         }
 
-        // Copy the data to the frame buffer
-        if (m_dataType == DataType::F32)
-        {
-            frame = MatrixFloat_t (m_frameWidth, m_frameHeight);
-            std::memcpy(frame.memptr(), (float *)buf.get(), nbytes);
-        }
-        else if (m_dataType == DataType::U16)
-        {
-            arma::Mat<uint16_t> tmpFrame(m_frameWidth, m_frameHeight);
-            std::memcpy(tmpFrame.memptr(), (uint16_t *)buf.get(), nbytes);
-            frame = arma::conv_to<MatrixFloat_t>::from(tmpFrame);
-        }
-        else if (m_dataType == DataType::U8)
-        {
-            arma::Mat<uint8_t> tmpFrame(m_frameWidth, m_frameHeight);
-            std::memcpy(tmpFrame.memptr(), (uint8_t *)buf.get(), nbytes);
-            frame = arma::conv_to<MatrixFloat_t>::from(tmpFrame);
-        }
-        else
-        {
-            ISX_LOG_ERROR("Tiff input datatype not supported. Only F32, U16, and U8 are supported.");
-            throw std::runtime_error("Tiff input datatype not supported. Only F32, U16, and U8 are supported.");
-        }
-
-        frame = frame.t();
+        outBuffer.set_size(nbytes);
+        std::memcpy(outBuffer.memptr(), (char *)buf.get(), nbytes);
     }
 
     size_t

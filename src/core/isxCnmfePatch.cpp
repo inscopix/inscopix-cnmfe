@@ -331,7 +331,7 @@ namespace isx
         ISX_LOG_INFO("Scaling spatiotemporal components");
         scaleSpatialTemporalComponents(outA, outRawC, outputType, inDeconvParams);
 
-        ISX_LOG_INFO("Removing temporary binary file for memory mapping movie (file:", inMemoryMapPath, ")");
+        ISX_LOG_INFO("Removing temporary binary file for memory mapping movie (file: ", inMemoryMapPath, ")");
         std::remove(inMemoryMapPath.c_str());
     }
 }
