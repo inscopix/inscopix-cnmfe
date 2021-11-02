@@ -249,7 +249,6 @@ TEST_CASE("MemoryMapMovieU16", "[cnmfe-utils]")
     {
         const arma::Col<uint16_t> data = arma::regspace<arma::Col<uint16_t>>(0, 1, numRows * numCols * numFrames);
         const arma::Cube<uint16_t> cube(data.memptr(), numRows, numCols, numFrames);
-
         saveCubeToTiffFile(cube, inputMoviePath);
     }
 
