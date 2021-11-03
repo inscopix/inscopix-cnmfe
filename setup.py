@@ -136,9 +136,12 @@ setup(name='inscopix-cnmfe',
             'Operating System :: Microsoft :: Windows',
             'Programming Language :: Python',
             'Programming Language :: Python :: 3',
+            'License :: OSI Approved :: GNU Affero General Public License v3',
       ],
       platforms=["Mac OS-X", "Linux", "Windows"],
       python_requires='>=3.6',
       ext_modules=[CMakeExtension("inscopix_cnmfe_python")],
       cmdclass={"build_ext": CMakeBuild},
-      zip_safe=False)
+      zip_safe=False,
+      license="GNU AFFERO GENERAL PUBLIC LICENSE",
+      license_files="LICENSE")
