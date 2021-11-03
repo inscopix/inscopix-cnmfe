@@ -108,5 +108,16 @@ Note that the default values may not be optimal for all scenarios and should be 
 ## Contribute to Inscopix CNMFe
 For those interested in contributing to this project, please consult our documentation for developers [here](docs/developers.md).
 
+## Developers
+
+This project was developed by the Inscopix Data Products & Analytics Group, with many others across the company contributing along the way.
+
+Development led by: 
+- Bruno Boivin, Data Engineer
+- Nosheen Adil, Software Engineer
+
+Key contributions from: 
+- Eric Lin, Software Engineering intern
+
 ## License
 This program is free software; you can use, redistribute, and/or modify it under the terms of the GNU Affero General Public License. Note that the software is provided 'as is', without warranty of any kind. See the Affero General Public License for more details. 
