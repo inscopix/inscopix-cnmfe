@@ -25,7 +25,7 @@ int main(int argc, char* argv[]) {
     const int patchOverlap = params["patch_overlap"].get<int>();
     const int traceOutputUnits = params["output_units"].get<int>();
     const int outputFiletype = params["output_filetype"].get<int>();
-    const bool verbose = params["verbose"].get<bool>();
+    const int verbose = params["verbose"].get<int>();
 
     isx::cnmfe(
         inputMoviePath,

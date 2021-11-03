@@ -142,7 +142,7 @@ namespace isx {
             return;
         }
 
-        if (!isInitialized())
+        if (!isInitialized() || isVerbose() != inVerbose)
         {
             s_instance.reset(new Logger(inLogFileName, inAppName, inAppVersion, inVerbose));
         }

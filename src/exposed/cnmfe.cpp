@@ -32,7 +32,8 @@ namespace isx
         const std::string logFileName = outputDirPath + "/" + "Inscopix_CNMFe_Log.txt";
         const std::string appName = "Inscopix CNMFe";
         const std::string appVersion = "1.0.0";
-        Logger::initialize(logFileName, appName, appVersion, verbose==1 ? true : false);
+        const bool verboseEnabled = verbose==1 ? true : false;
+        Logger::initialize(logFileName, appName, appVersion, verboseEnabled);
 
         nlohmann::json params;
         params["inputMoviePath"] = inputMoviePath;
