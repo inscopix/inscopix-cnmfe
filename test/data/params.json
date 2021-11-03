@@ -12,5 +12,6 @@
   "patch_size": 80,
   "patch_overlap": 20,
   "output_units": 1,
-  "output_filetype": 0
+  "output_filetype": 0,
+  "verbose": false
 }

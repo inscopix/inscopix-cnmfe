@@ -50,7 +50,8 @@ inscopix_cnmfe.run_cnmfe(
 	processing_mode=2,
 	patch_size=80,
 	patch_overlap=20,
-	trace_output_units=1
+	trace_output_units=1,
+	verbose=1
 )
 ```
 

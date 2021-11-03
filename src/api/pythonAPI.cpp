@@ -27,6 +27,7 @@ PYBIND11_MODULE(inscopix_cnmfe, handle)
     patch_size (int): Size of a single patch in pixels
     patch_overlap (int): Amount of overlap between patches in pixels
     trace_output_units (int): Output units for temporal components (0: DF, 1: noise scaled)
+    verbose (int): Indicates whether to display progress in the console (0: False, 1: True)
     )mydelimiter",
     py::arg("input_movie_path"),
     py::arg("output_dir_path") = "output",
@@ -43,6 +44,7 @@ PYBIND11_MODULE(inscopix_cnmfe, handle)
     py::arg("processing_mode") = 2,
     py::arg("patch_size") = 80,
     py::arg("patch_overlap") = 20,
-    py::arg("trace_output_units") = 1
+    py::arg("trace_output_units") = 1,
+    py::arg("verbose") = 0
     );
 }
