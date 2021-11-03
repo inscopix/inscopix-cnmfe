@@ -110,13 +110,11 @@ For those interested in contributing to this project, please consult our documen
 
 ## Developers
 
-This project was developed by the Inscopix Data Products & Analytics Group, with many others across the company contributing along the way.
+This project was led by Bruno Boivin, Nosheen Adil,and Shay Neufeld in the Inscopix Data Products & Analytics Group, with many others across the company contributing along the way.
 
-Development led by: 
+Developers: 
 - Bruno Boivin, Data Engineer
 - Nosheen Adil, Software Engineer
-
-Key contributions from: 
 - Eric Lin, Software Engineering intern
 
 ## License
