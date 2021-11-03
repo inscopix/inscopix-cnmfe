@@ -141,4 +141,6 @@ setup(name='inscopix-cnmfe',
       python_requires='>=3.6',
       ext_modules=[CMakeExtension("inscopix_cnmfe_python")],
       cmdclass={"build_ext": CMakeBuild},
-      zip_safe=False)
+      zip_safe=False,
+      license="GNU AFFERO GENERAL PUBLIC LICENSE",
+      license_files="LICENSE")
