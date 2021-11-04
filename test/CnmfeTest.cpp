@@ -30,6 +30,7 @@ TEST_CASE("CnmfeFullTest", "[cnmfe]")
     const int patchSize = 80;
     const int patchOverlap = 20;
     const int traceOutputUnits = 1;  // noise scaled
+    const bool verbose = true;
 
     isx::cnmfe(
         inputMoviePath,
@@ -47,7 +48,8 @@ TEST_CASE("CnmfeFullTest", "[cnmfe]")
         processingMode,
         patchSize,
         patchOverlap,
-        traceOutputUnits);
+        traceOutputUnits,
+        verbose);
 
     // a total of 79 cells should be identified
     // here we just check for the existence of the output files

@@ -40,9 +40,14 @@ namespace isx {
             /// \param inLogFileName if empty, nothing will be logged
             /// \param inAppName string representing the name of the app (will appear on every log message)
             /// \param inAppVersion string representing the version of the app (will only appear when logging system info)
+            /// \param inVerbose bool indicating whether to display progress in the console
             static
             void
-            initialize(const std::string & inLogFileName, const std::string & inAppName, const std::string & inAppVersion);
+            initialize(
+                const std::string & inLogFileName,
+                const std::string & inAppName,
+                const std::string & inAppVersion,
+                const bool inVerbose);
 
             /// Check if singleton has been initialized
             /// \return bool indicating the above
@@ -87,8 +92,18 @@ namespace isx {
             const std::string &
             getAppVersion();
 
+            /// \return whether logger is verbose
+            ///
+            static
+            const bool
+            isVerbose();
+
         private:
-            Logger(const std::string & inLogFileName, const std::string & inAppName, const std::string & inAppVersion);
+            Logger(
+                const std::string & inLogFileName,
+                const std::string & inAppName,
+                const std::string & inAppVersion,
+                const bool inVerbose);
             Logger(const Logger & other) = delete;
             const Logger & operator=(const Logger & other) = delete;
 

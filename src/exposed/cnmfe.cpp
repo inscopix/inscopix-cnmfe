@@ -5,6 +5,7 @@
 #include "isxCnmfePatch.h"
 #include "isxLog.h"
 #include "json.hpp"
+#include <QDateTime>
 
 namespace isx
 {
@@ -24,14 +25,17 @@ namespace isx
         const int processingMode,
         const int patchSize,
         const int patchOverlap,
-        const int traceOutputUnits)
+        const int traceOutputUnits,
+        const int verbose)
     {
         using nlohmann::json;
 
-        const std::string logFileName = outputDirPath + "/" + "Inscopix_CNMFe_Log.txt";
+        const std::string timeStamp = QDateTime::currentDateTime().toString("yyyyMMdd-hhmmss").toStdString();
+        const std::string logFileName = outputDirPath + "/" + "Inscopix_CNMFe_Log_" + timeStamp + ".txt";
         const std::string appName = "Inscopix CNMFe";
         const std::string appVersion = "1.0.0";
-        Logger::initialize(logFileName, appName, appVersion);
+        const bool verboseEnabled = verbose==1 ? true : false;
+        Logger::initialize(logFileName, appName, appVersion, verboseEnabled);
 
         nlohmann::json params;
         params["inputMoviePath"] = inputMoviePath;
@@ -50,6 +54,7 @@ namespace isx
         params["patchSize"] = patchSize;
         params["patchOverlap"] = patchOverlap;
         params["traceOutputUnits"] = traceOutputUnits;
+        params["verbose"] = verbose;
         ISX_LOG_INFO("CNMFe parameters:\n" + params.dump(4));
 
         if (!pathExists(outputDirPath))
