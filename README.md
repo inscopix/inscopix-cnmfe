@@ -107,7 +107,7 @@ Note that the default values may not be optimal for all scenarios and should be 
 | output_dir_path | path to the directory where output files will be stored | output |
 
 ## Contribute to Inscopix CNMFe
-For those interested in contributing to this project, please consult our documentation for developers [here](docs/developers.md).
+For those interested in contributing to this project, please consult our documentation for developers [here](docs/developers_guide.md).
 
 ## License
 This program is free software; you can use, redistribute, and/or modify it under the terms of the GNU Affero General Public License. Note that the software is provided 'as is', without warranty of any kind. See the Affero General Public License for more details. 
