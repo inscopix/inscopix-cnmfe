@@ -1,5 +1,4 @@
 # Inscopix CNMFe Parameters
-# Tips for Fine-Tuning CNMFe Parameters
 This section provides guidance and tips on how to fine-tune the CNMFe input parameters
 based on the results obtained. While the default parameters used in CNMFe were determined by 
 applying them to several datasets, they may not be optimal for all datasets. 
@@ -85,24 +84,107 @@ by reducing the merging threshold.
 ## Processing Parameters
 
 ### Processing Modes
-### when to use each mode
+Parallel patch mode is the fastest processing mode, but it requires a large amount of memory.
+Sequential patch mode is the slowest processing mode, but requires the least amount of memory.
+All-in-memory mode is also slower than parallel patch mode and requires a large amount of memory.
 
+The different processing modes are depicted in the figure below.
+
+![Processing Modes](../img/processing_modes.png?raw=true "Processing Modes")
+
+### Patch Size and Patch Overlap
+Patch size refers to the side length of an individual square patch of the field of view in pixels.
+Patch overlap refers to the amount of overlap between adjacent patches in pixels.
+These two concepts are illustrated below.
+
+![Patch Parameters](../img/patch_parameters.png?raw=true "Patch Parameters")
+
+### Number of threads
+The number of threads controls the amount of parallelism used during processing.
+When using all-in-memory or sequential patch mode, increasing the number of threads will
+result in a higher level of parallelism in each CNMFe processing module.
+A larger number of threads will not always lead to faster processing.
+Specifically, if the number of threads exceed the number of cores available on your machine
+you may see start seeing a plateau or even an increase in processing time as the overhead of managing
+the extra threads start exceeding the benefits provided through parallelization.
+When using parallel patch mode, the number of threads will instead control the number of patches
+being processed in parallel at any given time.
+Each thread will process one patch at a time, each time grabbing the next patch to process in the queue, until all patches are processed.
+
+## Auto-Estimated Parameters
+Inscopix CNMFe is able to automatically estimated an appropriate value for some of the input parameters based on
+the specified average cell diameter. Specifically, the Gaussian filter size and closing kernel size are both automatically
+estimated using the following formula if unspecified:
+
+`floor((average cell diameter - 1) / 4)`
 
 ## Common Issues
 
-## Missing Cells
+### Average Cell Diameter
+The average cell diameter should be obtained by measuring the diameter of a representative cell in pixels.
+This parameter should not be deliberately under- or over-estimated as this could affect the quality of the output.
+The user should instead try to adjust the other parameters based on the tips provide below and depending on the results obtained.
 
-## Too Many Cells or Oversegmented Cells
+### Missing Cells
+If you feel that CNMFe missed some cells that are visible in the field of view, try relaxing the initialization parameters
+while maintaining the other parameters constant. 
+More specifically, try reducing the minimum pixel correlation and the peak-to-noise ratio.
+Note that it is not recommended to specify an inaccurate average cell diameter in an attempt to capture the missing cells
+as this could impair the quality of the output obtained from CNMFe.
+Below is an example showing a field of view where some cells are visible but were not identified by CNMFe using the default
+initialization parameters.
 
+![Missing Cells](../img/missing_cells.png?raw=true "Missing Cells")
 
-## Slow Processing
+### Too Many Cells
+If you feel that CNMFe identified too many cells, specifically blobs that don't appear to be cells, try
+making the initialization parameters more stringent by increase the minimum pixel correlation and the peak-to-noise ratio.
+Also, make sure to use the appropriate average cell diameter as underestimating or overestimating this value could lead to 
+the identification of additional blobs that may not be cells of interest.
 
+### Oversegmented Cells
+If you find that CNMFe is overfragmenting cells, i.e. the same cell appears to be identified as multiple distinct components,
+try reducing the merging threshold to allow CNMFe to combine such fragments together during processing.
+Again, make sure to use an appropriate average cell diameter and underestimating it could in some cases lead to the identification
+of smaller blobs within cells.
+Below is an example showing cells that were oversegmented and identified as distinct cells.
+In this case it is best to validate the average cell diameter and reduce the merging threshold
+to prevent such oversegmentation of the cell bodies.
 
-## Limited Hardware Resources such as Insufficient Memory
+![Oversegmented Cells](../img/oversegmented_cells.png?raw=true "Oversegmented Cells")
 
+### Slow Processing
+Processing time is largely affected by the chosen processing mode and the parallelism associated
+with the specified processing parameters.
+Parallel patch mode is the fastest processing mode, but it requires more memory.
+If you noticed that while running CNMFe you still have a large amount of unused memory,
+try increasing the number of threads used with parallel patch mode.
+Background estimation is one of the most expensive operations in CNMFe.
+As such, increasing the background downsampling factor can significantly reduce processing time
+while shifting the background estimate toward a global rather than localized estimate.
 
+### Limited Computing Resources such as Low Memory
+If you are attempting to run CNMFe on a system that has a very small amount of random-access memory,
+you may not be able to process you movie using either the all-in-memory or parallel patch mode.
+However, the sequential patch mode will allow you to process a single patch of data at a time, dramatically
+reducing memory consumption at the expense of longer processing time.
+
+If your system runs out of memory during processing, CNMFe will likely shut down.
+Most operating systems offer built-in monitoring tools to keep track of memory consumption.
+To circumvent this issue, try reducing the patch size or number of threads if using parallel patch mode.
+If this still consumes too much memory, try using sequential patch mode to minimize memory consumption.
 
 ## Output Units
+The temporal traces extracted by Inscopix CNMFe can be expressed in terms of different units.
+Inscopix CNMFe offers two options, dF and dF over noise as described in the table below.
+It is common for people to standardize traces by subtracting the mean and dividing by the standard deviation of the traces,
+effectively converting each value to a Z-score.
+dF over noise uses a similar formula, with the exception that the traces are divided by the estimated noise level in each trace.
+Since noise is estimated by averaging the high-frequency fluctuations along the trace, these output units are more robust to outliers.
+In particular, outliers would inflate the standard deviation measured and thus reduce the scores computed.
+The approach used to measure noise here is less susceptible to the influence of outliers.
 
-
-## Auto-Estimated Parameters
+| Output Units  | Description |
+|:----------|:-------------|
+| dF | temporal traces on the same scale of pixel intensity as the original movie. dF is calculated as the average fluorescence activity of all pixels in a cell, scaled so that each spatial footprint has a magnitude of 1. |
+| dF over noise | temporal traces divided by their respective estimated noise level. This can be interpreted similarly to a z-score, with the added benefit that the noise is a more robust measure of the variance in a temporal trace compared to the standard deviation. |
