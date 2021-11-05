@@ -106,6 +106,11 @@ Note that the default values may not be optimal for all scenarios and should be 
 | output_filetype | the file types into which the output will be saved (0: footprints saved to a tiff file and traces saved to a csv file, 1: output saved to a h5 file under the keys footprints and traces) | 0 |
 | output_dir_path | path to the directory where output files will be stored | output |
 
+## Fine-Tuning Inscopix CNMFe Parameters
+To learn more about the effect of each parameter on the algorithm or to determine the best course of action
+for fine-tuning parameters based on the results obtained, please consult our documentation
+on Inscopix CNMFe Parameters [here](docs/parameter_tuning.md).
+
 ## Contribute to Inscopix CNMFe
 For those interested in contributing to this project, please consult our documentation for developers [here](docs/developers_guide.md).
 
