@@ -4,6 +4,31 @@ based on the results obtained. While the default parameters used in CNMFe were d
 applying them to several datasets, they may not be optimal for all datasets. 
 As such, it is important to understand which parameter to tweak to obtain the desired output.
 
+**Table of Contents**
+- [Recommended Workflow](#recommended-workflow)
+- [Relationships Between CNMFe Modules and Individual Parameters](#relationships-between-cnmfe-modules-and-individual-parameters)
+- [Initialization Parameters](#initialization-parameters)
+    - [Preprocessing](#preprocessing)
+    - [Seed Pixels](#seed-pixels)
+- [Background Parameters](#background-parameters)
+    - [Downsampling](#downsampling)
+    - [Background Model](#background-model)
+- [Spatial Parameters](#spatial-parameters)
+- [Merging Parameters](#merging-parameters)
+- [Processing Parameters](#processing-parameters)
+  - [Processing Modes](#processing-modes)
+  - [Patch Size and Patch Overlap](#patch-size-and-patch-overlap)
+  - [Number of Threads](#number-of-threads)
+- [Auto-Estimated Parameters](#auto-estimated-parameters)
+- [Common Issues](#common-issues)
+  - [Average Cell Diameter](#average-cell-diameter)
+  - [Missing Cells](#missing-cells)
+  - [Too Many Cells](#too-many-cells)
+  - [Oversegmented Cells](#oversegmented-cells)
+  - [Slow Processing](#slow-processing)
+  - [Limited Computing Resources](#limited-computing-resources)
+- [Output Units](#output-units)
+
 ## Recommended Workflow
 Prior to running CNMFe on your movie, we recommend applying the following operations
 to help improve the source extraction algorithm.
@@ -18,7 +43,7 @@ opposed to the pixels visited by their respective cell body over time.
 This will in turn ensure that the temporal dynamics extracted for each cell are due to 
 fluctuations in the reporter fluorescence and not cellular displacements.
 
-## Overview of Knobs (Module-Parameter Mapping)
+## Relationships Between CNMFe Modules and Individual Parameters
 The diagram and table below provide a color-coded mapping from the CNMFe parameters to the
 CNMFe processing modules they have an effect on.
 
@@ -99,7 +124,7 @@ These two concepts are illustrated below.
 
 ![Patch Parameters](../img/patch_parameters.png?raw=true "Patch Parameters")
 
-### Number of threads
+### Number of Threads
 The number of threads controls the amount of parallelism used during processing.
 When using all-in-memory or sequential patch mode, increasing the number of threads will
 result in a higher level of parallelism in each CNMFe processing module.
@@ -163,7 +188,7 @@ Background estimation is one of the most expensive operations in CNMFe.
 As such, increasing the background downsampling factor can significantly reduce processing time
 while shifting the background estimate toward a global rather than localized estimate.
 
-### Limited Computing Resources such as Low Memory
+### Limited Computing Resources
 If you are attempting to run CNMFe on a system that has a very small amount of random-access memory,
 you may not be able to process you movie using either the all-in-memory or parallel patch mode.
 However, the sequential patch mode will allow you to process a single patch of data at a time, dramatically
