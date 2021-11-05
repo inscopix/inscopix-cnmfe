@@ -1,7 +1,8 @@
 # Inscopix CNMFe Parameters
 This section provides guidance and tips on how to fine-tune the CNMFe input parameters
 based on the results obtained. The default parameters may not be optimal for all datasets. 
-As such, it is important to understand which parameters to tweak to obtain the desired output.
+As such, it is important to understand how each parameter affects processing in order to
+determine which ones to tweak to obtain the desired output.
 
 ## Recommended Workflow
 Prior to running CNMFe on your movie, we recommend applying the following operations
