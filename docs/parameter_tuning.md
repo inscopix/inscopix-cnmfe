@@ -1,6 +1,6 @@
 # Inscopix CNMFe Parameters
 This section provides guidance and tips on how to fine-tune the CNMFe input parameters
-based on the results obtained. The default parameters may not be optimal for all datasets. 
+based on the results obtained by the algorithm. The default parameters may not be optimal for all datasets. 
 As such, it is important to understand how each parameter affects processing in order to
 determine which ones to tweak to obtain the desired output.
 
@@ -18,9 +18,9 @@ according to the module the parameter has an effect on.
 ### Preprocessing
 One of the first steps of the initialization module is to apply a Gaussian filter with width roughly
 equal to the radius of a cell in pixels.
-This effectively applies a high-pass filter to the movie to make cells pop out in the correlation image,
-which ultimately makes them easier to identify.
-An example of the effect of using different Gaussian filter sizes is shown below.
+This effectively make cells pop out in the correlation image, which ultimately makes them easier to identify.
+An example of the effect of using different Gaussian filter sizes is shown below. 
+In this case, a Gaussian filter width of 5 produces a crisp correlation image that leads to more identified cells.
 
 ![Initialization: Gaussian Filter Width](../img/initialization_gaussian_filter.png?raw=true "Initialization: Gaussian Filter Width")
 
@@ -30,7 +30,7 @@ the spatial footprint of a neuron, it must meet or exceed the initialization cri
 sufficiently correlated with its immediate neighbors and must also have a level of temporal activity that exceeds some multiple
 of the estimated noise level. The two metrics can be computed for each pixel, providing two images that can be 
 combined into one search image that can be used to identify neurons that meet the initialization criteria.
-An example of such images is displayed below: PNR Image obtained using a peak-to-noise ratio of 10 (left), 
+An example of such images is displayed below: PNR Image obtained using a minimum peak-to-noise ratio of 10 (left), 
 Correlation Image obtained using a minimum correlation of 0.8 with 8 immediate neighbor pixels (middle),
 and a Search Image obtained by multiplying the PNR Image with the Correlation Image (right).
 
@@ -121,7 +121,7 @@ Note that it is not recommended to specify an inaccurate average cell diameter i
 as this could impair the quality of the output obtained from CNMFe.
 Below is an example showing the effect of relaxing the initialization criteria.
 Some cells visible in the field of view were missed when using a minimum pixel correlation of 0.8 and
-a peak-to-noise ratio of 10 (left), but were identified when relaxing the initialization criteria (right).
+a minimum peak-to-noise ratio of 10 (left), but were identified when relaxing the initialization criteria (right).
 
 ![Missing Cells](../img/missing_cells.png?raw=true "Missing Cells")
 
@@ -143,7 +143,7 @@ to prevent such oversegmentation of the cell bodies.
 ![Oversegmented Cells](../img/oversegmented_cells.png?raw=true "Oversegmented Cells")
 
 ### Slow Processing
-Processing time is largely affected by the chosen processing mode and the parallelism associated
+Processing time is largely affected by the input dimensions, the chosen processing mode, and the parallelism associated
 with the specified processing parameters.
 Parallel patch mode is the fastest processing mode, but it requires more memory.
 If you notice while running CNMFe that you still have a large amount of unused memory available on your machine,
@@ -151,6 +151,8 @@ try increasing the number of threads used with parallel patch mode.
 Background estimation is one of the most expensive operations in CNMFe.
 As such, increasing the background downsampling factor can also significantly reduce processing time
 while shifting the background estimate toward a global rather than a localized estimate.
+Another way to improve processing speed is to downsample the input data as per our recommended workflow.
+Many operations are performed on every pixel. Downsampling can help reduce noise and also dramatically reduce processing time.
 
 ### Limited Computing Resources
 If you are attempting to run CNMFe on a system that has limited random-access memory,
@@ -162,6 +164,9 @@ If your system runs out of memory during processing, CNMFe will likely shut down
 Most operating systems offer built-in monitoring tools to keep track of memory consumption.
 To circumvent a lack of memory, try reducing the patch size or the number of threads if using parallel patch mode.
 If this still consumes too much memory, try using sequential patch mode to minimize memory consumption.
+
+Another way to significantly reduce memory consumption is to downsample the input data as per our recommended workflow.
+For instance, downsampling the data by a factor of 2 along each dimension would reduce the memory footprint of the algorithm by a factor of 4.
 
 ## Output Units
 The temporal traces extracted by Inscopix CNMFe can be expressed in terms of different units.

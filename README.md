@@ -99,7 +99,7 @@ to help improve the performance of the source extraction algorithm.
 ## Algorithm Parameters
 The CNMFe parameters used in the Python package are listed below along with their respective descriptions and default values.
 All parameters are optional with the exception of the input movie file and the average cell diameter.
-Note that the default values may not be optimal for all scenarios and should be adjusted based on the results obtained.
+Note that the default values may not be optimal for all scenarios and should be adjusted based on the results obtained by the algorithm.
 
 | Parameter  | Description | Default Value |
 |:----------|:-------------|:-------------|
@@ -122,7 +122,7 @@ Note that the default values may not be optimal for all scenarios and should be 
 
 ## Tuning Parameters to Optimize Performance
 To learn more about the effect of each parameter on the algorithm or to determine the best course of action
-for fine-tuning parameters based on the results obtained, please consult our documentation
+for fine-tuning parameters based on the results obtained by the algorithm, please consult our documentation
 on Inscopix CNMFe Parameters [here](docs/parameter_tuning.md).
 
 ## Contribute to Inscopix CNMFe
