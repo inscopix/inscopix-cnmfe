@@ -4,20 +4,6 @@ based on the results obtained. The default parameters may not be optimal for all
 As such, it is important to understand how each parameter affects processing in order to
 determine which ones to tweak to obtain the desired output.
 
-## Recommended Workflow
-Prior to running CNMFe on your movie, we recommend applying the following operations
-to help improve the performance of the source extraction algorithm.
-1. Spatial downsampling of the data by a factor of 2 to 4. This will help blur away 
-minor spatial fluctuations and significantly reduce CNMFe processing time.
-2. Spatial bandpass filtering with global mean subtraction. The removal of low spatial
-frequency content will help remove out-of-focus cells. Likewise, the removal of 
-high spatial frequencies will reduce noise by smoothing the movie images.
-3. Motion correction. The removal of motion artifacts will help ensure that the spatial 
-location of cells identified by CNMFe is confined to their precise positions as
-opposed to the pixels visited by their respective cell body over time. 
-This will in turn ensure that the temporal dynamics extracted for each cell are due to 
-fluctuations in the fluorescent reporter and not cellular displacements.
-
 ## Relationships between Individual Parameters and CNMFe Processing Modules
 The flow chart below shows how data flows through the different CNMFe modules during processing.
 The table underneath lists the input parameters that can be fine-tuned, with each row color-coded 
