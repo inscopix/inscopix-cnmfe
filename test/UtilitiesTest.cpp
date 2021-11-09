@@ -2,8 +2,8 @@
 #include "isxUtilities.h"
 #include "isxTest.h"
 #include "isxTiffMovie.h"
-
-#include <QFile>
+#include <iostream>
+#include <fstream>
 
 TEST_CASE("UtilitiesGetFileName", "[utilities]")
 {
@@ -15,10 +15,29 @@ TEST_CASE("UtilitiesGetFileName", "[utilities]")
 
 TEST_CASE("UtilitiesGetDirName", "[utilities]")
 {
-    const std::string path = "/my/path/to/some/data/movie_128x128x100.tif";
-    const std::string expectedDirName = "/my/path/to/some/data";
-    const std::string actualDirName = isx::getDirName(path);
-    REQUIRE(expectedDirName == actualDirName);
+    SECTION("from full file path")
+    {
+        const std::string path = "/my/path/to/some/data/movie_128x128x100.tif";
+        const std::string expectedDirName = "/my/path/to/some/data";
+        const std::string actualDirName = isx::getDirName(path);
+        REQUIRE(expectedDirName == actualDirName);
+    }
+
+    SECTION("from directory path ending with slash")
+    {
+        const std::string path = "/my/path/to/some/data/";
+        const std::string expectedDirName = "/my/path/to/some/data";
+        const std::string actualDirName = isx::getDirName(path);
+        REQUIRE(expectedDirName == actualDirName);
+    }
+
+    SECTION("from directory path NOT ending with slash")
+    {
+        const std::string path = "/my/path/to/some/data";
+        const std::string expectedDirName = "/my/path/to/some";
+        const std::string actualDirName = isx::getDirName(path);
+        REQUIRE(expectedDirName == actualDirName);
+    }
 }
 
 TEST_CASE("UtilitiesPathExists", "[utilities]")
@@ -41,19 +60,9 @@ TEST_CASE("UtilitiesRemoveFiles", "[utilities]")
     const std::string path = "test/data/tmp.txt";
     REQUIRE(!isx::pathExists(path));
 
-    {
-        const char * msg = "hello";
-
-        QFile file(QString::fromStdString(path));
-        bool success = file.open(QIODevice::ReadWrite);
-        REQUIRE(success);
-
-        auto numBytes = qstrlen(msg);
-        auto bytesWritten = file.write(msg, numBytes);
-        REQUIRE(bytesWritten == numBytes);
-
-        file.close();
-    }
+    std::ofstream outfile (path);
+    outfile << "this is a temporary text file" << std::endl;
+    outfile.close();
     REQUIRE(isx::pathExists(path));
 
     isx::removeFiles({path});
