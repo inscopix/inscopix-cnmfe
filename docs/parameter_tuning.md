@@ -1,4 +1,4 @@
-# Inscopix CNMFe Parameters
+# Inscopix-CNMFe Parameters
 This section provides guidance and tips on how to fine-tune the CNMFe input parameters
 based on the results obtained by the algorithm. The default parameters may not be optimal for all datasets. 
 As such, it is important to understand how each parameter affects processing in order to
@@ -71,7 +71,7 @@ by reducing the merging threshold.
 ## Processing Parameters
 
 ### Processing Modes
-Three processing modes are offered in Inscopix CNMFe, each with their own memory-speed tradeoff.
+Three processing modes are offered in Inscopix-CNMFe, each with their own memory-speed tradeoff.
 Parallel patch mode is the fastest processing mode, but it requires a large amount of memory.
 Its speed advantage comes from processing smaller portions of the field of view in parallel. 
 Sequential patch mode is the slowest processing mode, but requires the least amount of memory.
@@ -100,7 +100,7 @@ being processed in parallel at any given time.
 In this mode, each thread will process one patch at a time, each time grabbing the next patch to process in the queue until all patches are processed.
 
 ## Auto-Estimated Parameters
-Inscopix CNMFe is able to automatically estimate an appropriate value for some of the input parameters based on
+Inscopix-CNMFe is able to automatically estimate an appropriate value for some of the input parameters based on
 the specified average cell diameter. Specifically, the Gaussian filter size and closing kernel size are both automatically
 estimated using the following formula if unspecified:
 
@@ -169,8 +169,8 @@ Another way to significantly reduce memory consumption is to downsample the inpu
 For instance, downsampling the data by a factor of 2 along each dimension would reduce the memory footprint of the algorithm by a factor of 4.
 
 ## Output Units
-The temporal traces extracted by Inscopix CNMFe can be expressed in terms of different units.
-Inscopix CNMFe offers two options: `dF` and `dF over noise`.
+The temporal traces extracted by Inscopix-CNMFe can be expressed in terms of different units.
+Inscopix-CNMFe offers two options: `dF` and `dF over noise`.
 It is common for people to standardize traces by subtracting the mean and dividing by the standard deviation,
 effectively converting each value to a Z-score.
 `dF over noise` uses a similar formula, with the exception that the traces are divided by the estimated noise level as opposed to the standard deviation.

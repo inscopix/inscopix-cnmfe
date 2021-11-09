@@ -83,12 +83,12 @@ The first two steps of Inscopix CNMFe aim to determine how to efficiently proces
 ![CNMFe Modules Overview](img/cnmfe_modules_overview.png?raw=true "CNMFe Modules Overview")
 
 ## Recommended Workflow
-Prior to running CNMFe on your movie, we recommend applying the following operations
-to help improve the performance of the source extraction algorithm.
+Prior to running Inscopix-CNMFe, we recommend applying the following operations
+to the input movie to help improve the performance of the source extraction algorithm.
 1. Spatial downsampling of the data by a factor of 2 to 4. This will help blur away
    minor spatial fluctuations and significantly reduce CNMFe processing time.
 2. Spatial bandpass filtering with global mean subtraction. The removal of low spatial
-   frequency content will help remove out-of-focus cells. Likewise, the removal of
+   frequency content will help remove out-of-focus cells. The removal of
    high spatial frequencies will reduce noise by smoothing the movie images.
 3. Motion correction. The removal of motion artifacts will help ensure that the spatial
    location of cells identified by CNMFe is confined to their precise positions as
@@ -123,7 +123,7 @@ Note that the default values may not be optimal for all scenarios and should be 
 ## Tuning Parameters to Optimize Performance
 To learn more about the effect of each parameter on the algorithm or to determine the best course of action
 for fine-tuning parameters based on the results obtained by the algorithm, please consult our documentation
-on Inscopix CNMFe Parameters [here](docs/parameter_tuning.md).
+on Inscopix-CNMFe Parameters [here](docs/parameter_tuning.md).
 
 ## Contribute to Inscopix CNMFe
 For those interested in contributing to this project, please consult our documentation for developers [here](docs/developers_guide.md).
