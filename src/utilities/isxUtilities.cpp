@@ -1,8 +1,12 @@
 #include "isxUtilities.h"
 #include <sys/stat.h>
-#include <unistd.h>
 #include <string>
 
+#ifdef _WIN32
+#include <direct.h>  // Windows
+#else
+#include <unistd.h>  // Mac & Linux
+#endif
 
 namespace isx
 {
@@ -57,7 +61,14 @@ namespace isx
 
     bool makeDirectory(const std::string & path)
     {
-        if (mkdir(path.c_str(), 0777) == -1)
+		int status;
+		#ifdef _WIN32
+		status = mkdir(path.c_str());  // Windows
+		#else
+		status = mkdir(path.c_str(), 0777);  // Mac & Linux
+		#endif
+
+		if (status == -1)
         {
             return false;
         }
