@@ -106,20 +106,23 @@ TEST_CASE("TestingUtilitiesSaveCubeToTiffFileFloat32", "[testing-utilities]")
         46.3534714f, 87.04082964f,  3.94548177f,  3.85709232f, 35.29169532f
     };
     const isx::CubeFloat_t inputData(data, 4, 3, 5);
+    const std::string outputFilename = "test/data/tmp_movie_float32.tif";
 
-    const std::string outputFilename = "test/data/tmp_movie_float32.tif";;
-    saveCubeToTiffFile(inputData, outputFilename);
-
-    // ensure file exists
-    REQUIRE(isx::pathExists(outputFilename));
-
-    // validate content of the file
-    const isx::SpTiffMovie_t movie = std::shared_ptr<isx::TiffMovie>(new isx::TiffMovie(outputFilename));
-    for (size_t frameIndex = 0; frameIndex < movie->getNumFrames(); frameIndex++)
+    SECTION("save float 32 movie")
     {
-        isx::MatrixFloat_t frame;
-        movie->getFrame(frameIndex, frame);
-        REQUIRE(arma::approx_equal(frame, inputData.slice(frameIndex), "reldiff", 1e-5f));
+        saveCubeToTiffFile(inputData, outputFilename);
+
+        // ensure file exists
+        REQUIRE(isx::pathExists(outputFilename));
+
+        // validate content of the file
+        const isx::SpTiffMovie_t movie = std::shared_ptr<isx::TiffMovie>(new isx::TiffMovie(outputFilename));
+        for (size_t frameIndex = 0; frameIndex < movie->getNumFrames(); frameIndex++)
+        {
+            isx::MatrixFloat_t frame;
+            movie->getFrame(frameIndex, frame);
+            REQUIRE(arma::approx_equal(frame, inputData.slice(frameIndex), "reldiff", 1e-5f));
+        }        
     }
 
     // delete file
@@ -143,20 +146,23 @@ TEST_CASE("TestingUtilitiesSaveCubeToTiffFileUint16", "[testing-utilities]")
         46, 87,  3,  3, 35
     };
     const arma::Cube<uint16_t> inputData(data, 4, 3, 5);
-
     const std::string outputFilename = "test/data/tmp_movie_uint16.tif";;
-    saveCubeToTiffFile(inputData, outputFilename);
 
-    // ensure file exists
-    REQUIRE(isx::pathExists(outputFilename));
-
-    // validate content of the file
-    const isx::SpTiffMovie_t movie = std::shared_ptr<isx::TiffMovie>(new isx::TiffMovie(outputFilename));
-    for (size_t frameIndex = 0; frameIndex < movie->getNumFrames(); frameIndex++)
+    SECTION("save uint 16 movie")
     {
-        arma::Mat<uint16_t> frame;
-        movie->getFrame(frameIndex, frame);
-        REQUIRE(arma::approx_equal(frame, inputData.slice(frameIndex), "abs_tol", 0));
+        saveCubeToTiffFile(inputData, outputFilename);
+
+        // ensure file exists
+        REQUIRE(isx::pathExists(outputFilename));
+
+        // validate content of the file
+        const isx::SpTiffMovie_t movie = std::shared_ptr<isx::TiffMovie>(new isx::TiffMovie(outputFilename));
+        for (size_t frameIndex = 0; frameIndex < movie->getNumFrames(); frameIndex++)
+        {
+            arma::Mat<uint16_t> frame;
+            movie->getFrame(frameIndex, frame);
+            REQUIRE(arma::approx_equal(frame, inputData.slice(frameIndex), "abs_tol", 0));
+        }
     }
 
     // delete file

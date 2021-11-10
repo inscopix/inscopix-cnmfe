@@ -1,5 +1,4 @@
 #include "isxMemoryMappedFileUtils.h"
-#include "isxLog.h"
 
 #include "mio.hpp"
 
@@ -25,7 +24,7 @@ namespace isx
         }
         else
         {
-            ISX_LOG_ERROR("writeMemoryMappedFileMovie: No conversion specified from data type (" + std::to_string(int(dataType)) + ") to float.");
+            ISX_LOG_WARNING("writeMemoryMappedFileMovie: No conversion specified from data type (", std::to_string(int(dataType)), ") to float.");
             throw std::runtime_error("Failed memory mapped file write. No conversion specified from data type (" + std::to_string(int(dataType)) + ") to float.");
         }
 
@@ -41,7 +40,7 @@ namespace isx
         file.open(inFilename, std::ofstream::binary | std::ofstream::out);
         if (!file.good() || !file.is_open())
         {
-            ISX_LOG_ERROR("Failed to open memory mapped file for writing: ", inFilename, "\nError from standard library: ",  std::generic_category().message(errno));
+            ISX_LOG_WARNING("Failed to open memory mapped file for writing: ", inFilename, "\nError from standard library: ",  std::generic_category().message(errno));
             throw std::runtime_error("Failed to open memory mapped file for writing: " + inFilename + "\nError from standard library: " + std::generic_category().message(errno));
         }
 
@@ -76,14 +75,14 @@ namespace isx
         mmap.map(inFilename, error);
         if (error)
         {
-            ISX_LOG_ERROR("Failed to memory map movie: ", error.message());
+            ISX_LOG_WARNING("Failed to memory map movie: ", error.message());
             throw std::runtime_error("Failed to memory map movie: " + error.message());
         }
 
         size_t numBytes = (inNumRows * inNumCols * inNumFrames * sizeof(T));
         if (size_t(mmap.size()) != numBytes)
         {
-            ISX_LOG_ERROR("constructPatch: Size of file (" + std::to_string(size_t(mmap.size())) + ") does not match size of movie (" + std::to_string(numBytes) + ")");
+            ISX_LOG_WARNING("constructPatch: Size of file (" + std::to_string(size_t(mmap.size())) + ") does not match size of movie (" + std::to_string(numBytes) + ")");
             throw std::runtime_error("Failed memory mapped file read. Size of file (" + std::to_string(size_t(mmap.size())) + ") does not match size of movie (" + std::to_string(numBytes) + ")");
         }
 
@@ -142,7 +141,7 @@ namespace isx
             || std::get<2>(inRoi) >= inNumCols
             || std::get<3>(inRoi) >= inNumCols)
         {
-            ISX_LOG_ERROR("readMemoryMappedFileMovie: Roi(" + std::to_string(std::get<0>(inRoi)) + ", " + std::to_string(std::get<1>(inRoi)) + ", " + std::to_string(std::get<2>(inRoi)) + ", " + std::to_string(std::get<3>(inRoi)) + ") out of range of input movie.");
+            ISX_LOG_WARNING("readMemoryMappedFileMovie: Roi(" + std::to_string(std::get<0>(inRoi)) + ", " + std::to_string(std::get<1>(inRoi)) + ", " + std::to_string(std::get<2>(inRoi)) + ", " + std::to_string(std::get<3>(inRoi)) + ") out of range of input movie.");
             throw std::runtime_error("Failed memory mapped file read. Roi(" + std::to_string(std::get<0>(inRoi)) + ", " + std::to_string(std::get<1>(inRoi)) + ", " + std::to_string(std::get<2>(inRoi)) + ", " + std::to_string(std::get<3>(inRoi)) + ") out of range of input movie.");
         }
 
@@ -150,7 +149,7 @@ namespace isx
         if (std::get<0>(inRoi) >= std::get<1>(inRoi)
             || std::get<2>(inRoi) >= std::get<3>(inRoi))
         {
-            ISX_LOG_ERROR("readMemoryMappedFileMovie: Roi(" + std::to_string(std::get<0>(inRoi)) + ", " + std::to_string(std::get<1>(inRoi)) + ", " + std::to_string(std::get<2>(inRoi)) + ", " + std::to_string(std::get<3>(inRoi)) + ") range is non-increasing.");
+            ISX_LOG_WARNING("readMemoryMappedFileMovie: Roi(" + std::to_string(std::get<0>(inRoi)) + ", " + std::to_string(std::get<1>(inRoi)) + ", " + std::to_string(std::get<2>(inRoi)) + ", " + std::to_string(std::get<3>(inRoi)) + ") range is non-increasing.");
             throw std::runtime_error("Failed memory mapped file read. Roi(" + std::to_string(std::get<0>(inRoi)) + ", " + std::to_string(std::get<1>(inRoi)) + ", " + std::to_string(std::get<2>(inRoi)) + ", " + std::to_string(std::get<3>(inRoi)) + ") range is non-increasing.");
         }
         
@@ -164,7 +163,7 @@ namespace isx
         }
         else
         {
-            ISX_LOG_ERROR("readMemoryMappedFileMovie: No conversion specified from data type (" + std::to_string(int(inDataType)) + ") to float.");
+            ISX_LOG_WARNING("readMemoryMappedFileMovie: No conversion specified from data type (" + std::to_string(int(inDataType)) + ") to float.");
             throw std::runtime_error("Failed memory mapped file read. No conversion specified from data type (" + std::to_string(int(inDataType)) + ") to float.");
         }
     }

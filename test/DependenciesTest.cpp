@@ -42,7 +42,11 @@ TEST_CASE("MioDependency", "[cnmfe-dependencies]")
     mmap.map(filename, error);
 
     REQUIRE(error);
-    REQUIRE(error.message() == "No such file or directory");
+    #ifdef _WIN32
+    REQUIRE(error.message() == "The system cannot find the file specified.\r\n");  // Windows
+    #else
+    REQUIRE(error.message() == "No such file or directory");  // Mac & Linux
+    #endif
 }
 
 TEST_CASE("HDF5Dependency", "[cnmfe-dependencies]")

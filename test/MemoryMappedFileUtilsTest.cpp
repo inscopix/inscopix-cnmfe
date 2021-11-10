@@ -243,14 +243,14 @@ TEST_CASE("MemoryMapMovieU16", "[cnmfe-utils]")
         saveCubeToTiffFile(cube, inputMoviePath);
     }
 
-    const isx::SpTiffMovie_t movie = std::shared_ptr<isx::TiffMovie>(new isx::TiffMovie(inputMoviePath));
     const std::string outputMemoryMapPath = "test/data/mmap.bin";
-    
-    isx::CubeFloat_t movieCube;
-    convertMovieToCube(movie, movieCube);
 
     SECTION("Full FOV")
     {
+        const isx::SpTiffMovie_t movie = std::shared_ptr<isx::TiffMovie>(new isx::TiffMovie(inputMoviePath));
+        isx::CubeFloat_t movieCube;
+        convertMovieToCube(movie, movieCube);
+
         isx::writeMemoryMappedFileMovie(movie, outputMemoryMapPath);
 
         const std::tuple<size_t, size_t, size_t, size_t> roi = std::make_tuple(0, numRows - 1, 0, numCols - 1);
@@ -262,6 +262,10 @@ TEST_CASE("MemoryMapMovieU16", "[cnmfe-utils]")
 
     SECTION("Patches")
     {
+        const isx::SpTiffMovie_t movie = std::shared_ptr<isx::TiffMovie>(new isx::TiffMovie(inputMoviePath));
+        isx::CubeFloat_t movieCube;
+        convertMovieToCube(movie, movieCube);
+
         isx::writeMemoryMappedFileMovie(movie, outputMemoryMapPath);
 
         std::vector<std::tuple<size_t,size_t,size_t,size_t>> rois = {
