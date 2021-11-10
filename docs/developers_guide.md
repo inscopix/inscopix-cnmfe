@@ -183,6 +183,7 @@ inscopix_cnmfe.run_cnmfe(
 Below is a list of common issues you may run into while setting up your development environment
 along with specific solutions to them.
 
-| Operating System | Error   | Solution       |
-| ------------- |:------------------:| :-------------:|
-| Ubuntu | No rule to make target '/lib64/libz.so' | Create a symlink in /lib64 to libz.so <br> ```sudo ln -s /lib/x86_64-linux-gnu/libz.so.1 /lib64/libz.so``` |
+| Operating System | Trigger | Error   | Solution       |
+|:-------------|:------------------|:------------------| :-------------|
+| Ubuntu | When building the C++ project | No rule to make target '/lib64/libz.so' | Create a symlink in /lib64 to libz.so <br> ```sudo ln -s /lib/x86_64-linux-gnu/libz.so.1 /lib64/libz.so``` |
+| Windows | When running `import inscopix_cnmfe` in Python | ImportError: DLL load failed while importing inscopix_cnmfe: %1 is not a valid Win32 application. | Make sure `anaconda` is part of the Python environment in which you are installing inscopix-cnmfe. <br> `conda create -n inscopix-cnmfe python=3.9 anaconda`  |
