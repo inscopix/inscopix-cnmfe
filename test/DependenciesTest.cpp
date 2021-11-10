@@ -1,9 +1,9 @@
 #include "catch.hpp"
 #include "ThreadPool.h"
+#include "mio.hpp"
 #include "H5Cpp.h"
 #include <armadillo>
 #include "opencv2/core.hpp"
-#include <QFile>
 namespace libtiff {
     // placed in its own namespace to avoid
     // type redefinition conflict with OpenCV
@@ -32,6 +32,17 @@ TEST_CASE("ThreadPoolDependency", "[cnmfe-dependencies]")
     REQUIRE(sums[0] == 1);
     REQUIRE(sums[1] == 0);
     REQUIRE(sums[2] == 14);
+}
+
+TEST_CASE("MioDependency", "[cnmfe-dependencies]")
+{
+    const std::string filename = "myfile_X9Fa1nahda8had.txt";
+    std::error_code error;
+    mio::shared_mmap_source mmap;
+    mmap.map(filename, error);
+
+    REQUIRE(error);
+    REQUIRE(error.message() == "No such file or directory");
 }
 
 TEST_CASE("HDF5Dependency", "[cnmfe-dependencies]")
@@ -77,22 +88,5 @@ TEST_CASE("LibTiffDependency", "[cnmfe-dependencies]")
     libtiff::TIFF * tiffFile = libtiff::TIFFOpen(filename.c_str(), mode);
     REQUIRE(tiffFile != nullptr);
     TIFFClose(tiffFile);
-    std::remove(filename.c_str());
-}
-
-TEST_CASE("QtDependency", "[cnmfe-dependencies]")
-{
-    const std::string filename = "dsahkafafbjcvha.bin";
-    const char * msg = "hello";
-
-    QFile file(QString::fromStdString(filename));
-    bool success = file.open(QIODevice::ReadWrite);
-    REQUIRE(success);
-
-    auto numBytes = qstrlen(msg);
-    auto bytesWritten = file.write(msg, numBytes);
-    REQUIRE(bytesWritten == numBytes);
-
-    file.close();
     std::remove(filename.c_str());
 }

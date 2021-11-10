@@ -3,8 +3,6 @@
 #include "isxCnmfeIO.h"
 #include "isxTest.h"
 
-#include <QFile>
-
 namespace {
     void convertMovieToCube(
         const isx::SpTiffMovie_t & inMovie,
@@ -210,17 +208,10 @@ TEST_CASE("MemoryMapMovieDeleteFile", "[cnmfe-utils]")
 
     // write something random to mmap file before calling mmap module
     {
-        const char * msg = "hello";
-
-        QFile file(QString::fromStdString(outputMemoryMapPath));
-        bool success = file.open(QIODevice::ReadWrite);
-        REQUIRE(success);
-
-        auto numBytes = qstrlen(msg);
-        auto bytesWritten = file.write(msg, numBytes);
-        REQUIRE(bytesWritten == numBytes);
-
+        std::ofstream file(outputMemoryMapPath);
+        file << "hello" << std::endl;
         file.close();
+        REQUIRE(isx::pathExists(outputMemoryMapPath));
     }
 
     SECTION("Full FOV")
