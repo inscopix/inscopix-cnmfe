@@ -24,8 +24,9 @@ namespace isx
         }
         else
         {
-            ISX_LOG_WARNING("writeMemoryMappedFileMovie: No conversion specified from data type (", std::to_string(int(dataType)), ") to float.");
-            throw std::runtime_error("Failed memory mapped file write. No conversion specified from data type (" + std::to_string(int(dataType)) + ") to float.");
+            const std::string errorMessage = "writeMemoryMappedFileMovie: No conversion specified from data type (" + std::to_string(int(dataType)) + ") to float.";
+            ISX_LOG_WARNING(errorMessage);
+            throw std::runtime_error(errorMessage);
         }
 
         // In case the tmp file was not removed successfully on a previous run of CNMFe
@@ -44,8 +45,9 @@ namespace isx
         file.open(inFilename, std::ofstream::binary | std::ofstream::out);
         if (!file.good() || !file.is_open())
         {
-            ISX_LOG_WARNING("Failed to open memory mapped file for writing: ", inFilename, "\nError from standard library: ",  std::generic_category().message(errno));
-            throw std::runtime_error("Failed to open memory mapped file for writing: " + inFilename + "\nError from standard library: " + std::generic_category().message(errno));
+            const std::string errorMessage = "Failed to open memory mapped file for writing: " + inFilename + "\nError from standard library: " + std::generic_category().message(errno);
+            ISX_LOG_WARNING(errorMessage);
+            throw std::runtime_error(errorMessage);
         }
 
         for (size_t frameIndex = 0; frameIndex < numFrames; frameIndex++)
@@ -79,15 +81,17 @@ namespace isx
         mmap.map(inFilename, error);
         if (error)
         {
-            ISX_LOG_WARNING("Failed to memory map movie: ", error.message());
-            throw std::runtime_error("Failed to memory map movie: " + error.message());
+            const std::string errorMessage = "Failed to memory map movie: " + error.message();
+            ISX_LOG_WARNING(errorMessage);
+            throw std::runtime_error(errorMessage);
         }
 
         size_t numBytes = (inNumRows * inNumCols * inNumFrames * sizeof(T));
         if (size_t(mmap.size()) != numBytes)
         {
-            ISX_LOG_WARNING("constructPatch: Size of file (" + std::to_string(size_t(mmap.size())) + ") does not match size of movie (" + std::to_string(numBytes) + ")");
-            throw std::runtime_error("Failed memory mapped file read. Size of file (" + std::to_string(size_t(mmap.size())) + ") does not match size of movie (" + std::to_string(numBytes) + ")");
+            const std::string errorMessage = "Failed memory mapped file read. Size of file (" + std::to_string(size_t(mmap.size())) + ") does not match size of movie (" + std::to_string(numBytes) + ")"; 
+            ISX_LOG_WARNING(errorMessage);
+            throw std::runtime_error(errorMessage);
         }
 
         size_t rowStart = std::get<0>(inRoi);
@@ -145,16 +149,18 @@ namespace isx
             || std::get<2>(inRoi) >= inNumCols
             || std::get<3>(inRoi) >= inNumCols)
         {
-            ISX_LOG_WARNING("readMemoryMappedFileMovie: Roi(" + std::to_string(std::get<0>(inRoi)) + ", " + std::to_string(std::get<1>(inRoi)) + ", " + std::to_string(std::get<2>(inRoi)) + ", " + std::to_string(std::get<3>(inRoi)) + ") out of range of input movie.");
-            throw std::runtime_error("Failed memory mapped file read. Roi(" + std::to_string(std::get<0>(inRoi)) + ", " + std::to_string(std::get<1>(inRoi)) + ", " + std::to_string(std::get<2>(inRoi)) + ", " + std::to_string(std::get<3>(inRoi)) + ") out of range of input movie.");
+            const std::string errorMessage = "Failed memory mapped file read. Roi(" + std::to_string(std::get<0>(inRoi)) + ", " + std::to_string(std::get<1>(inRoi)) + ", " + std::to_string(std::get<2>(inRoi)) + ", " + std::to_string(std::get<3>(inRoi)) + ") out of range of input movie.";
+            ISX_LOG_WARNING(errorMessage);
+            throw std::runtime_error(errorMessage);
         }
 
         // Validate ROI ranges are in increasing order
         if (std::get<0>(inRoi) >= std::get<1>(inRoi)
             || std::get<2>(inRoi) >= std::get<3>(inRoi))
         {
-            ISX_LOG_WARNING("readMemoryMappedFileMovie: Roi(" + std::to_string(std::get<0>(inRoi)) + ", " + std::to_string(std::get<1>(inRoi)) + ", " + std::to_string(std::get<2>(inRoi)) + ", " + std::to_string(std::get<3>(inRoi)) + ") range is non-increasing.");
-            throw std::runtime_error("Failed memory mapped file read. Roi(" + std::to_string(std::get<0>(inRoi)) + ", " + std::to_string(std::get<1>(inRoi)) + ", " + std::to_string(std::get<2>(inRoi)) + ", " + std::to_string(std::get<3>(inRoi)) + ") range is non-increasing.");
+            const std::string errorMessage = "Failed memory mapped file read. Roi(" + std::to_string(std::get<0>(inRoi)) + ", " + std::to_string(std::get<1>(inRoi)) + ", " + std::to_string(std::get<2>(inRoi)) + ", " + std::to_string(std::get<3>(inRoi)) + ") range is non-increasing.";
+            ISX_LOG_WARNING(errorMessage);
+            throw std::runtime_error(errorMessage);
         }
         
         if (inDataType == DataType::U16)
@@ -167,8 +173,9 @@ namespace isx
         }
         else
         {
-            ISX_LOG_WARNING("readMemoryMappedFileMovie: No conversion specified from data type (" + std::to_string(int(inDataType)) + ") to float.");
-            throw std::runtime_error("Failed memory mapped file read. No conversion specified from data type (" + std::to_string(int(inDataType)) + ") to float.");
+            const std::string errorMessage = "Failed memory mapped file read. No conversion specified from data type (" + std::to_string(int(inDataType)) + ") to float.";
+            ISX_LOG_WARNING(errorMessage);
+            throw std::runtime_error(errorMessage);
         }
     }
 } // namespace isx

@@ -43,7 +43,7 @@ TEST_CASE("MioDependency", "[cnmfe-dependencies]")
 
     REQUIRE(error);
     #ifdef _WIN32
-    REQUIRE(error.message() == "The system cannot find the file specified.\r\n");  // Windows
+    REQUIRE(error.message().rfind("The system cannot find the file specified.\r\n", 0) == 0);  // Windows
     #else
     REQUIRE(error.message() == "No such file or directory");  // Mac & Linux
     #endif
