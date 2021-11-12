@@ -13,10 +13,10 @@ TEST_CASE("TiffMovie-GetF32Frame", "[tiff-movie]")
     const arma::Col<float> data = arma::regspace<arma::Col<float>>(0, 0.123, numRows * numCols * numFrames);
     const arma::Cube<float> cube(data.memptr(), numRows, numCols, numFrames);
     saveCubeToTiffFile(cube, filename);
-    isx::TiffMovie movie(filename);
 
     SECTION("As F32 frame")
     {
+        isx::TiffMovie movie(filename);
         for (size_t i = 0; i < numFrames; i++)
         {
             arma::Mat<float> frame;
@@ -27,6 +27,7 @@ TEST_CASE("TiffMovie-GetF32Frame", "[tiff-movie]")
 
     SECTION("As U16 frame")
     {
+        isx::TiffMovie movie(filename);
         const arma::Cube<uint16_t> expectedCube = arma::conv_to<arma::Cube<uint16_t>>::from(cube);
 
         for (size_t i = 0; i < numFrames; i++)
@@ -51,10 +52,10 @@ TEST_CASE("TiffMovie-GetU16Frame", "[tiff-movie]")
     const arma::Col<uint16_t> data = arma::regspace<arma::Col<uint16_t>>(0, 1, numRows * numCols * numFrames);
     const arma::Cube<uint16_t> cube(data.memptr(), numRows, numCols, numFrames);
     saveCubeToTiffFile(cube, filename);
-    isx::TiffMovie movie(filename);
 
     SECTION("As F32 frame")
     {
+        isx::TiffMovie movie(filename);
         const arma::Cube<float> expectedCube = arma::conv_to<arma::Cube<float>>::from(cube);
 
         for (size_t i = 0; i < numFrames; i++)
@@ -67,6 +68,7 @@ TEST_CASE("TiffMovie-GetU16Frame", "[tiff-movie]")
 
     SECTION("As U16 frame")
     {
+        isx::TiffMovie movie(filename);
         for (size_t i = 0; i < numFrames; i++)
         {
             arma::Mat<uint16_t> frame;

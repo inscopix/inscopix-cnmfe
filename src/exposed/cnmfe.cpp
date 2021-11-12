@@ -5,7 +5,6 @@
 #include "isxCnmfePatch.h"
 #include "isxLog.h"
 #include "json.hpp"
-#include <QDateTime>
 
 namespace isx
 {
@@ -30,7 +29,7 @@ namespace isx
     {
         using nlohmann::json;
 
-        const std::string timeStamp = QDateTime::currentDateTime().toString("yyyyMMdd-hhmmss").toStdString();
+        const std::string timeStamp = getCurrentDateTime("%Y%m%d-%H%M%S", false);
         const std::string logFileName = outputDirPath + "/" + "Inscopix_CNMFe_Log_" + timeStamp + ".txt";
         const std::string appName = "Inscopix CNMFe";
         const std::string appVersion = "1.0.0";
