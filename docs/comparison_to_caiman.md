@@ -66,9 +66,7 @@ By contrast, in CaImAn CNMF-E the dimensions of individual patches are specified
 The CNMFe algorithm outputs the spatial footprints and temporal activity of all cells identified during processing. 
 An important distinction between Inscopix-CNMFe and CaImAn CNMF-E is that the temporal traces obtained using CaImAn CNMF-E 
 are deconvolved using an autoregressive model while the traces obtained from Inscopix-CNMFe are referred to as the raw traces, 
-i.e. the traces prior to such deconvolution.
-
-The temporal traces are also scaled differently between the two implementations depending on the selected output units. 
+i.e. the traces prior to such deconvolution. The temporal traces are also scaled differently between the two implementations depending on the selected output units. 
 Two options are available in the Inscopix-CNMFe as described below.
 
 | Output Units | Description |
@@ -91,6 +89,7 @@ We then combined these two metrics into a single similarity measurement by avera
 We consider two cells to be the same if their spatiotemporal similarity is above some threshold, referring to such an event as a match. 
 Below is an example where we compared the spatiotemporal profiles of a cell identified using Inscopix-CNMFe (first row) to a cell identified using CaImAn (second row).
 
+TO BE COMPLETED: REPLACE "IDPS" WITH INSCOPIX-CNMFE
 ![Single Cell Comparison](../img/single_cell_comparison.png?raw=true "Single Cell Comparison")
 
 To adapt the spatiotemporal correlation metric to entire cell sets, we calculated the pairwise spatial similarity and the pairwise temporal similarity between all cells from the two cell sets. 
@@ -108,19 +107,51 @@ To account for the possibility that the number of cells in the two cell sets may
 
 ![ROC Curve](../img/roc_curve.png?raw=true "ROC Curve")
 
-### Comparison of Components Identified
-
-
 ## Results
 
 ## Comparison of Outputs Across Various Brain Regions
+TO BE COMPLETED
+
+### Comparison of the Components Identified
+TO BE COMPLETED
+
+### Differences Between the Cell Sets Produced by Inscopix-CNMFe and CaImAn CNMF-E
+TO BE COMPLETED
+
+### Runtime Comparison
+TO BE COMPLETED
 
 ### Consistency Comparison Across Processing Modes
+In this section we take a closer look at the consistency of the output produced by CNMFe under the different processing modes. 
+We quantify consistency using the AUC metric defined above, i.e. by comparing the cell sets produced under different processing modes. 
+Since both parallel and sequential patch modes yield the same components, we compared all-in-memory mode with parallel patch mode, which we refer to simply as patch mode.
+
+We ran CNMFe on a movie consisting of 1000 frames collected at 10 Hz, with a field of view of size 128x128 pixels. 
+As shown in the table below, both Inscopix-CNMFe and CaImAn CNMF-E's results were consistent across the different processing modes.
+
+|  | Inscopix-CNMFe | CaImAn CNMF-E |
+|:----------|:----------|:-------------|
+| Number of cells (all-in-memory mode) | 268 | 268 |
+| Number of cells (patch mode) | 262 | 261 |
+| AUC | 0.9873 | 0.9779 |
+
+TO BE COMPLETED: VALIDATE CONTENT OF THE ABOVE TABLE WITH THE LATEST VERSION OF CNMFE
+
+## Notes on Matching the Outputs from Inscopix-CNMFe and CaImAn CNMF-E
+In order for CaIman and Inscopix-CNMFe to produce comparable results, all analysis parameters must be matched as per the parameter mapping table above. 
+The parameters not listed in that table are automatically set to CaImAn’s default values. 
+CaImAn’s default processing mode is parallel patch mode, with the patch size set through the “rf” parameter. 
+The all-in-memory mode can be used by setting “rf” equal to “None”. 
+The sequential patch mode can be used when “rf” is set to a positive value by setting the “dview” parameter of the CNMF object to “None” upon instantiation. 
+In Inscopix-CNMFe, the processing mode can be specified explicitly via the input parameter `processing_mode`.
+The output units in Inscopix-CNMFe should be set to "dF" to match CaImAn’s units. 
+Note that Inscopix-CNMFe outputs raw temporal traces while CaImAn outputs denoised temporal traces.
 
 TO BE COMPLETED
 
-## Notes on Matching the Outputs from Inscopix-CNMFe and CaImAn
-
-
 ## Notes on MATLAB CNMF_E
-
+CNMFe was originally developed in MATLAB and later ported to Python. 
+Both versions are widely used despite some algorithmic differences between them. 
+Specifically, the number of cells and the magnitude of the temporal traces can differ between these two versions of CNMFe.
+Since Inscopix-CNMFe was developed based primarily on the Python implementation, the output from Inscopix-CNMFe is similar 
+to that of CaImAn and shares the same differences with the MATLAB version.
