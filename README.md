@@ -125,6 +125,11 @@ To learn more about the effect of each parameter on the algorithm or to determin
 for fine-tuning parameters based on the results obtained by the algorithm, please consult our documentation
 on Inscopix-CNMFe Parameters [here](docs/parameter_tuning.md).
 
+## Comparison of Inscopix-CNMFe and CaImAn CNMF-E
+Since our implementation of CNMF-E is based on the version offered in the [CaImAn](https://github.com/flatironinstitute/CaImAn) package,
+we have compared the performance and outputs obtained using both implementations.
+Our approach and results are presented [here](docs/comparison_to_caiman.md) along with a full parameter mapping.
+
 ## Contribute to Inscopix CNMFe
 For those interested in contributing to this project, please consult our documentation for developers [here](docs/developers_guide.md).
 
