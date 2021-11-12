@@ -140,9 +140,9 @@ TO BE COMPLETED: VALIDATE CONTENT OF THE ABOVE TABLE WITH THE LATEST VERSION OF 
 ## Notes on Matching the Outputs from Inscopix-CNMFe and CaImAn CNMF-E
 In order for CaIman and Inscopix-CNMFe to produce comparable results, all analysis parameters must be matched as per the parameter mapping table above. 
 The parameters not listed in that table are automatically set to CaImAn’s default values. 
-CaImAn’s default processing mode is parallel patch mode, with the patch size set through the “rf” parameter. 
-The all-in-memory mode can be used by setting “rf” equal to “None”. 
-The sequential patch mode can be used when “rf” is set to a positive value by setting the “dview” parameter of the CNMF object to “None” upon instantiation. 
+CaImAn’s default processing mode is parallel patch mode, with the patch size set through the "rf" parameter. 
+The all-in-memory mode can be used by setting "rf" equal to "None". 
+The sequential patch mode can be used when "rf" is set to a positive value by setting the "dview" parameter of the CNMF object to "None" upon instantiation. 
 In Inscopix-CNMFe, the processing mode can be specified explicitly via the input parameter `processing_mode`.
 The output units in Inscopix-CNMFe should be set to "dF" to match CaImAn’s units. 
 Note that Inscopix-CNMFe outputs raw temporal traces while CaImAn outputs denoised temporal traces.
