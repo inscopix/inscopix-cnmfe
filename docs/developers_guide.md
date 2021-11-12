@@ -19,8 +19,8 @@ isx-cnmfe
       ├── Intel_MKL
       ├── json
       ├── libtiff
+      ├── mio
       ├── OpenCV
-      ├── Qt
       ├── ThreadPool
       └── pybind11
 ```
@@ -38,7 +38,7 @@ pybind11 is only needed if you intend to build the Python API.
 | [hdf5](https://support.hdfgroup.org/HDF5/doc/cpplus_RM/index.html) | 1.10 |
 | [libtiff](https://libtiff.gitlab.io/libtiff/) | 4.0.8 |
 | [ThreadPool](https://github.com/progschj/ThreadPool) | 1.0 |
-| [Qt](https://www.qt.io/) | 5.8.0 |
+| [mio](https://github.com/mandreyel/mio) | commit 8c0d3c7|
 | [json](https://github.com/nlohmann/json) | 2.0.1 |
 | [Catch](https://github.com/catchorg/Catch2) | 1.4.0 |
 | [pybind11](https://github.com/pybind/pybind11) | 2.8.0 |

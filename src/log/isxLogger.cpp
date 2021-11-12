@@ -4,10 +4,7 @@
 #include <iostream>
 #include <fstream>
 #include <string>
-#include <ctime>
-#include <chrono>
-#include <iomanip>
-#include <sstream>
+
 #include <thread>
 
 namespace isx {
@@ -79,23 +76,6 @@ namespace isx {
             std::string m_appVersion;
             bool m_verbose;
     };
-
-    // get current date & time, format is YYYY-MM-DD HH:mm:ss.xxx (xxx represents milliseconds)
-    std::string currentDateTime() {
-        using namespace std::chrono;
-
-        system_clock::time_point now = system_clock::now();
-        milliseconds ms = duration_cast<milliseconds>(now.time_since_epoch()) % 1000;
-
-        time_t timer = system_clock::to_time_t(now);
-        std::ostringstream oss;
-        char timeStr[20];
-        if (std::strftime(timeStr, sizeof(timeStr), "%Y-%m-%d %H:%M:%S", std::localtime(&timer))) {
-            oss << timeStr; // HH:MM:SS
-        }
-        oss << '.' << std::setfill('0') << std::setw(3) << ms.count();
-        return oss.str();
-    }
 
     // returns the name of the operating system
     std::string getOsName()
@@ -171,7 +151,7 @@ namespace isx {
     {
         if (isInitialized())
         {
-            const std::string message = "[" + currentDateTime() + "]"
+            const std::string message = "[" + getCurrentDateTime("%Y-%m-%d %H:%M:%S") + "]"
                                       + "[" + instance()->m_pImpl->getAppName() + "]"
                                       + "[" + isx::logTypeNameMap.at(logType) + "]"
                                       + " " +  text;

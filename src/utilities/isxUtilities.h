@@ -77,6 +77,13 @@ namespace isx
     /// \return         The base name of the path.
     std::string getBaseName(const std::string & path);
 
+    // Get current date & time
+    // Format is YYYY-MM-DD HH:mm:ss.xxx (xxx represents milliseconds)
+    ///
+    /// \param  includeMilliseconds     Appends milliseconds to string
+    /// \return                         Current date time as a string
+    std::string getCurrentDateTime(const std::string & format, const bool includeMilliseconds=true);
+
 } // namespace
 
 #endif //ISX_TIFF_MOVIE
