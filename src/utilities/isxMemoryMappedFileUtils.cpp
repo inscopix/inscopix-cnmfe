@@ -36,11 +36,9 @@ namespace isx
             std::remove(inFilename.c_str());
         }
 
-        // mio provides the ability to write to memory mapped files
-        // However it requires the file size to be allocated prior to writing
-        // This is not easy to do aside from simply writing in a certain number of empty bytes
-        // and that operation has comparable performance to simply writing the whole file with the frame data
-        // So we do that instead of memory mapping the file being written to
+        // This file contains frames organized sequentially on disk that are used for memory mapping.
+        // Use std library instead of mio to write this file because mio expects the file to exist
+        // and for the size of the file to be preallocated with the number of bytes to write to the file (i.e., the total number of bytes of the movie).
         std::ofstream file;
         file.open(inFilename, std::ofstream::binary | std::ofstream::out);
         if (!file.good() || !file.is_open())
