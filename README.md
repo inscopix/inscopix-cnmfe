@@ -35,24 +35,24 @@ Once Inscopix CNMFe is installed in your Python environment, you can run CNMFe o
 import inscopix_cnmfe
 
 inscopix_cnmfe.run_cnmfe(
-	input_movie_path='test/data/movie.tif', 
-	output_dir_path='output', 
-	output_filetype=0,
-	average_cell_diameter=7,
-	min_corr=0.8,
-	min_pnr=10.0,
-	gaussian_kernel_size=0,
-	closing_kernel_size=0,
-	background_downsampling_factor=2,
-	ring_size_factor=1.4,
-	merge_threshold=0.7,
-	num_threads=4,
-	processing_mode=2,
-	patch_size=80,
-	patch_overlap=20,
-	trace_output_units=1,
+    input_movie_path='test/data/movie.tif', 
+    output_dir_path='output', 
+    output_filetype=0,
+    average_cell_diameter=7,
+    min_corr=0.8,
+    min_pnr=10.0,
+    gaussian_kernel_size=0,
+    closing_kernel_size=0,
+    background_downsampling_factor=2,
+    ring_size_factor=1.4,
+    merge_threshold=0.7,
+    num_threads=4,
+    processing_mode=2,
+    patch_size=80,
+    patch_overlap=20,
+    trace_output_units=1,
     deconvolve=0,
-	verbose=1
+    verbose=1
 )
 ```
 
