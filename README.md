@@ -51,6 +51,7 @@ inscopix_cnmfe.run_cnmfe(
 	patch_size=80,
 	patch_overlap=20,
 	trace_output_units=1,
+    deconvolve=0,
 	verbose=1
 )
 ```
@@ -85,12 +86,17 @@ The first two steps of Inscopix CNMFe aim to determine how to efficiently proces
 ## Recommended Workflow
 Prior to running Inscopix-CNMFe, we recommend applying the following operations
 to the input movie to help improve the performance of the source extraction algorithm.
-1. Spatial downsampling of the data by a factor of 2 to 4. This will help blur away
+1. Temporal downsampling of the data to 10 Hz or below. On each iteration of the algorithm,
+   temporal traces are deconvolved using an autoregressive model of order 1. Higher-frequency data
+   may not be adequately deconvolved using low-order models in noisy regimes. The current version of Inscopix-CNMFe
+   performs deconvolution using the [OASIS](https://pubmed.ncbi.nlm.nih.gov/28291787/) algorithm with an AR(1) model,
+   which is appropriate for data recorded at up to 10 Hz.
+2. Spatial downsampling of the data by a factor of 2 to 4. This will help blur away
    minor spatial fluctuations and significantly reduce CNMFe processing time.
-2. Spatial bandpass filtering with global mean subtraction. The removal of low spatial
+3. Spatial bandpass filtering with global mean subtraction. The removal of low spatial
    frequency content will help remove out-of-focus cells. The removal of
    high spatial frequencies will reduce noise by smoothing the movie images.
-3. Motion correction. The removal of motion artifacts will help ensure that the spatial
+4. Motion correction. The removal of motion artifacts will help ensure that the spatial
    location of cells identified by CNMFe is confined to their precise positions as
    opposed to the pixels visited by their respective cell body over time.
    This will in turn ensure that the temporal dynamics extracted for each cell are due to
@@ -116,6 +122,7 @@ Note that the default values may not be optimal for all scenarios and should be 
 | processing_mode | the processing mode to use to run CNMFe (0: all in memory, 1: sequential patches, 2: parallel patches) <br/><br/><ul><li>All in memory: processes the entire field of view at once.</li><li>Sequential patches: breaks the field of view into overlapping patches and processes them one at a time using the specified number of threads where parallelization is possible.</li><li>Parallel patches:  breaks the field of view into overlapping patches and processes them in parallel using a single thread for each.</li></ul>| 2 |
 | patch_size | the side length of an individual square patch of the field of view in pixels | 80 |
 | patch_overlap | the amount of overlap between adjacent patches in pixels | 20 |
+| deconvolve | specifies whether to deconvolve the final temporal traces (0: return raw traces, 1: return deconvolved traces) | 0 |
 | output_units | the units of the output temporal traces (0: dF, 1: dF over noise) <br/><br/><ul><li>dF: temporal traces on the same scale of pixel intensity as the original movie. dF is calculated as the average fluorescence activity of all pixels in a cell, scaled so that each spatial footprint has a magnitude of 1.</li><li>dF over noise: temporal traces divided by their respective estimated noise level. This can be interpreted similarly to a z-score, with the added benefit that the noise is a more robust measure of the variance in a temporal trace compared to the standard deviation.</li></ul> | 1 |
 | output_filetype | the file types into which the output will be saved (0: footprints saved to a tiff file and traces saved to a csv file, 1: output saved to a h5 file under the keys footprints and traces) | 0 |
 | output_dir_path | path to the directory where output files will be stored | output |

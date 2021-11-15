@@ -25,6 +25,7 @@ namespace isx
         const int patchSize,
         const int patchOverlap,
         const int traceOutputUnits,
+        const int deconvolve,
         const int verbose)
     {
         using nlohmann::json;
@@ -53,6 +54,7 @@ namespace isx
         params["patchSize"] = patchSize;
         params["patchOverlap"] = patchOverlap;
         params["traceOutputUnits"] = traceOutputUnits;
+        params["deconvolve"] = deconvolve;
         params["verbose"] = verbose;
         ISX_LOG_INFO("CNMFe parameters:\n" + params.dump(4));
 
@@ -93,7 +95,7 @@ namespace isx
         CubeFloat_t footprints;  // spatial footprints
         MatrixFloat_t traces;    // raw temporal traces
         patchCnmfe(movie, memoryMapPath, footprints, traces, deconvParams, initParams, spatialParams, patchParams,
-           maxNumNeurons, ringSizeFactor, mergeThreshold, numIterations, numThreads, outputType);
+           maxNumNeurons, ringSizeFactor, mergeThreshold, numIterations, numThreads, outputType, deconvolve);
 
         // save output to disk
         if (outputFiletype == 1)

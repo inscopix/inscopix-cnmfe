@@ -175,6 +175,7 @@ inscopix_cnmfe.run_cnmfe(
 	patch_size=80,
 	patch_overlap=20,
 	trace_output_units=1,
+	deconvolve=0,
 	verbose=1
 )
 ```

@@ -13,5 +13,6 @@
   "patch_overlap": 20,
   "output_units": 1,
   "output_filetype": 0,
+  "deconvolve": 0,
   "verbose": 1
 }

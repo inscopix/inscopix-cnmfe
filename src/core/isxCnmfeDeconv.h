@@ -43,6 +43,22 @@ namespace isx
         const bool inFirstOrderAR,
         std::vector<float> & outParams);
 
+    /// Compute from the raw traces the corresponding deconvolved traces and inferred spikes
+    ///
+    /// \param inRawC           Column vector containing the raw fluorescence trace
+    /// \param outC             Column vector containing the deconvolved fluorescence trace
+    /// \param outS             Discretized deconvolved neural activity (spikes)
+    /// \param outSn            Standard deviation of the noise distribution. Estimated if a negative value is provided
+    /// \param inDeconvParams   Parameters for estimating noise and autoregressive model used for deconvolution
+    /// \param inNumIterations  Number of deconvolution iteration to perform
+    void deconvolveTraces(
+        const MatrixFloat_t & inRawC,
+        MatrixFloat_t & outC,
+        MatrixFloat_t & outS,
+        ColumnFloat_t & outSn,
+        DeconvolutionParams inDeconvParams,
+        const size_t inNumIterations = 1);
+
 } // namespace isx
 
 #endif //ISX_CNMFE_DECONV_H
