@@ -115,11 +115,9 @@ std::tuple<py::array,py::array> isx_cnmfe_python(
         verbose
     );
 
-    arma::Cube<float> footprintsCube = std::get<0>(cnmfeOutput);
-    arma::Mat<float> tracesMatrix = std::get<1>(cnmfeOutput);
-    py::array footprintsArray = armaCubeToPyarray(footprintsCube);
-    py::array tracesArray = armaMatToPyarray(tracesMatrix);
-    return std::make_tuple(footprintsArray, tracesArray);
+    py::array footprints = armaCubeToPyarray(std::get<0>(cnmfeOutput));
+    py::array traces = armaMatToPyarray(std::get<1>(cnmfeOutput));
+    return std::make_tuple(footprints, traces);
 }
 
 PYBIND11_MODULE(inscopix_cnmfe, handle)
