@@ -128,7 +128,7 @@ PYBIND11_MODULE(inscopix_cnmfe, handle)
     Arguments
     ---------
     input_movie_path (str): Path to the input tiff movie file
-    output_dir_path (str): Path to output directory
+    output_dir_path (str): Path to output directory (output files not saved when given an empty string)
     output_filetype (int): Filetype to use for saving the results of CNMFe (0: .tiff for footprints & .csv for traces, 1: .h5 file with keys "footprints" and "traces")
     average_cell_diameter (int): Average diameter of a neuron in pixels
     min_corr (float): Minimum pixel correlation when searching for seed pixels
@@ -147,7 +147,7 @@ PYBIND11_MODULE(inscopix_cnmfe, handle)
     verbose (int): To enable and disable verbose mode. When enabled, progress is displayed in the console. (0: disabled, 1: enabled)
     )mydelimiter",
     py::arg("input_movie_path"),
-    py::arg("output_dir_path") = "output",
+    py::arg("output_dir_path") = "",
     py::arg("output_filetype") = 0,
     py::arg("average_cell_diameter") = 7,
     py::arg("min_corr") = 0.8,

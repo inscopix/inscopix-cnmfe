@@ -93,6 +93,10 @@ namespace isx
         const std::string & inputMoviePath,
         const std::string & outputDir)
     {
+        if (outputDir.empty())
+        {
+            return getDirName(inputMoviePath) + "/" + getBaseName(inputMoviePath) + "_tmp.bin"; // TODO _isxcnmfe_memmap.bin
+        }
         return outputDir + "/" + getBaseName(inputMoviePath) + "_tmp.bin";
     }
 
