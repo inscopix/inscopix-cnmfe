@@ -123,11 +123,7 @@ namespace isx {
         const std::string & inAppVersion,
         const bool inVerbose)
     {
-        if (!isInitialized() || isVerbose() != inVerbose)
-        {
-            s_instance.reset(new Logger(inLogFileName, inAppName, inAppVersion, inVerbose));
-        }
-
+        s_instance.reset(new Logger(inLogFileName, inAppName, inAppVersion, inVerbose));
         logSystemInfo();
     }
 
