@@ -95,9 +95,9 @@ namespace isx
     {
         if (outputDir.empty())
         {
-            return getDirName(inputMoviePath) + "/" + getBaseName(inputMoviePath) + "_tmp.bin"; // TODO _isxcnmfe_memmap.bin
+            return getDirName(inputMoviePath) + "/" + getBaseName(inputMoviePath) + "_isxcnmfe_memmap.bin";
         }
-        return outputDir + "/" + getBaseName(inputMoviePath) + "_tmp.bin";
+        return outputDir + "/" + getBaseName(inputMoviePath) + "_isxcnmfe_memmap.bin";
     }
 
     std::string getH5OutputFilename(const std::string & inputMoviePath, const std::string & outputDir)
