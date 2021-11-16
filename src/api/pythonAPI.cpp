@@ -33,8 +33,8 @@ inline py::array_t<T> construct_array(const arma::Cube<T>* data)
     auto ncols = static_cast<ssize_t>(data->n_cols);
     auto nslices = static_cast<ssize_t>(data->n_slices);
     auto arr = py::array_t<T>(
-        {nrows, ncols, nslices},                       // shape
-        {tsize, nrows * tsize, tsize * nrows * ncols}, // F-style contiguous strides
+        {nslices, nrows, ncols},                       // shape
+        {tsize * nrows * ncols, tsize, nrows * tsize}, // F-style contiguous strides
         data->memptr(),                                // data pointer
         create_dummy_capsule<arma::Cube<T>>(data)      // numpy array references this parent
     );
@@ -114,9 +114,12 @@ std::tuple<py::array,py::array> isx_cnmfe_python(
         deconvolve,
         verbose
     );
-    py::array footprints = armaCubeToPyarray(std::get<0>(cnmfeOutput));
-    py::array traces = armaMatToPyarray(std::get<1>(cnmfeOutput));
-    return std::make_tuple(footprints, traces);
+
+    arma::Cube<float> footprintsCube = std::get<0>(cnmfeOutput);
+    arma::Mat<float> tracesMatrix = std::get<1>(cnmfeOutput);
+    py::array footprintsArray = armaCubeToPyarray(footprintsCube);
+    py::array tracesArray = armaMatToPyarray(tracesMatrix);
+    return std::make_tuple(footprintsArray, tracesArray);
 }
 
 PYBIND11_MODULE(inscopix_cnmfe, handle)
