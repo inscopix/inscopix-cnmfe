@@ -5,10 +5,11 @@
 #include "isxCnmfePatch.h"
 #include "isxLog.h"
 #include "json.hpp"
+#include <tuple>
 
 namespace isx
 {
-    void cnmfe(
+    std::tuple<arma::Cube<float>,arma::Mat<float>> cnmfe(
         const std::string & inputMoviePath,
         const std::string & outputDirPath,
         const int outputFiletype,
@@ -112,5 +113,7 @@ namespace isx
             std::string tracesOutputFilename = getTracesOutputFilename(inputMoviePath, outputDirPath);
             saveTracesToCSVFile(traces, tracesOutputFilename);
         }
+
+        return std::make_tuple(footprints, traces);
     }
 }
