@@ -4,10 +4,7 @@
 #include <iostream>
 #include <fstream>
 #include <string>
-#include <ctime>
-#include <chrono>
-#include <iomanip>
-#include <sstream>
+
 #include <thread>
 
 namespace isx {
@@ -17,11 +14,16 @@ namespace isx {
     class Logger::Impl : public std::enable_shared_from_this<Logger::Impl>
     {
         public:
-            Impl(const std::string & inLogFileName, const std::string & inAppName, const std::string & inAppVersion)
+            Impl(
+                const std::string & inLogFileName,
+                const std::string & inAppName,
+                const std::string & inAppVersion,
+                const bool inVerbose)
             {
                 m_filename = inLogFileName;
                 m_appName = inAppName;
                 m_appVersion = inAppVersion;
+                m_verbose = inVerbose;
 
                 // Ensure the path exists
                 if (!isx::pathExists(isx::getDirName(m_filename)))
@@ -62,28 +64,18 @@ namespace isx {
                 return m_appVersion;
             }
 
+            const bool
+            isVerbose()
+            {
+                return m_verbose;
+            }
+
         private:
             std::string m_filename;
             std::string m_appName;
             std::string m_appVersion;
+            bool m_verbose;
     };
-
-    // get current date & time, format is YYYY-MM-DD HH:mm:ss.xxx (xxx represents milliseconds)
-    std::string currentDateTime() {
-        using namespace std::chrono;
-
-        system_clock::time_point now = system_clock::now();
-        milliseconds ms = duration_cast<milliseconds>(now.time_since_epoch()) % 1000;
-
-        time_t timer = system_clock::to_time_t(now);
-        std::ostringstream oss;
-        char timeStr[20];
-        if (std::strftime(timeStr, sizeof(timeStr), "%Y-%m-%d %H:%M:%S", std::localtime(&timer))) {
-            oss << timeStr; // HH:MM:SS
-        }
-        oss << '.' << std::setfill('0') << std::setw(3) << ms.count();
-        return oss.str();
-    }
 
     // returns the name of the operating system
     std::string getOsName()
@@ -105,9 +97,13 @@ namespace isx {
         #endif
     }
 
-    Logger::Logger(const std::string & inLogFileName, const std::string & inAppName, const std::string & inAppVersion)
+    Logger::Logger(
+        const std::string & inLogFileName,
+        const std::string & inAppName,
+        const std::string & inAppVersion,
+        const bool inVerbose)
     {
-        m_pImpl.reset(new Impl(inLogFileName, inAppName, inAppVersion));
+        m_pImpl.reset(new Impl(inLogFileName, inAppName, inAppVersion, inVerbose));
     }
 
     Logger::~Logger()
@@ -115,16 +111,20 @@ namespace isx {
     }
 
     void
-    Logger::initialize(const std::string & inLogFileName, const std::string & inAppName, const std::string & inAppVersion)
+    Logger::initialize(
+        const std::string & inLogFileName,
+        const std::string & inAppName,
+        const std::string & inAppVersion,
+        const bool inVerbose)
     {
         if(inLogFileName.empty())
         {
             return;
         }
 
-        if (!isInitialized())
+        if (!isInitialized() || isVerbose() != inVerbose)
         {
-            s_instance.reset(new Logger(inLogFileName, inAppName, inAppVersion));
+            s_instance.reset(new Logger(inLogFileName, inAppName, inAppVersion, inVerbose));
         }
 
         logSystemInfo();
@@ -151,12 +151,19 @@ namespace isx {
     {
         if (isInitialized())
         {
-            const std::string message = "[" + currentDateTime() + "]"
+            const std::string message = "[" + getCurrentDateTime("%Y-%m-%d %H:%M:%S") + "]"
                                       + "[" + instance()->m_pImpl->getAppName() + "]"
                                       + "[" + isx::logTypeNameMap.at(logType) + "]"
                                       + " " +  text;
-            std::cout << message;
-            std::cout << std::flush;
+
+            // log to console when verbose mode is enabled
+            if (instance()->isVerbose())
+            {
+                std::cout << message;
+                std::cout << std::flush;
+            }
+
+            // always log to file
             instance()->m_pImpl->log(message);
         }
     }
@@ -213,5 +220,16 @@ namespace isx {
 
         static std::string emptyString;
         return emptyString;
+    }
+
+    const bool
+    Logger::isVerbose()
+    {
+        if (isInitialized())
+        {
+            return instance()->m_pImpl->isVerbose();
+        }
+
+        return false;
     }
 }

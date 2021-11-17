@@ -50,7 +50,8 @@ inscopix_cnmfe.run_cnmfe(
 	processing_mode=2,
 	patch_size=80,
 	patch_overlap=20,
-	trace_output_units=1
+	trace_output_units=1,
+	verbose=1
 )
 ```
 
@@ -81,10 +82,24 @@ The first two steps of Inscopix-CNMFe aim to determine how to efficiently proces
 
 ![CNMFe Modules Overview](img/cnmfe_modules_overview.png?raw=true "CNMFe Modules Overview")
 
-## Description of Individual Parameters
+## Recommended Workflow
+Prior to running Inscopix-CNMFe, we recommend applying the following operations
+to the input movie to help improve the performance of the source extraction algorithm.
+1. Spatial downsampling of the data by a factor of 2 to 4. This will help blur away
+   minor spatial fluctuations and significantly reduce CNMFe processing time.
+2. Spatial bandpass filtering with global mean subtraction. The removal of low spatial
+   frequency content will help remove out-of-focus cells. The removal of
+   high spatial frequencies will reduce noise by smoothing the movie images.
+3. Motion correction. The removal of motion artifacts will help ensure that the spatial
+   location of cells identified by CNMFe is confined to their precise positions as
+   opposed to the pixels visited by their respective cell body over time.
+   This will in turn ensure that the temporal dynamics extracted for each cell are due to
+   fluctuations in the fluorescent reporter and not cellular displacements.
+
+## Algorithm Parameters
 The CNMFe parameters used in the Python package are listed below along with their respective descriptions and default values.
 All parameters are optional with the exception of the input movie file and the average cell diameter.
-Note that the default values may not be optimal for all scenarios and should be adjusted based on the results obtained.
+Note that the default values may not be optimal for all scenarios and should be adjusted based on the results obtained by the algorithm.
 
 | Parameter  | Description | Default Value |
 |:----------|:-------------|:-------------|
@@ -105,8 +120,13 @@ Note that the default values may not be optimal for all scenarios and should be 
 | output_filetype | the file types into which the output will be saved (0: footprints saved to a tiff file and traces saved to a csv file, 1: output saved to a h5 file under the keys footprints and traces) | 0 |
 | output_dir_path | path to the directory where output files will be stored | output |
 
-## Contribute to Inscopix-CNMFe
-For those interested in contributing to this project, please consult our documentation for developers [here](docs/developers.md).
+## Tuning Parameters to Optimize Performance
+To learn more about the effect of each parameter on the algorithm or to determine the best course of action
+for fine-tuning parameters based on the results obtained by the algorithm, please consult our documentation
+on Inscopix-CNMFe Parameters [here](docs/parameter_tuning.md).
+
+## Contribute to Inscopix CNMFe
+For those interested in contributing to this project, please consult our documentation for developers [here](docs/developers_guide.md).
 
 ## Project Team
 This project was led by Bruno Boivin, Nosheen Adil, and Shay Neufeld in the Inscopix Data Products & Analytics Group, with many others across the company contributing along the way.

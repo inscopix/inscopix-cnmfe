@@ -19,8 +19,8 @@ isx-cnmfe
       ├── Intel_MKL
       ├── json
       ├── libtiff
+      ├── mio
       ├── OpenCV
-      ├── Qt
       ├── ThreadPool
       └── pybind11
 ```
@@ -38,7 +38,7 @@ pybind11 is only needed if you intend to build the Python API.
 | [hdf5](https://support.hdfgroup.org/HDF5/doc/cpplus_RM/index.html) | 1.10 |
 | [libtiff](https://libtiff.gitlab.io/libtiff/) | 4.0.8 |
 | [ThreadPool](https://github.com/progschj/ThreadPool) | 1.0 |
-| [Qt](https://www.qt.io/) | 5.8.0 |
+| [mio](https://github.com/mandreyel/mio) | commit 8c0d3c7|
 | [json](https://github.com/nlohmann/json) | 2.0.1 |
 | [Catch](https://github.com/catchorg/Catch2) | 1.4.0 |
 | [pybind11](https://github.com/pybind/pybind11) | 2.8.0 |
@@ -174,7 +174,8 @@ inscopix_cnmfe.run_cnmfe(
 	processing_mode=2,
 	patch_size=80,
 	patch_overlap=20,
-	trace_output_units=1
+	trace_output_units=1,
+	verbose=1
 )
 ```
 
@@ -182,6 +183,7 @@ inscopix_cnmfe.run_cnmfe(
 Below is a list of common issues you may run into while setting up your development environment
 along with specific solutions to them.
 
-| Operating System | Error   | Solution       |
-| ------------- |:------------------:| :-------------:|
-| Ubuntu | No rule to make target '/lib64/libz.so' | Create a symlink in /lib64 to libz.so <br> ```sudo ln -s /lib/x86_64-linux-gnu/libz.so.1 /lib64/libz.so``` |
+| Operating System | Trigger | Error   | Solution       |
+|:-------------|:------------------|:------------------| :-------------|
+| Ubuntu | When building the C++ project | No rule to make target '/lib64/libz.so' | Create a symlink in /lib64 to libz.so <br> ```sudo ln -s /lib/x86_64-linux-gnu/libz.so.1 /lib64/libz.so``` |
+| Windows | When running `import inscopix_cnmfe` in Python | ImportError: DLL load failed while importing inscopix_cnmfe: %1 is not a valid Win32 application. | Make sure `anaconda` is part of the Python environment in which you are installing inscopix-cnmfe. <br> `conda create -n inscopix-cnmfe python=3.9 anaconda`  |
