@@ -5,7 +5,7 @@
 namespace py = pybind11;
 
 /// The helper functions for converting between Armadillo data structures
-/// and pybind arrays was adapted from the carma library: https://github.com/RUrlus/carma
+/// and pybind arrays were adapted from the carma library: https://github.com/RUrlus/carma
 
 // py::capsule holds a reference to a Python object (with reference counting)
 template <typename armaT>
