@@ -14,9 +14,9 @@ The Inscopix Data Products and Analytics team then reimplemented the constrained
 ## Installation & Usage
 
 ### Using Python
-Inscopix CNMFe can be installed directly into your Python environment using the commands below.
+Inscopix-CNMFe can be installed directly into your Python environment using the commands below.
 These commands assume you have pre-installed [Anaconda](https://www.anaconda.com/products/individual), which can be used to create and manage Python environments.
-Note that Inscopix CNMFe is currently available only for Python version 3.6 or higher on 64-bit machines,
+Note that Inscopix-CNMFe is currently available only for Python version 3.6 or higher on 64-bit machines,
 with the exception of Python 3.10 on Windows which isn't compatible yet.
 
 ```
@@ -30,7 +30,7 @@ Note that on Windows the environment must include the `anaconda` package, which 
 conda create -n inscopix-cnmfe python=3.9 anaconda
 ```
 
-Once Inscopix CNMFe is installed in your Python environment, you can run CNMFe on a given movie as follows:
+Once Inscopix-CNMFe is installed in your Python environment, you can run CNMFe on a given movie as follows:
 ```
 import inscopix_cnmfe
 
@@ -57,7 +57,7 @@ footprints, traces = inscopix_cnmfe.run_cnmfe(
 ```
 
 #### Example Notebook
-A demo Jupyter Notebook that runs Inscopix CNMFe on a small movie and displays spatial footprints 
+A demo Jupyter Notebook that runs Inscopix-CNMFe on a small movie and displays spatial footprints 
 and temporal traces side by side is available [here](Inscopix_CNMFe_Demo.ipynb).
 
 ### Using Docker
@@ -79,7 +79,7 @@ docker run --rm -ti \
 ## Algorithm Overview
 CNMFe is an iterative algorithm that solves a non-convex optimization problem, which consists of minimizing the difference between the input movie and the data reconstructed using the model. The process consists of making an initial estimation of the spatial location and temporal activity of cells, which we refer to as the initialization phase, and then refining this estimate over several iterations of processing. The algorithm can be broken down into distinct and reusable processing modules as depicted below. 
 
-The first two steps of Inscopix CNMFe aim to determine how to efficiently process the movie through division of labor and efficient memory management. The following 13 steps (steps 3 through 16) encompass the core functionality of CNMFe and are applied to the movie, or to spatially distinct portions of the movie for parallel processing. Finally, the results from parallel processing are combined and the components scaled based on user-specified parameters.
+The first two steps of Inscopix-CNMFe aim to determine how to efficiently process the movie through division of labor and efficient memory management. The following 13 steps (steps 3 through 16) encompass the core functionality of CNMFe and are applied to the movie, or to spatially distinct portions of the movie for parallel processing. Finally, the results from parallel processing are combined and the components scaled based on user-specified parameters.
 
 ![CNMFe Modules Overview](img/cnmfe_modules_overview.png?raw=true "CNMFe Modules Overview")
 
@@ -134,6 +134,14 @@ on Inscopix-CNMFe Parameters [here](docs/parameter_tuning.md).
 
 ## Contribute to Inscopix CNMFe
 For those interested in contributing to this project, please consult our documentation for developers [here](docs/developers_guide.md).
+
+## Project Team
+This project was led by Bruno Boivin, Nosheen Adil, and Shay Neufeld in the Inscopix Data Products & Analytics Group, with many others across the company contributing along the way.
+
+Developers: 
+- Bruno Boivin, Data Engineer
+- Nosheen Adil, Software Engineer
+- Eric Lin, Software Engineering intern
 
 ## License
 This program is free software; you can use, redistribute, and/or modify it under the terms of the GNU Affero General Public License. Note that the software is provided 'as is', without warranty of any kind. See the Affero General Public License for more details. 
