@@ -27,6 +27,7 @@ PYBIND11_MODULE(inscopix_cnmfe, handle)
     patch_size (int): Size of a single patch in pixels
     patch_overlap (int): Amount of overlap between patches in pixels
     trace_output_units (int): Output units for temporal components (0: DF, 1: noise scaled)
+    deconvolve (int): Specifies whether to deconvolve the final temporal traces (0: return raw traces, 1: return deconvolved traces)
     verbose (int): To enable and disable verbose mode. When enabled, progress is displayed in the console. (0: disabled, 1: enabled)
     )mydelimiter",
     py::arg("input_movie_path"),
@@ -45,6 +46,7 @@ PYBIND11_MODULE(inscopix_cnmfe, handle)
     py::arg("patch_size") = 80,
     py::arg("patch_overlap") = 20,
     py::arg("trace_output_units") = 1,
+    py::arg("deconvolve") = 0,
     py::arg("verbose") = 0
     );
 }
