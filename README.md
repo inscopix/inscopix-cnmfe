@@ -138,10 +138,5 @@ For those interested in contributing to this project, please consult our documen
 ## Project Team
 This project was led by Bruno Boivin, Nosheen Adil, and Shay Neufeld in the Inscopix Data Products & Analytics Group, with many others across the company contributing along the way.
 
-Developers: 
-- Bruno Boivin, Data Engineer
-- Nosheen Adil, Software Engineer
-- Eric Lin, Software Engineering intern
-
 ## License
 This program is free software; you can use, redistribute, and/or modify it under the terms of the GNU Affero General Public License. Note that the software is provided 'as is', without warranty of any kind. See the Affero General Public License for more details. 
