@@ -332,9 +332,9 @@ namespace isx
         ISX_LOG_INFO("Scaling spatiotemporal components");
         scaleSpatialTemporalComponents(outA, outTraces, outputType, inDeconvParams);
 
-        ISX_LOG_INFO("Deconvolving temporal traces");
         if (deconvolve)
         {
+            ISX_LOG_INFO("Deconvolving temporal traces");
             MatrixFloat_t outDeconvolvedTraces;
             MatrixFloat_t outS;
             ColumnFloat_t outSn;
