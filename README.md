@@ -109,7 +109,7 @@ Note that the default values may not be optimal for all scenarios and should be 
 For those interested in contributing to this project, please consult our documentation for developers [here](docs/developers.md).
 
 ## Project Team
-This project was led by Bruno Boivin, Nosheen Adil,and Shay Neufeld in the Inscopix Data Products & Analytics Group, with many others across the company contributing along the way.
+This project was led by Bruno Boivin, Nosheen Adil, and Shay Neufeld in the Inscopix Data Products & Analytics Group, with many others across the company contributing along the way.
 
 Developers: 
 - Bruno Boivin, Data Engineer
