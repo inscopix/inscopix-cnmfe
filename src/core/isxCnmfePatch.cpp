@@ -213,7 +213,7 @@ namespace isx
         const SpTiffMovie_t & inMovie,
         const std::string inMemoryMapPath,
         CubeFloat_t & outA,
-        MatrixFloat_t & outRawC,
+        MatrixFloat_t & outTraces,
         const DeconvolutionParams inDeconvParams,
         InitializationParams inInitParams,
         const SpatialParams inSpatialParams,
@@ -223,7 +223,8 @@ namespace isx
         const float mergeThresh,
         const size_t numIterations,
         const size_t numThreads,
-        const CnmfeOutputType_t outputType)
+        const CnmfeOutputType_t outputType,
+        const bool deconvolve)
     {
         ISX_LOG_INFO("Using ", cnmfeModeNameMap.at(inPatchParams.m_mode), " processing mode");
 
@@ -320,16 +321,26 @@ namespace isx
 
         ISX_LOG_INFO("Merging patch results");
         mergePatchResults(
-            outA, outRawC, numRows, numCols, numFrames, patchCoordinates, cnmfes,
+            outA, outTraces, numRows, numCols, numFrames, patchCoordinates, cnmfes,
             inDeconvParams, mergeThresh, numThreads, numComponents);
 
         MatrixFloat_t tmpC;
-        removeEmptyComponents(outA, outRawC, tmpC);
+        removeEmptyComponents(outA, outTraces, tmpC);
 
-        ISX_LOG_INFO(outRawC.n_rows, " components were extracted");
+        ISX_LOG_INFO(outTraces.n_rows, " components were extracted");
 
         ISX_LOG_INFO("Scaling spatiotemporal components");
-        scaleSpatialTemporalComponents(outA, outRawC, outputType, inDeconvParams);
+        scaleSpatialTemporalComponents(outA, outTraces, outputType, inDeconvParams);
+
+        if (deconvolve)
+        {
+            ISX_LOG_INFO("Deconvolving temporal traces");
+            MatrixFloat_t outDeconvolvedTraces;
+            MatrixFloat_t outS;
+            ColumnFloat_t outSn;
+            deconvolveTraces(outTraces, outDeconvolvedTraces, outS, outSn, inDeconvParams);
+            outTraces = outDeconvolvedTraces;
+        }
 
         ISX_LOG_INFO("Removing temporary binary file for memory mapping movie (file: ", inMemoryMapPath, ")");
         std::remove(inMemoryMapPath.c_str());

@@ -22,11 +22,12 @@ namespace isx
     /// \param numIterations        Number of iterations for neuron initialization
     /// \param numThreads           Number of threads to use when parallelization is possible
     /// \param outputType           Output type for spatial and temporal components
+    /// \param deconvolve           If true final traces are deconvolved, otherwise raw traces are returned
     void patchCnmfe(
         const SpTiffMovie_t & inMovie,
         const std::string inMemoryMapPath,
         CubeFloat_t & outA,
-        MatrixFloat_t & outRawC,
+        MatrixFloat_t & outTraces,
         const DeconvolutionParams inDeconvParams,
         InitializationParams inInitParams,
         const SpatialParams inSpatialParams,
@@ -36,7 +37,8 @@ namespace isx
         const float mergeThresh,
         const size_t numIterations,
         const size_t numThreads,
-        const CnmfeOutputType_t traceOutputType = CnmfeOutputType_t::NON_NORMALIZED);
+        const CnmfeOutputType_t traceOutputType = CnmfeOutputType_t::NON_NORMALIZED,
+        const bool deconvolve=false);
 }
 
 #endif //ISX_CNMFE_PATCH_H

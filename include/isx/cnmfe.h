@@ -24,6 +24,7 @@ namespace isx
     /// \param patchOverlap                 Amount of overlap between patches in pixels
     /// \param traceOutputUnits             Output units for temporal components (0: DF, 1: noise scaled)
     /// \param verbose                      If true progress will be displayed in the console (0: false, 1: true)
+    /// \param deconvolve                   If true deconvolved traces are returned (using OASIS AR(1)), otherwise raw traces are returned (0: raw traces, 1: deconvolved traces)
     void cnmfe(
         const std::string & inputMoviePath,
         const std::string & outputDirPath = "output",
@@ -41,6 +42,7 @@ namespace isx
         const int patchSize = 80,
         const int patchOverlap = 20,
         const int traceOutputUnits = 1,
+        const int deconvolve = 0,
         const int verbose = 0);
 } // namespace isx
 

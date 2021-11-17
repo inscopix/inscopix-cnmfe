@@ -76,4 +76,64 @@ namespace isx
         }
     }
 
+    /// Helper function to convert a single raw trace into the corresponding deconvolved trace and inferred spikes
+    ///
+    /// \param inRawC           Column vector containing the raw fluorescence trace
+    /// \param outC             Column vector containing the deconvolved fluorescence trace
+    /// \param outS             Discretized deconvolved neural activity (spikes)
+    /// \param outSn            Standard deviation of the noise distribution. Estimated if a negative value is provided
+    /// \param inDeconvParams   Parameters for estimating noise and autoregressive model used for deconvolution
+    void deconvolveSingleTrace(
+        const ColumnFloat_t & inRawC,
+        ColumnFloat_t & outC,
+        ColumnFloat_t & outS,
+        float & outSn,
+        DeconvolutionParams inDeconvParams)
+    {
+        outC = inRawC;
+        outS.clear();
+        outS.copy_size(inRawC);
+        outSn = -1;
+
+        float initCaVal, baseline;
+        std::vector<float> arParams;
+        isx::constrainedFoopsi(inRawC, arParams, outSn, outC, baseline, initCaVal, outS, inDeconvParams);
+    }
+
+    void deconvolveTraces(
+        const MatrixFloat_t & inRawC,
+        MatrixFloat_t & outC,
+        MatrixFloat_t & outS,
+        ColumnFloat_t & outSn,
+        DeconvolutionParams inDeconvParams,
+        const size_t inNumIterations)
+    {
+        const size_t K = inRawC.n_rows;
+        outC = inRawC;
+
+        outS.clear();
+        outS.copy_size(inRawC);
+        outSn.set_size(inRawC.n_rows);
+
+        for (size_t i = 0; i < inNumIterations; i++)
+        {
+            for (size_t k = 0; k < K; k++)
+            {
+                isx::ColumnFloat_t c, s;
+                float ca1, b;
+                float sn = -1;
+                std::vector<float> arParams;
+                isx::ColumnFloat_t y = outC.row(k).t();
+                isx::constrainedFoopsi(y, arParams, sn, c, b, ca1, s, inDeconvParams);
+                outC.row(k) = c.t();
+                outS.row(k) = s.t();
+                outSn(k) = sn;
+
+                ColumnFloat_t tmpC, tmpS;
+                float tmpSn = -1;
+                deconvolveSingleTrace(y, tmpC, tmpS, tmpSn, inDeconvParams);
+            }
+        }
+    }
+
 } // namespace isx
