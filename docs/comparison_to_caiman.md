@@ -175,13 +175,13 @@ components identified by Inscopix-CNMFe and CaImAn CNMF-E.
 | Dataset Identifier | Brain Region | Dimensions of the field of view (in pixels) | Number of frames | Frame rate (in Hz) | Number of cells identified by Inscopix-CNMFe | Number of cells identified by CaImAn CNMFe | AUC (similarity metric) |
 |:----------|:-------------|:-------------|:-------------|:-------------|:-------------|:-------------|:-------------|
 | 1 | Prefrontal cortex | 161 x 207 | 12004 | 10 | 88 | 88 | 0.9844 |
-| 2 | Prefrontal cortex | 235 x 266 | 17995 | 10 | 235 | 237 | 0.9631 |
-| 3 | Striatum | 263 x 318 | 17996 | 10 | 608 | 613 | 0.9630 |
-| 4 | Striatum | 226 x 272 | 17995 | 10 | 516 | 542 | 0.9126 |
+| 2 | Prefrontal cortex | 235 x 266 | 17995 | 10 | 237 | 235 | 0.9631 |
+| 3 | Striatum | 263 x 318 | 17996 | 10 | 613 | 608 | 0.9630 |
+| 4 | Striatum | 226 x 272 | 17995 | 10 | 542 | 516 | 0.9126 |
 | 5 | Striatum | 128 x 128 | 1000 | 10 | 268 | 268 | 0.9843 |
 | 6 | Hippocampus | 159 x 219 | 17996 | 10 | 301 | 301 | 0.9626 |
-| 7 | Hippocampus | 220 x 261 | 17995 | 10 | 652 | 668 | 0.9589 |
-| 8 | Hippocampus | 196 x 242 | 12100 | 10 | 922 | 935 | 0.8456 |
+| 7 | Hippocampus | 220 x 261 | 17995 | 10 | 668 | 652 | 0.9589 |
+| 8 | Hippocampus | 196 x 242 | 12100 | 10 | 935 | 922 | 0.8456 |
 
 ### Components Identified Across Various Brain Regions
 TO BE COMPLETED
@@ -196,15 +196,37 @@ We then spatially expanded the data to measure the impact of the movie dimension
 Similarly, we expanded the movie temporally by concatenating copies of the same movie to measure the impact of the number of frames on processing time while keeping cell density constant. 
 This provided us with a comprehensive set of movies that we used to compare the processing time of the two CNMFe implementations.
 
-### Processing Time as a Function of the Number of Frames
-![Different Number of Frames](../img/different_num_frames.png?raw=true "Different Number of Frames")
-
-TO BE COMPLETED
-
 ### Processing Time as a Function of the Dimensions of the Field of View
 ![Different FOV Dimensions](../img/different_fov_dimensions.png?raw=true "Different FOV Dimensions")
 
-TO BE COMPLETED
+We compared the processing time of the two CNMFe implementations on datasets consisting of 100 frames with dimensions varying from 128x128 to 512x512 pixels. 
+The components identified by both algorithms were almost identical for all frame dimensions as indicated by the high AUC values.
+The minor differences reflected in the AUC values slightly under 1.0 may be due to how patches are handled in each implementation.
+While both implementations identified roughly the same components, Inscopix-CNMFe was faster to complete across all datasets as shown below.
+
+|  | 128 x 128 | 256 x 256 | 384 x 384 | 512 x 512 |
+|:----------|:-------------|:-------------|:-------------|:-------------|
+| Number of cells identified by Inscopix-CNMFe | 78 | 309 | 688 | 1208 |
+| Number of cells identified by CaImAn CNMF-E | 79 | 305 | 688 | 1217 |
+| AUC (similarity metric) | 0.9847 | 0.9571 | 0.9655 | 0.9603 |
+
+![Processing Time as a Function of FOV Dimensions](../img/processing_time_fov.png?raw=true "Processing Time as a Function of FOV Dimensions")
+
+### Processing Time as a Function of the Number of Frames
+![Different Number of Frames](../img/different_num_frames.png?raw=true "Different Number of Frames")
+
+We compared the processing time of Inscopix-CNMFe and CaImAn CNMF-E as a function of the number of frames in the input movie.
+We use a field of view of size 128 x 128 pixels and varied the number of frames from 1000 to 50000.
+While both implementations identified roughly the same components, as indicated by the high AUC values, 
+Inscopix-CNMFe was faster to complete across all datasets as shown below.
+
+|  | 1000 | 5000 | 10000 | 20000 | 30000 | 50000 |
+|:----------|:-------------|:-------------|:-------------|:-------------|:-------------|:-------------|
+| Number of cells identified by Inscopix-CNMFe | 262 | 265 | 261 | 263 | 262 | 263 |
+| Number of cells identified by CaImAn CNMF-E | 261 | 266 | 263 | 262 | 263 | 261 |
+| AUC (similarity metric) | 0.9797 | 0.9763 | 0.9846 | 0.9748 | 0.9799 | 0.9755 |
+
+![Processing Time as a Function of the Number of Frames](../img/processing_time_number_of_frames.png?raw=true "Processing Time as a Function of the Number of Frames")
 
 ## Notes on Matching the Outputs from Inscopix-CNMFe and CaImAn CNMF-E
 In order for Inscopix-CNMFe and CaImAn CNMF-E to produce comparable results, all analysis parameters must be matched as per the parameter mapping table above. 
