@@ -95,7 +95,15 @@ namespace isx
     {
         if (outputDir.empty())
         {
-            return getDirName(inputMoviePath) + "/" + getBaseName(inputMoviePath) + "_isxcnmfe_memmap.bin";
+            std::string dirName = getDirName(inputMoviePath);
+            if (dirName.empty())
+            {
+                return getBaseName(inputMoviePath) + "_isxcnmfe_memmap.bin";
+            }
+            else
+            {
+                return dirName + "/" + getBaseName(inputMoviePath) + "_isxcnmfe_memmap.bin";
+            }
         }
         return outputDir + "/" + getBaseName(inputMoviePath) + "_isxcnmfe_memmap.bin";
     }
