@@ -47,7 +47,18 @@ namespace isx
     std::string
     getDirName(const std::string & inPath)
     {
-        return inPath.substr(0, inPath.find_last_of("/\\"));
+        if (inPath.empty() || inPath == ".")
+        {
+            return "";
+        }
+
+        size_t last_slash_index = inPath.find_last_of("/\\");
+        if (last_slash_index > inPath.length())
+        {
+            return "";
+        }
+
+        return inPath.substr(0, last_slash_index);
     }
 
     void removeFiles(const std::vector<std::string> & inFilePaths)

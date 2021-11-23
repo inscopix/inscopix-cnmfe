@@ -168,3 +168,34 @@ TEST_CASE("TestingUtilitiesSaveCubeToTiffFileUint16", "[testing-utilities]")
     // delete file
     isx::removeFiles({outputFilename});
 }
+
+TEST_CASE("GetDirectoryName", "[cnmfe-io]")
+{
+    SECTION("relative path") {
+        const std::string moviePath = "/my/path/to/some/directory/movie.tiff";
+        const std::string expectedDirName = "/my/path/to/some/directory";
+        std::string actualDirName = isx::getDirName(moviePath);
+        REQUIRE(actualDirName == expectedDirName);
+    }
+
+    SECTION("current directory") {
+        const std::string moviePath = ".";
+        const std::string expectedDirName = "";
+        std::string actualDirName = isx::getDirName(moviePath);
+        REQUIRE(actualDirName == expectedDirName);
+    }
+
+    SECTION("empty string") {
+        const std::string moviePath = "";
+        const std::string expectedDirName = "";
+        std::string actualDirName = isx::getDirName(moviePath);
+        REQUIRE(actualDirName == expectedDirName);
+    }
+
+    SECTION("file in current directory") {
+        const std::string moviePath = "movie.tiff";
+        const std::string expectedDirName = "";
+        std::string actualDirName = isx::getDirName(moviePath);
+        REQUIRE(actualDirName == expectedDirName);
+    }
+}

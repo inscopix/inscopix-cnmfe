@@ -126,3 +126,33 @@ TEST_CASE("SaveCNMFeFootprintsToTiff", "[cnmfe-io]")
 
     std::remove(outputFilename.c_str());
 }
+
+TEST_CASE("GetMemoryMapFilePath", "[cnmfe-io]")
+{
+    SECTION("relative path")
+    {
+        const std::string moviePath = "/my/path/to/movie.tiff";
+        const std::string outputDir = "output";
+        const std::string expectedMemoryMapFilePath = "output/movie_isxcnmfe_memmap.bin";
+        std::string actualMemoryMapFilePath = isx::getMemoryMapPath(moviePath, outputDir);
+        REQUIRE(actualMemoryMapFilePath == expectedMemoryMapFilePath);
+    }
+
+    SECTION("no output dir specified")
+    {
+        const std::string moviePath = "/my/path/to/movie.tiff";
+        const std::string outputDir = "";
+        const std::string expectedMemoryMapFilePath = "/my/path/to/movie_isxcnmfe_memmap.bin";
+        std::string actualMemoryMapFilePath = isx::getMemoryMapPath(moviePath, outputDir);
+        REQUIRE(actualMemoryMapFilePath == expectedMemoryMapFilePath);
+    }
+
+    SECTION("movie in current directory, no output dir specified")
+    {
+        const std::string moviePath = "movie.tiff";
+        const std::string outputDir = "";
+        const std::string expectedMemoryMapFilePath = "movie_isxcnmfe_memmap.bin";
+        std::string actualMemoryMapFilePath = isx::getMemoryMapPath(moviePath, outputDir);
+        REQUIRE(actualMemoryMapFilePath == expectedMemoryMapFilePath);
+    }
+}
