@@ -129,7 +129,7 @@ setup(name='inscopix-cnmfe',
       author='Inscopix, Inc.',
       author_email="support@inscopix.com",
       url="https://github.com/inscopix/isx-cnmfe",
-      description='Inscopix CNMFe for automated source extraction',
+      description='Inscopix CNMF-E for automated source extraction',
       classifiers=[
             'Operating System :: MacOS',
             'Operating System :: POSIX :: Linux',

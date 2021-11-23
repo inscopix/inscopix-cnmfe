@@ -122,15 +122,15 @@ std::tuple<py::array,py::array> isx_cnmfe_python(
 
 PYBIND11_MODULE(inscopix_cnmfe, handle)
 {
-    handle.doc() = "Inscopix CNMFe for automated source extraction";
+    handle.doc() = "Inscopix CNMF-E for automated source extraction";
     handle.def("run_cnmfe", &isx_cnmfe_python, R"mydelimiter(
-    Run the CNMFe cell identification algorithm on a movie
+    Run the CNMF-E cell identification algorithm on a movie
 
     Arguments
     ---------
     input_movie_path (str): Path to the input tiff movie file
     output_dir_path (str): Path to output directory (output files not saved when given an empty string)
-    output_filetype (int): Filetype to use for saving the results of CNMFe (0: .tiff for footprints & .csv for traces, 1: .h5 file with keys "footprints" and "traces")
+    output_filetype (int): Filetype to use for saving the results of CNMF-E (0: .tiff for footprints & .csv for traces, 1: .h5 file with keys "footprints" and "traces")
     average_cell_diameter (int): Average diameter of a neuron in pixels
     min_corr (float): Minimum pixel correlation when searching for seed pixels
     min_pnr (float): Minimum peak-to-noise ratio when searching for seed pixels

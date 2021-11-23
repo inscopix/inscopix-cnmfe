@@ -34,7 +34,7 @@ namespace isx
 
     void Cnmfe::fit(const CubeFloat_t & inY)
     {
-        ISX_LOG_INFO(m_numThreads, m_numThreads > 1 ? " threads" : " thread", " assigned for fitting CNMFe model");
+        ISX_LOG_INFO(m_numThreads, m_numThreads > 1 ? " threads" : " thread", " assigned for fitting CNMF-E model");
 
         // estimate noise in each pixel
         ISX_LOG_INFO("Estimating individual pixel noise");

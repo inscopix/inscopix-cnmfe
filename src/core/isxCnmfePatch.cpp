@@ -261,7 +261,7 @@ namespace isx
         const size_t numThreadsOverride = (inPatchParams.m_mode == CnmfeMode_t::PATCH_PARALLEL) ? 1 : numThreads;
         const bool outputFinalTraces = (inPatchParams.m_mode != CnmfeMode_t::ALL_IN_MEMORY);
 
-        ISX_LOG_INFO("Launching CNMFe workers");
+        ISX_LOG_INFO("Launching CNMF-E workers");
         size_t numComponents = 0;
         size_t numPatches = patchCoordinates.size();
         std::vector<Cnmfe> cnmfes(numPatches);
