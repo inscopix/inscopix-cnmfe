@@ -172,22 +172,50 @@ including the dimensions of the field of view, the number of frames, and the fra
 We obtained an average similarity (AUC) of 0.95 across all 8 datasets, indicating strong spatiotemporal similarity between the 
 components identified by Inscopix-CNMFe and CaImAn CNMF-E.
 
-| Dataset Identifier | Brain Region | Dimensions of the field of view (in pixels) | Number of frames | Frame rate (in Hz) | Number of cells identified by Inscopix-CNMFe | Number of cells identified by CaImAn CNMFe | AUC (similarity metric) |
-|:----------|:-------------|:-------------|:-------------|:-------------|:-------------|:-------------|:-------------|
-| 1 | Prefrontal cortex | 161 x 207 | 12004 | 10 | 88 | 88 | 0.9844 |
-| 2 | Prefrontal cortex | 235 x 266 | 17995 | 10 | 237 | 235 | 0.9631 |
-| 3 | Striatum | 263 x 318 | 17996 | 10 | 613 | 608 | 0.9630 |
-| 4 | Striatum | 226 x 272 | 17995 | 10 | 542 | 516 | 0.9126 |
-| 5 | Striatum | 128 x 128 | 1000 | 10 | 268 | 268 | 0.9843 |
-| 6 | Hippocampus | 159 x 219 | 17996 | 10 | 301 | 301 | 0.9626 |
-| 7 | Hippocampus | 220 x 261 | 17995 | 10 | 668 | 652 | 0.9589 |
-| 8 | Hippocampus | 196 x 242 | 12100 | 10 | 935 | 922 | 0.8456 |
+| Dataset Identifier | Brain Region | Dimensions of the field of view (in pixels) | Number of frames | Frame rate (in Hz) | Average cell diameter (in pixels) | Number of cells identified by Inscopix-CNMFe | Number of cells identified by CaImAn CNMFe | AUC (similarity metric) |
+|:----------|:-------------|:-------------|:-------------|:-------------|:-------------|:-------------|:-------------|:-------------|
+| 1 | Prefrontal cortex | 161 x 207 | 12004 | 10 | 15 | 88 | 88 | 0.9841 |
+| 2 | Prefrontal cortex | 235 x 266 | 17995 | 10 | 17 | 236 | 235 | 0.9630 |
+| 3 | Striatum | 263 x 318 | 17996 | 10 | 14 | 612 | 608 | 0.9619 |
+| 4 | Striatum | 226 x 272 | 17995 | 10 | 16 | 526 | 516 | 0.9628 |
+| 5 | Striatum | 128 x 128 | 1000 | 10 | 13 | 268 | 268 | 0.9824 |
+| 6 | Hippocampus | 159 x 219 | 17996 | 10 | 18 | 301 | 301 | 0.9616 |
+| 7 | Hippocampus | 220 x 261 | 17995 | 10 | 15 | 665 | 652 | 0.9621 |
+| 8 | Hippocampus | 196 x 242 | 12100 | 10 | 13 | 929 | 922 | 0.8490 |
 
 ### Components Identified Across Various Brain Regions
-TO BE COMPLETED
+To visualize these comparison results, we generated a polyptych consistening of four panels for each dataset. The first panel is a summary image of the input movie which shows the correlation of each pixel in the FOV with its 8 neighbours. The second and third panels are the cell maps of the corresponding Inscopix CNMF-E and CaImAn CNMF-E outputs generated from the input movie. The fourth panel shows an overlay of the two cell maps in order to highlight the differences in the two outputs. Inscopix CNMF-E cells are shown in orange, CaImAn CNMF-E cells are shown in orange, and overlapping areas are shown in white.
+
+**Dataset #1, Prefrontal Cortex**
+![PFC_V3_38](../img/pfc_v3_38_comparison.png?raw=true "PFC_V3_38")
+
+**Dataset #2, Prefrontal Cortex**
+![PFC_IM2](../img/pfc_im2_comparison.png?raw=true "PFC_IM2")
+
+**Dataset #3, Striatum**
+![Striatum_IM1](../img/striatum_im1_comparison.png?raw=true "Striatum_IM1")
+
+**Dataset #4, Striatum**
+![Striatum_IM2](../img/striatum_im2_comparison.png?raw=true "Striatum_IM2")
+
+**Dataset #5, Striatum**
+![sample_128x128x1000](../img/sample_128x128x1000_comparison.png?raw=true "sample_128x128x1000")
+
+**Dataset #6, Hippocampus**
+![Hippocampus_BO4](../img/hippocampus_BO3_comparison.png?raw=true "Hippocampus_BO4")
+
+**Dataset #7, Hippocampus**
+![Hippocampus_BO4](../img/hippocampus_BO4_comparison.png?raw=true "Hippocampus_BO4")
+
+**Dataset #8, Hippocampus**
+![Hippocampus_DD1](../img/hippocampus_DD1_comparison.png?raw=true "Hippocampus_DD1")
 
 ### Differences Between the Cell Sets Produced by Inscopix-CNMFe and CaImAn CNMF-E
-TO BE COMPLETED
+While the results above show strong similarity between the output produced by IDPS and CaImAn, one dataset in particular led to a lower AUC value when compared to the other datasets. We took a closer look at dataset #8 to better understand what gave rise to a slightly lower AUC value. First, it is worth noting that both cell sets have a similar number of cells, specifically 922 and 935 for CaImAn and IDPS, respectively. When we visualized the data, we found differences in the footprints produced by the two algorithms. Some spatial footprints in CaImAn were significantly larger than those obtained in IDPS. Below are some components from CaImAn showing irregularities in the footprints along with the corresponding temporal traces. These irregularities in the spatial footprint can have a dual effect on our AUC metric, first by reducing the spatial correlation with components from IDPS, and since these footprints are used internally by CNMFe to extract the temporal activity the traces will likely be noisier and thus result in lower temporal correlation with the traces from IDPS. While no such footprints were identified in IDPS, it remains clear that on this dataset both IDPS and CaImAn identified cells that would likely be filtered out when evaluating components.
+
+![Caiman differences pt1](../img/caiman_differences_pt1.png?raw=true "Caiman differences pt1")
+
+![Caiman differences pt2](../img/caiman_differences_pt2.png?raw=true "Caiman differences pt2")
 
 ### Processing Time Comparison
 We compared the processing time of Inscopix-CNMFe and CaImAn CNMF-E on movies of different dimensions and durations.
@@ -204,6 +232,7 @@ The components identified by both algorithms were almost identical for all frame
 The minor differences reflected in the AUC values slightly under 1.0 may be due to how patches are handled in each implementation.
 While both implementations identified roughly the same components, Inscopix-CNMFe was faster to complete across all datasets as shown below.
 
+TODO: fill in table
 |  | 128 x 128 | 256 x 256 | 384 x 384 | 512 x 512 |
 |:----------|:-------------|:-------------|:-------------|:-------------|
 | Number of cells identified by Inscopix-CNMFe | 78 | 309 | 688 | 1208 |
@@ -220,6 +249,7 @@ We use a field of view of size 128 x 128 pixels and varied the number of frames 
 While both implementations identified roughly the same components, as indicated by the high AUC values, 
 Inscopix-CNMFe was faster to complete across all datasets as shown below.
 
+TODO: fill in table
 |  | 1000 | 5000 | 10000 | 20000 | 30000 | 50000 |
 |:----------|:-------------|:-------------|:-------------|:-------------|:-------------|:-------------|
 | Number of cells identified by Inscopix-CNMFe | 262 | 265 | 261 | 263 | 262 | 263 |
