@@ -30,7 +30,7 @@ using the commands provided below.
 
 For Python 3.6:
 ```
-conda create -n inscopix-cnmfe python=3.9 anaconda==2020.07
+conda create -n inscopix-cnmfe python=3.6 anaconda==2020.07
 ```
 
 For Python 3.7, 3.8, 3.9
