@@ -25,16 +25,24 @@ conda activate inscopix-cnmfe
 pip install inscopix-cnmfe
 ```
 
-Note that on Windows the environment must include the `anaconda` package, which can be installed while creating the environment:
+Note that on Windows the environment must include the `anaconda` package, which can be installed while creating the environment
+using the commands provided below.
+
+For Python 3.6:
 ```
-conda create -n inscopix-cnmfe python=3.9 anaconda
+conda create -n inscopix-cnmfe python=3.6 anaconda==2020.07
+```
+
+For Python 3.7, 3.8, 3.9
+```
+conda create -n inscopix-cnmfe python=3.9 anaconda==2021.05
 ```
 
 Once Inscopix-CNMFe is installed in your Python environment, you can run CNMFe on a given movie as follows:
 ```
 import inscopix_cnmfe
 
-inscopix_cnmfe.run_cnmfe(
+footprints, traces = inscopix_cnmfe.run_cnmfe(
     input_movie_path='test/data/movie.tif', 
     output_dir_path='output', 
     output_filetype=0,
@@ -125,7 +133,7 @@ Note that the default values may not be optimal for all scenarios and should be 
 | deconvolve | specifies whether to deconvolve the final temporal traces (0: return raw traces, 1: return deconvolved traces) | 0 |
 | output_units | the units of the output temporal traces (0: dF, 1: dF over noise) <br/><br/><ul><li>dF: temporal traces on the same scale of pixel intensity as the original movie. dF is calculated as the average fluorescence activity of all pixels in a cell, scaled so that each spatial footprint has a magnitude of 1.</li><li>dF over noise: temporal traces divided by their respective estimated noise level. This can be interpreted similarly to a z-score, with the added benefit that the noise is a more robust measure of the variance in a temporal trace compared to the standard deviation.</li></ul> | 1 |
 | output_filetype | the file types into which the output will be saved (0: footprints saved to a tiff file and traces saved to a csv file, 1: output saved to a h5 file under the keys footprints and traces) | 0 |
-| output_dir_path | path to the directory where output files will be stored | output |
+| output_dir_path | path to the directory where output files will be stored (output files not saved to disk when given an empty string) | empty string |
 
 ## Tuning Parameters to Optimize Performance
 To learn more about the effect of each parameter on the algorithm or to determine the best course of action
@@ -142,11 +150,6 @@ For those interested in contributing to this project, please consult our documen
 
 ## Project Team
 This project was led by Bruno Boivin, Nosheen Adil, and Shay Neufeld in the Inscopix Data Products & Analytics Group, with many others across the company contributing along the way.
-
-Developers: 
-- Bruno Boivin, Data Engineer
-- Nosheen Adil, Software Engineer
-- Eric Lin, Software Engineering intern
 
 ## License
 This program is free software; you can use, redistribute, and/or modify it under the terms of the GNU Affero General Public License. Note that the software is provided 'as is', without warranty of any kind. See the Affero General Public License for more details. 

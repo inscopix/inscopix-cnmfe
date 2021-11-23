@@ -158,7 +158,7 @@ You are now ready to use Inscopix CNMFe using Python.
 ```
 import inscopix_cnmfe
 
-inscopix_cnmfe.run_cnmfe(
+footprints, traces = inscopix_cnmfe.run_cnmfe(
 	input_movie_path='test/data/movie.tif', 
 	output_dir_path='output', 
 	output_filetype=0,

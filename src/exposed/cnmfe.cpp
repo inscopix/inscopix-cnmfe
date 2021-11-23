@@ -5,10 +5,11 @@
 #include "isxCnmfePatch.h"
 #include "isxLog.h"
 #include "json.hpp"
+#include <tuple>
 
 namespace isx
 {
-    void cnmfe(
+    std::tuple<arma::Cube<float>,arma::Mat<float>> cnmfe(
         const std::string & inputMoviePath,
         const std::string & outputDirPath,
         const int outputFiletype,
@@ -30,8 +31,13 @@ namespace isx
     {
         using nlohmann::json;
 
+        if (!outputDirPath.empty() && !pathExists(outputDirPath))
+        {
+            makeDirectory(outputDirPath);
+        }
+
         const std::string timeStamp = getCurrentDateTime("%Y%m%d-%H%M%S", false);
-        const std::string logFileName = outputDirPath + "/" + "Inscopix_CNMFe_Log_" + timeStamp + ".txt";
+        const std::string logFileName = outputDirPath.empty() ? "" : outputDirPath + "/" + "Inscopix_CNMFe_Log_" + timeStamp + ".txt";
         const std::string appName = "Inscopix CNMFe";
         const std::string appVersion = "1.0.0";
         const bool verboseEnabled = verbose==1 ? true : false;
@@ -57,11 +63,6 @@ namespace isx
         params["deconvolve"] = deconvolve;
         params["verbose"] = verbose;
         ISX_LOG_INFO("CNMFe parameters:\n" + params.dump(4));
-
-        if (!pathExists(outputDirPath))
-        {
-            makeDirectory(outputDirPath);
-        }
 
         const SpTiffMovie_t movie = std::shared_ptr<TiffMovie>(new TiffMovie(inputMoviePath));
 
@@ -97,20 +98,25 @@ namespace isx
         patchCnmfe(movie, memoryMapPath, footprints, traces, deconvParams, initParams, spatialParams, patchParams,
            maxNumNeurons, ringSizeFactor, mergeThreshold, numIterations, numThreads, outputType, deconvolve);
 
-        // save output to disk
-        if (outputFiletype == 1)
+        // if output directory provided, save output files to disk
+        if (!outputDirPath.empty())
         {
-            std::string outputFilename = getH5OutputFilename(inputMoviePath, outputDirPath);
-            saveOutputToH5File(footprints, traces, outputFilename);
-        }
-        else
-        {
-            // default to tiff/csv if invalid output filetype is provided
-            std::string footprintsOutputFilename = getFootprintsOutputFilename(inputMoviePath, outputDirPath);
-            saveFootprintsToTiffFile(footprints, footprintsOutputFilename);
+            if (outputFiletype == 1)
+            {
+                std::string outputFilename = getH5OutputFilename(inputMoviePath, outputDirPath);
+                saveOutputToH5File(footprints, traces, outputFilename);
+            }
+            else
+            {
+                // default to tiff/csv if invalid output filetype is provided
+                std::string footprintsOutputFilename = getFootprintsOutputFilename(inputMoviePath, outputDirPath);
+                saveFootprintsToTiffFile(footprints, footprintsOutputFilename);
 
-            std::string tracesOutputFilename = getTracesOutputFilename(inputMoviePath, outputDirPath);
-            saveTracesToCSVFile(traces, tracesOutputFilename);
+                std::string tracesOutputFilename = getTracesOutputFilename(inputMoviePath, outputDirPath);
+                saveTracesToCSVFile(traces, tracesOutputFilename);
+            }
         }
+
+        return std::make_tuple(footprints, traces);
     }
 }

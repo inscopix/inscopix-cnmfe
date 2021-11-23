@@ -342,7 +342,7 @@ namespace isx
             outTraces = outDeconvolvedTraces;
         }
 
-        ISX_LOG_INFO("Removing temporary binary file for memory mapping movie (file: ", inMemoryMapPath, ")");
+        ISX_LOG_INFO("Removing temporary memory-mapped binary file (file: ", inMemoryMapPath, ")");
         std::remove(inMemoryMapPath.c_str());
     }
 }

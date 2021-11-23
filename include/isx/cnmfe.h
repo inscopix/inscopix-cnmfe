@@ -2,6 +2,8 @@
 #define ISX_CNMFE
 
 #include <string>
+#include <tuple>
+#include <armadillo>
 
 namespace isx
 {
@@ -25,7 +27,7 @@ namespace isx
     /// \param traceOutputUnits             Output units for temporal components (0: DF, 1: noise scaled)
     /// \param verbose                      If true progress will be displayed in the console (0: false, 1: true)
     /// \param deconvolve                   If true deconvolved traces are returned (using OASIS AR(1)), otherwise raw traces are returned (0: raw traces, 1: deconvolved traces)
-    void cnmfe(
+    std::tuple<arma::Cube<float>,arma::Mat<float>> cnmfe(
         const std::string & inputMoviePath,
         const std::string & outputDirPath = "output",
         const int outputFiletype = 0,
