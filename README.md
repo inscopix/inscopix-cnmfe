@@ -1,5 +1,5 @@
 # Inscopix CNMF-E
-Inscopix CNMF-E is a constrained non-negative matrix factorization (CNMF) algorithm used to perform automated source extraction from microendoscopic calcium imaging movies (the 'e' stands for endoscope). Specifically, it aims to retrieve the spatial location and temporal dynamics of neurons in a fluorescent 1-photon calcium imaging movie. 
+Inscopix CNMF-E is a constrained non-negative matrix factorization (CNMF) algorithm used to perform automated source extraction from microendoscopic calcium imaging movies (the 'E' stands for endoscope). Specifically, it aims to retrieve the spatial location and temporal dynamics of neurons in a fluorescent 1-photon calcium imaging movie. 
 
 ![ CNMF-E Workflow Example](img/inscopix_cnmfe_workflow.png?raw=true " CNMF-E Workflow Example")
 

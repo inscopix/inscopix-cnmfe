@@ -1,9 +1,9 @@
 # Comparison of Inscopix CNMF-E and CaImAn CNMF-E
 This section provides an in-depth comparison of Inscopix CNMF-E and CaImAn CNMF-E.
 Key differences in the algorithm parameters, processing modes, and output formats are first highlighted.
-We then present our approach for comparing the two implementations and present the results of such comparison
-on various datasets.
-We evaluated processing time and consistency between the outputs obtained using the two algorithms, as well as 
+We then present our approach for comparing the two implementations and the results of this comparison
+across multiple datasets obtained from distinct brain regions.
+We evaluated processing time and similarity between the outputs obtained using the two algorithms, as well as 
 how processing time is affected by the input dimensions.
 
 ## Algorithm Parameters
@@ -11,7 +11,7 @@ In this section we summarize how the Inscopix CNMF-E parameters relate to or dif
 
 ### Parameter Mapping
 The table below provides a mapping from the parameters used in Inscopix CNMF-E to the corresponding parameters in CaImAn.
-Note that some parameters are unique to Inscopix CNMF-E and relate to features not available in open-source implementations.
+Note that some parameters are unique to Inscopix CNMF-E and relate to features not available in other open-source implementations.
 This includes the trace output units and the explicit processing modes.
 
 | Name in Inscopix CNMF-E  | Name in CaImAn CNMF-E | Description | Possible Values |
@@ -32,7 +32,7 @@ This includes the trace output units and the explicit processing modes.
 | output_filetype | N/A | the file types into which the output will be saved | Integer in {0, 1} </br> <ul><li>0: footprints saved to a tiff file and traces saved to a csv file</li><li>1: output saved to a h5 file under the keys footprints and traces</li></ul> |
 
 ### Parameters Automatically Set in Inscopix CNMF-E
-Some parameters offered in CaImAn CNMF-E are automatically determined or set to fixed value in Inscopix CNMF-E as described in the table below.
+Some parameters offered in CaImAn CNMF-E are automatically determined or set to a fixed value in Inscopix CNMF-E as described in the table below.
 
 | Name in CaImAn CNMF-E  | Description | Value in Inscopix CNMF-E | Corresponding Value in CaImAn CNMF-E |
 |:----------|:-------------|:-------------|:-------------|
@@ -53,14 +53,14 @@ Some parameters offered in CaImAn CNMF-E are automatically determined or set to 
 Three processing modes are available to run CNMF-E: all in memory, sequential patches, parallel patches. 
 The chosen processing mode determines the amount of computing resources that will be used by the algorithm and how work will be divided over such resources. 
 In CaImAn CNMF-E, the processing mode is inferred based on user-specified parameters including the patch size (`rf`) and the view associated with the IPython Parallel computing cluster (`dview`). 
-In Incopix CNMF-E, the processing mode and associated parallelism is explicitly specified by the user using the parameters ````
-The processing modes as implemented in Incopix CNMF-E are described and described in the table below.
+In Incopix CNMF-E, the processing mode and associated parallelism is explicitly specified by the user using the parameters `processing_mode`, `patch_size`, `patch_overlap`, and `number_of_threads`.
+The processing modes available in Incopix CNMF-E are described in the table below.
 
 | Processing Mode  | Description |
 |:----------|:-------------|
 | All in memory | The entire field of view is loaded into memory and processed at once. |
 | Sequential patches | The field of view is first split into spatially distinct areas (referred to as patches) that can partially overlap. Each patch is then processed one at a time using the specified number of threads where parallelization is possible. |
-| Parallel patches | The field of view is first split into spatially distinct areas (referred to as patches) that can partially overlap. Patches are then processed in parallel using a single thread for each. The total number of threads allocated to CNMF-E sets an upper limit on the number of patches that can be processed simultaneously. |
+| Parallel patches | The field of view is first split into spatially distinct areas (referred to as patches) that can partially overlap. Patches are then processed in parallel using a single thread for each patch. The total number of threads allocated to CNMF-E sets an upper limit on the number of patches that can be processed simultaneously. |
 
 The boundaries of individual patches are determined using a different approach in each implementation.
 In Inscopix CNMF-E, the dimensions of individual patches are fixed while the amount of overlap is allowed to vary to account for uneven movie dimensions. 
@@ -70,7 +70,8 @@ By contrast, in CaImAn CNMF-E the dimensions of individual patches are specified
 The CNMF-E algorithm outputs the spatial footprints and temporal activity of all cells identified during processing. 
 An important distinction between Inscopix CNMF-E and CaImAn CNMF-E is that the temporal traces obtained using CaImAn CNMF-E 
 are deconvolved using an autoregressive model while the default traces obtained from Inscopix CNMF-E are referred to as the raw traces, 
-i.e. the traces prior to such deconvolution. The `deconvolve` parameter controls the type of traces produced by Inscopix CNMF-E (0: raw traces, 1: deconvolved traces).
+i.e. the traces prior to such deconvolution. 
+The `deconvolve` parameter controls the type of traces produced by Inscopix CNMF-E (0: raw traces, 1: deconvolved traces), allowing our algorithm to produce the desired type of traces.
 The temporal traces are also scaled differently between the two implementations.
 CaImAn CNMF-E traces are in terms of `dF` units whereas Inscopix CNMF-E allows the user to choose between `dF` and `dF over noise`
 as described below.
@@ -84,10 +85,11 @@ as described below.
 In this section we present the approach we developed for comparing the footprints and temporal dynamics of neurons
 identified using Inscopix CNMF-E to those obtained using CaImAn CNMF-E.
 We refer to the footprints and corresponding temporal traces together as a cell set.
-We also provide a summary of the hardware and software used to process the data, including the analysis parameters used for each dataset.
+We also provide a summary of the hardware and software used to process the data, 
+as well as the full list of analysis parameters used to process each dataset.
 
 ### Cell Set Comparison
-In order to compare the outputs from Inscopix CNMF-E to those obtained from CaImAn, we first defined a metric to quantify the similarity between two cell sets.
+In order to compare the outputs from Inscopix CNMF-E to those obtained from CaImAn CNMF-E, we first defined a metric to quantify the similarity between two cell sets.
 The concept is best explained by first comparing one cell to another. 
 A cell is defined by its spatial footprint (2D matrix) and its temporal activity (1D vector). 
 Accordingly, two cells can be compared by measuring the similarity between their spatial footprints and the similarity between their temporal traces. 
@@ -95,6 +97,7 @@ We evaluated spatial similarity by computing the normalized cross-correlation of
 We then combined these two metrics into a single similarity measurement by averaging them, giving equal weight to the spatial and temporal components. 
 Under this approach, we consider two cells to be the same if their spatiotemporal similarity is above some threshold, referring to such an event as a match. 
 Below is an example where we compared the spatiotemporal profiles of a cell identified using Inscopix CNMF-E (first row) to a cell identified using CaImAn (second row).
+The corresponding equation is shown underneath the figure.
 
 ![Single Cell Comparison](../img/single_cell_comparison.png?raw=true "Single Cell Comparison")
 
@@ -103,7 +106,8 @@ Below is an example where we compared the spatiotemporal profiles of a cell iden
 To adapt the spatiotemporal correlation metric to entire cell sets, we calculated the pairwise spatial similarity and the pairwise temporal similarity between all cells from the two cell sets. 
 From these matrices, we identified for each cell in the first cell set the cell from the second cell set with which it had the maximum spatial correlation. 
 We then employed a greedy approach to compare and match cells starting from the pair with the highest spatial correlation. 
-We computed the spatiotemporal correlation for each such pair of cells, i.e. one cell from CaImAn and the cell from Inscopix CNMF-E with which it had the maximum spatial correlation.
+We computed the spatiotemporal correlation for each such pair of cells, 
+i.e. one cell from CaImAn CNMF-E and the corresponding cell from Inscopix CNMF-E for which spatial correlation is maximized.
 We called two cells a match (i.e. considered to be the same) if their spatiotemporal correlation was above a given threshold.
 
 Rather than arbitrarily choosing a matching threshold, we varied the threshold from 0 to 1 and computed the proportion of cells matched at each value. 
@@ -126,11 +130,10 @@ All experiments were conducted on a laptop with the following specifications:
 
 ### Data Preprocessing
 All datasets were downsampled both spatially and temporally by a factor of 2, bandpass filtered, and motion corrected prior to cell identification.
-These operations were applied using [Inscopix Data Processing Software](https://www.inscopix.com/software-analysis#software_idps) (version 1.6.0).
+These operations were applied using [Inscopix Data Processing Software](https://www.inscopix.com/software-analysis#software_idps) (version 1.6.0) with default parameters.
 
 ### Analysis Parameters
 The CNMF-E parameters used for processing the data are listed below for each cell set.
-We used the same analysis parameters for both Inscopix CNMF-E and CaImAn CNMF-E.
 We used the same analysis parameters for both Inscopix CNMF-E and CaImAn CNMF-E.
 
 | Parameter (as defined in Inscopix CNMF-E) | Value |
@@ -162,13 +165,22 @@ The average cell diameter was specified for each dataset based on the average of
 | 7 | Hippocampus | 15 |
 | 8 | Hippocampus | 13 |
 
+### Notes on Matching the Outputs from Inscopix CNMF-E and CaImAn CNMF-E
+In order for Inscopix CNMF-E and CaImAn CNMF-E to produce comparable results, all analysis parameters must be matched as per the parameter mapping table above.
+The parameters not listed in that table are automatically set to CaImAn’s default values.
+CaImAn's default processing mode is parallel patch mode, with the patch size set through the `rf` parameter.
+The all-in-memory mode can be used by setting `rf` equal to `None`.
+The sequential patch mode is used when `rf` is set to a positive value by setting the `dview` parameter of the CNMF object to `None` upon instantiation.
+In Inscopix CNMF-E, the processing mode can be specified explicitly via the input parameter `processing_mode`.
+The output units in Inscopix CNMF-E should be set to `dF` to match CaImAn’s units.
+
 ## Results
 Using the methodology described above for comparing cell sets, we compared the components identified by Inscopix CNMF-E
 to those obtained from CaImAn CNMF-E on 8 datasets collected across various brain regions including the prefrontal cortex, striatum, and hippocampus.
 
 ### Overview
 An overview of the results is presented in the table below along with additional information about each dataset,
-including the dimensions of the field of view, the number of frames, and the frame rate of the movie.
+including the dimensions of the field of view, the number of frames, and the frame rate.
 We obtained an average similarity (AUC) of 0.95 across all 8 datasets, indicating strong spatiotemporal similarity between the 
 components identified by Inscopix CNMF-E and CaImAn CNMF-E.
 
@@ -184,7 +196,13 @@ components identified by Inscopix CNMF-E and CaImAn CNMF-E.
 | 8 | Hippocampus | 196 x 242 | 12100 | 10 | 13 | 929 | 922 | 0.8490 |
 
 ### Components Identified Across Various Brain Regions
-To visualize these comparison results, we generated a polyptych consistening of four panels for each dataset. The first panel is a summary image of the input movie which shows the correlation of each pixel in the FOV with its 8 neighbours. The second and third panels are the cell maps of the corresponding Inscopix CNMF-E and CaImAn CNMF-E outputs generated from the input movie. The fourth panel shows an overlay of the two cell maps in order to highlight the differences in the two outputs. Inscopix CNMF-E cells are shown in orange, CaImAn CNMF-E cells are shown in orange, and overlapping areas are shown in white.
+To visualize these comparison results, we generated a polyptych consisting of four panels for each dataset. 
+Starting from the left, the first panel is a summary image of the input movie which shows the correlation of each pixel with its 8 immediate neighbours.
+This image is referred to as the local correlation image and represents an important part of the neuron initialization algorithm used in CNMF-E.
+The second and third panels are the cell maps of the corresponding Inscopix CNMF-E and CaImAn CNMF-E outputs, respectively.
+A cell map consists of an overlay of all footprints contained in a given cell set.
+The fourth panel shows an overlay of the two cell maps, highlighting similarities and differences between the outputs of the two CNMF-E implementations. 
+Inscopix CNMF-E cells are shown in blue, CaImAn CNMF-E cells are shown in orange, and overlapping areas are shown in white.
 
 **Dataset #1, Prefrontal Cortex**
 ![PFC_V3_38](../img/pfc_v3_38_comparison.png?raw=true "PFC_V3_38")
@@ -211,11 +229,20 @@ To visualize these comparison results, we generated a polyptych consistening of 
 ![Hippocampus_DD1](../img/hippocampus_dd1_comparison.png?raw=true "Hippocampus_DD1")
 
 ### Differences Between the Cell Sets Produced by Inscopix CNMF-E and CaImAn CNMF-E
-While the results above show strong similarity between the output produced by IDPS and CaImAn, one dataset in particular led to a lower AUC value when compared to the other datasets. We took a closer look at dataset #8 to better understand what gave rise to a slightly lower AUC value. First, it is worth noting that both cell sets have a similar number of cells, specifically 922 and 935 for CaImAn and IDPS, respectively. When we visualized the data, we found differences in the footprints produced by the two algorithms. Some spatial footprints in CaImAn were significantly larger than those obtained in IDPS. Below are some components from CaImAn showing irregularities in the footprints along with the corresponding temporal traces. These irregularities in the spatial footprint can have a dual effect on our AUC metric, first by reducing the spatial correlation with components from IDPS, and since these footprints are used internally by CNMF-E to extract the temporal activity the traces will likely be noisier and thus result in lower temporal correlation with the traces from IDPS. While no such footprints were identified in IDPS, it remains clear that on this dataset both IDPS and CaImAn identified cells that would likely be filtered out when evaluating components.
+While the results above show strong similarity between the output produced by Inscopix CNMF-E and CaImAn CNMF-E, 
+one dataset in particular (Dataset #8, Hippocampus) led to a lower AUC value when compared to the other datasets.
+It is worth noting that despite the slightly lower AUC value, both cell sets have a similar number of cells, specifically 929 and 922 for Inscopix CNMF-E and CaImAn CNMF-E, respectively.
+Upon closer inspection of the individual components, we found differences in the footprints produced by the two algorithms. 
+Specifically, we observed that some spatial footprints in CaImAn CNMF-E were significantly larger than those obtained in Inscopix CNMF-E. 
+Below are some components from CaImAn CNMF-E showing irregularities in the footprints along with the corresponding temporal traces. 
+These irregularities in the spatial footprints can have a dual effect on our AUC metric, 
+first by reducing the spatial correlation with components from Inscopix CNMF-E,
+and since these footprints are used internally by CNMF-E to extract the corresponding temporal activity the traces will likely be noisier and thus result in lower temporal 
+correlation with the traces from Inscopix CNMF-E. 
+While no such footprints were identified in Inscopix CNMF-E, both Inscopix CNMF-E and CaImAn CNMF-E 
+identified cells that would likely be filtered out when evaluating the quality of individual components.
 
-![Caiman differences pt1](../img/caiman_differences_pt1.png?raw=true "Caiman differences pt1")
-
-![Caiman differences pt2](../img/caiman_differences_pt2.png?raw=true "Caiman differences pt2")
+![CaImAn Irregular Components](../img/caiman_irregular_components.png?raw=true "CaImAn Irregular Components")
 
 ### Processing Time Comparison
 We compared the processing time of Inscopix CNMF-E and CaImAn CNMF-E on movies of different dimensions and durations.
@@ -244,7 +271,7 @@ While both implementations identified roughly the same components, Inscopix CNMF
 ![Different Number of Frames](../img/different_num_frames.png?raw=true "Different Number of Frames")
 
 We compared the processing time of Inscopix CNMF-E and CaImAn CNMF-E as a function of the number of frames in the input movie.
-We use a field of view of size 128 x 128 pixels and varied the number of frames from 1000 to 50000.
+We used a field of view of size 128 x 128 pixels and varied the number of frames from 1000 to 50000.
 While both implementations identified roughly the same components, as indicated by the high AUC values, 
 Inscopix CNMF-E was faster to complete across all datasets as shown below.
 
@@ -255,12 +282,3 @@ Inscopix CNMF-E was faster to complete across all datasets as shown below.
 | AUC (similarity metric) | 0.9797 | 0.9763 | 0.9846 | 0.9748 | 0.9799 | 0.9755 |
 
 ![Processing Time as a Function of the Number of Frames](../img/processing_time_number_of_frames.png?raw=true "Processing Time as a Function of the Number of Frames")
-
-## Notes on Matching the Outputs from Inscopix CNMF-E and CaImAn CNMF-E
-In order for Inscopix CNMF-E and CaImAn CNMF-E to produce comparable results, all analysis parameters must be matched as per the parameter mapping table above. 
-The parameters not listed in that table are automatically set to CaImAn’s default values. 
-CaImAn's default processing mode is parallel patch mode, with the patch size set through the `rf` parameter. 
-The all-in-memory mode can be used by setting `rf` equal to `None`. 
-The sequential patch mode is used when `rf` is set to a positive value by setting the `dview` parameter of the CNMF object to `None` upon instantiation. 
-In Inscopix CNMF-E, the processing mode can be specified explicitly via the input parameter `processing_mode`.
-The output units in Inscopix CNMF-E should be set to `dF` to match CaImAn’s units.
