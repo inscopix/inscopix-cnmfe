@@ -115,6 +115,8 @@ This process generates a curve that shows the effect of varying the matching thr
 For near-identical cell sets, we would expect that even when using strict (high) threshold values the majority of cells would be matched. 
 To evaluate the overall similarity of the two cell sets across all possible thresholds, we computed the area under the curve by integrating it using the trapezoidal composite rule, 
 a concept analogous to the measurement of the area under the receiver operating characteristic (ROC) curve.
+The proportion of cells matched were normalized to the number of cells identified by CaImAn CNMF-E to better determine if our implementation
+could at least identify the same cells.
 
 ![ROC Curve](../img/roc_curve.png?raw=true "ROC Curve")
 
@@ -131,6 +133,21 @@ All experiments were conducted on a laptop with the following specifications:
 ### Data Preprocessing
 All datasets were downsampled both spatially and temporally by a factor of 2, bandpass filtered, and motion corrected prior to cell identification.
 These operations were applied using [Inscopix Data Processing Software](https://www.inscopix.com/software-analysis#software_idps) (version 1.6.0) with default parameters.
+
+The following version of CaImAn CNMF-E was used to process the data.
+
+| Repository | [https://github.com/flatironinstitute/CaImAn](https://github.com/flatironinstitute/CaImAn) |
+|:----------|:-------------|
+| Commit | 1a8a2f080135b0b683e23a8f9fe2ed6e6c97c8ef |
+| Date | Saturday June 13 10:11:42 2020 |
+
+The changes described below were applied to the CaImAn CNMF-E codebase.
+
+| Files | Changes |
+|:----------|:-------------|
+| <ul><li>caiman/source_extraction/cnmf/deconvolution.py</li><li>caiman/source_extraction/cnmf/params.py</li></ul> | Replace the ECOS solver for SCS across the board. |
+| <ul><li>caiman/source_extraction/cnmf/deconvolution.py</li><li>caiman/source_extraction/cnmf/initialization.py</li></ul> | Update the function `GetSn` to estimate noise using a Fast Fourier Transform approach (`get_noise_fft`) as opposed to Welch's method (`get_noise_welch`). |
+| caiman/source_extraction/cnmf/spatial.py | In the function `regression_ipyparallel` of the LassoLars model, set the `positive` parameter to False. |
 
 ### Analysis Parameters
 The CNMF-E parameters used for processing the data are listed below for each cell set.
@@ -167,12 +184,14 @@ The average cell diameter was specified for each dataset based on the average of
 
 ### Notes on Matching the Outputs from Inscopix CNMF-E and CaImAn CNMF-E
 In order for Inscopix CNMF-E and CaImAn CNMF-E to produce comparable results, all analysis parameters must be matched as per the parameter mapping table above.
-The parameters not listed in that table are automatically set to CaImAn’s default values.
+The parameters not listed in that table are automatically set to CaImAn's default values.
 CaImAn's default processing mode is parallel patch mode, with the patch size set through the `rf` parameter.
 The all-in-memory mode can be used by setting `rf` equal to `None`.
 The sequential patch mode is used when `rf` is set to a positive value by setting the `dview` parameter of the CNMF object to `None` upon instantiation.
 In Inscopix CNMF-E, the processing mode can be specified explicitly via the input parameter `processing_mode`.
 The output units in Inscopix CNMF-E should be set to `dF` to match CaImAn’s units.
+Note that the average cell diameter specified in Inscopix CNMF-E is half the diameter specified in CaImAn CNMF-E in order to match actual cell dimensions in pixels.
+This difference can be addressed by using even numbers or by hardcoding the odd cell diameters internally in Inscopix CNMF-E.
 
 ## Results
 Using the methodology described above for comparing cell sets, we compared the components identified by Inscopix CNMF-E
@@ -194,6 +213,9 @@ components identified by Inscopix CNMF-E and CaImAn CNMF-E.
 | 6 | Hippocampus | 159 x 219 | 17996 | 10 | 18 | 301 | 301 | 0.9616 |
 | 7 | Hippocampus | 220 x 261 | 17995 | 10 | 15 | 665 | 652 | 0.9621 |
 | 8 | Hippocampus | 196 x 242 | 12100 | 10 | 13 | 929 | 922 | 0.8490 |
+
+The average cell diameters specified above were used in CaImAn CNMF-E and hardcoded internally in Inscopix CNMF-E to ensure identical values
+were used during processing.
 
 ### Components Identified Across Various Brain Regions
 To visualize these comparison results, we generated a polyptych consisting of four panels for each dataset. 

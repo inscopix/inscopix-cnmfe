@@ -28,12 +28,12 @@ pip install inscopix-cnmfe
 Note that on Windows the environment must include the `anaconda` package, which can be installed while creating the environment
 using the commands provided below.
 
-For Python 3.6:
+For Python 3.6 on Windows:
 ```
 conda create -n inscopix-cnmfe python=3.6 anaconda==2020.07
 ```
 
-For Python 3.7, 3.8, 3.9
+For Python 3.7, 3.8, 3.9 on Windows:
 ```
 conda create -n inscopix-cnmfe python=3.9 anaconda==2021.05
 ```
