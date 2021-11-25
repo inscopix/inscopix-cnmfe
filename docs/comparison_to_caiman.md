@@ -182,6 +182,9 @@ The average cell diameter was specified for each dataset based on the average of
 | 7 | Hippocampus | 15 |
 | 8 | Hippocampus | 13 |
 
+The average cell diameters specified above were used in CaImAn CNMF-E and hardcoded internally in Inscopix CNMF-E to ensure identical values
+were used during processing.
+
 ### Notes on Matching the Outputs from Inscopix CNMF-E and CaImAn CNMF-E
 In order for Inscopix CNMF-E and CaImAn CNMF-E to produce comparable results, all analysis parameters must be matched as per the parameter mapping table above.
 The parameters not listed in that table are automatically set to CaImAn's default values.
@@ -203,19 +206,17 @@ including the dimensions of the field of view, the number of frames, and the fra
 We obtained an average similarity (AUC) of 0.95 across all 8 datasets, indicating strong spatiotemporal similarity between the 
 components identified by Inscopix CNMF-E and CaImAn CNMF-E.
 
-| Dataset Identifier | Brain Region | Dimensions of the field of view (in pixels) | Number of frames | Frame rate (in Hz) | Average cell diameter (in pixels) | Number of cells identified by Inscopix CNMF-E | Number of cells identified by CaImAn CNMF-E | AUC (similarity metric) |
-|:----------|:-------------|:-------------|:-------------|:-------------|:-------------|:-------------|:-------------|:-------------|
-| 1 | Prefrontal cortex | 161 x 207 | 12004 | 10 | 15 | 88 | 88 | 0.9841 |
-| 2 | Prefrontal cortex | 235 x 266 | 17995 | 10 | 17 | 236 | 235 | 0.9630 |
-| 3 | Striatum | 263 x 318 | 17996 | 10 | 14 | 612 | 608 | 0.9619 |
-| 4 | Striatum | 226 x 272 | 17995 | 10 | 16 | 526 | 516 | 0.9628 |
-| 5 | Striatum | 128 x 128 | 1000 | 10 | 13 | 268 | 268 | 0.9824 |
-| 6 | Hippocampus | 159 x 219 | 17996 | 10 | 18 | 301 | 301 | 0.9616 |
-| 7 | Hippocampus | 220 x 261 | 17995 | 10 | 15 | 665 | 652 | 0.9621 |
-| 8 | Hippocampus | 196 x 242 | 12100 | 10 | 13 | 929 | 922 | 0.8490 |
+| Dataset Identifier | Brain Region | Dimensions of the field of view (in pixels) | Number of frames | Frame rate (in Hz) | Number of cells identified by Inscopix CNMF-E | Number of cells identified by CaImAn CNMF-E | AUC (similarity metric) |
+|:----------|:-------------|:-------------|:-------------|:-------------|:-------------|:-------------|:-------------|
+| 1 | Prefrontal cortex | 161 x 207 | 12004 | 10 | 88 | 88 | 0.9841 |
+| 2 | Prefrontal cortex | 235 x 266 | 17995 | 10 | 236 | 235 | 0.9630 |
+| 3 | Striatum | 263 x 318 | 17996 | 10 | 612 | 608 | 0.9619 |
+| 4 | Striatum | 226 x 272 | 17995 | 10 | 526 | 516 | 0.9628 |
+| 5 | Striatum | 128 x 128 | 1000 | 10 | 268 | 268 | 0.9824 |
+| 6 | Hippocampus | 159 x 219 | 17996 | 10 | 301 | 301 | 0.9616 |
+| 7 | Hippocampus | 220 x 261 | 17995 | 10 | 665 | 652 | 0.9621 |
+| 8 | Hippocampus | 196 x 242 | 12100 | 10 | 929 | 922 | 0.8490 |
 
-The average cell diameters specified above were used in CaImAn CNMF-E and hardcoded internally in Inscopix CNMF-E to ensure identical values
-were used during processing.
 
 ### Components Identified Across Various Brain Regions
 To visualize these comparison results, we generated a polyptych consisting of four panels for each dataset. 
