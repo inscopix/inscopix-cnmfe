@@ -283,7 +283,7 @@ While both implementations identified roughly the same components, Inscopix CNMF
 
 |  | 128 x 128 | 256 x 256 | 384 x 384 | 512 x 512 |
 |:----------|:-------------|:-------------|:-------------|:-------------|
-| Number of cells identified by Inscopix-CNMFe | 78 | 304 | 687 | 1216 |
+| Number of cells identified by Inscopix CNMF-E | 78 | 304 | 687 | 1216 |
 | Number of cells identified by CaImAn CNMF-E | 78 | 309 | 692 | 1228 |
 | AUC (similarity metric) | 0.9945 | 0.9675 | 0.9752 | 0.9731 |
 
@@ -299,7 +299,7 @@ Inscopix CNMF-E was faster to complete across all datasets as shown below.
 
 |  | 1000 | 5000 | 10000 | 20000 | 30000 | 50000 |
 |:----------|:-------------|:-------------|:-------------|:-------------|:-------------|:-------------|
-| Number of cells identified by Inscopix-CNMFe | 261 | 266 | 263 | 262 | 263 | 261 |
+| Number of cells identified by Inscopix CNMF-E | 261 | 266 | 263 | 262 | 263 | 261 |
 | Number of cells identified by CaImAn CNMF-E | 260 | 265 | 263 | 264 | 264 | 263 |
 | AUC (similarity metric) | 0.9840 | 0.9799 | 0.9866 | 0.9736 | 0.9782 | 0.9757 |
 
