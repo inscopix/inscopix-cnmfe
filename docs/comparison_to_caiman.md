@@ -10,7 +10,7 @@ how processing time is affected by the input dimensions.
 In this section we summarize how the Inscopix CNMF-E parameters relate to or differ from those used in CaImAn CNMF-E.
 
 ### Parameter Mapping
-The table below provides a mapping from the parameters used in Inscopix CNMF-E to the corresponding parameters in CaImAn.
+The table below provides a mapping from the parameters used in Inscopix CNMF-E to the corresponding parameters in CaImAn CNMF-E.
 Note that some parameters are unique to Inscopix CNMF-E and relate to features not available in other open-source implementations.
 This includes the trace output units and the explicit processing modes.
 
@@ -104,7 +104,7 @@ The corresponding equation is shown underneath the figure.
 ![Spatiotemporal Similarity Formula](../img/spatiotemporal_similarity_formula.png?raw=true "Spatiotemporal Similarity Formula")
 
 To adapt the spatiotemporal correlation metric to entire cell sets, we calculated the pairwise spatial similarity and the pairwise temporal similarity between all cells from the two cell sets. 
-From these matrices, we identified for each cell in the first cell set the cell from the second cell set with which it had the maximum spatial correlation. 
+From these matrices, we identified for each cell in the first cell set the cell from the second cell set with which it had maximal spatial correlation. 
 We then employed a greedy approach to compare and match cells starting from the pair with the highest spatial correlation. 
 We computed the spatiotemporal correlation for each such pair of cells, 
 i.e. one cell from CaImAn CNMF-E and the corresponding cell from Inscopix CNMF-E for which spatial correlation is maximized.
@@ -152,6 +152,8 @@ The changes described below were applied to the CaImAn CNMF-E codebase.
 ### Analysis Parameters
 The CNMF-E parameters used for processing the data are listed below for each cell set.
 We used the same analysis parameters for both Inscopix CNMF-E and CaImAn CNMF-E.
+Note that for the performance benchmarks, we processed the data using parallel patch mode
+to compare the fastest implementation of each algorithm.
 
 | Parameter (as defined in Inscopix CNMF-E) | Value |
 |:----------|:-------------|
@@ -170,6 +172,8 @@ We used the same analysis parameters for both Inscopix CNMF-E and CaImAn CNMF-E.
 | output_units | dF |
 
 The average cell diameter was specified for each dataset based on the average of manual diameter measurements taken across representative neurons.
+The diameters specified below were used in CaImAn CNMF-E and hardcoded internally in Inscopix CNMF-E to ensure identical values
+were used during processing.
 
 | Dataset Identifier | Brain Region | Average Cell Diameter (in pixels) |
 |:----------|:-------------|:-------------|
@@ -181,9 +185,6 @@ The average cell diameter was specified for each dataset based on the average of
 | 6 | Hippocampus | 18 |
 | 7 | Hippocampus | 15 |
 | 8 | Hippocampus | 13 |
-
-The average cell diameters specified above were used in CaImAn CNMF-E and hardcoded internally in Inscopix CNMF-E to ensure identical values
-were used during processing.
 
 ### Notes on Matching the Outputs from Inscopix CNMF-E and CaImAn CNMF-E
 In order for Inscopix CNMF-E and CaImAn CNMF-E to produce comparable results, all analysis parameters must be matched as per the parameter mapping table above.
