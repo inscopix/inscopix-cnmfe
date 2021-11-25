@@ -37,8 +37,8 @@ namespace isx
         }
 
         const std::string timeStamp = getCurrentDateTime("%Y%m%d-%H%M%S", false);
-        const std::string logFileName = outputDirPath.empty() ? "" : outputDirPath + "/" + "Inscopix_CNMFe_Log_" + timeStamp + ".txt";
-        const std::string appName = "Inscopix CNMFe";
+        const std::string logFileName = outputDirPath.empty() ? "" : outputDirPath + "/" + "Inscopix_CNMF-E_Log_" + timeStamp + ".txt";
+        const std::string appName = "Inscopix CNMF-E";
         const std::string appVersion = "1.0.0";
         const bool verboseEnabled = verbose==1 ? true : false;
         Logger::initialize(logFileName, appName, appVersion, verboseEnabled);
@@ -62,7 +62,7 @@ namespace isx
         params["traceOutputUnits"] = traceOutputUnits;
         params["deconvolve"] = deconvolve;
         params["verbose"] = verbose;
-        ISX_LOG_INFO("CNMFe parameters:\n" + params.dump(4));
+        ISX_LOG_INFO("CNMF-E parameters:\n" + params.dump(4));
 
         const SpTiffMovie_t movie = std::shared_ptr<TiffMovie>(new TiffMovie(inputMoviePath));
 

@@ -1,22 +1,22 @@
-# Inscopix-CNMFe
-Inscopix-CNMFe is a constrained non-negative matrix factorization (CNMF) algorithm used to perform automated source extraction from microendoscopic calcium imaging movies (the 'e' stands for endoscope). Specifically, it aims to retrieve the spatial location and temporal dynamics of neurons in a fluorescent 1-photon calcium imaging movie. 
+# Inscopix CNMF-E
+Inscopix CNMF-E is a constrained non-negative matrix factorization (CNMF) algorithm used to perform automated source extraction from microendoscopic calcium imaging movies (the 'E' stands for endoscope). Specifically, it aims to retrieve the spatial location and temporal dynamics of neurons in a fluorescent 1-photon calcium imaging movie. 
 
-![CNMFe Workflow Example](img/inscopix_cnmfe_workflow.png?raw=true "CNMFe Workflow Example")
+![ CNMF-E Workflow Example](img/inscopix_cnmfe_workflow.png?raw=true " CNMF-E Workflow Example")
 
-Inscopix-CNMFe is implemented in C++, and can be used out of the box in Python via `pip install` or with a Docker container. The source code is open and available to developers who wish to further evaluate, modify, and improve the algorithm.
+Inscopix CNMF-E is implemented in C++, and can be used out of the box in Python via `pip install` or with a Docker container. The source code is open and available to developers who wish to further evaluate, modify, and improve the algorithm.
 
 ## Background
 The CNMF algorithm was originally developed for two-photon data by [Pnevmatikakis, 2016](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4881387/). 
 The two-photon algorithm was modified with enhanced background subtraction routines to work in the one-photon setting by [Zhou, 2018](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5871355/). 
-The first version of CNMFe, originally developed in MATLAB as [CNMF_E](https://github.com/zhoupc/CNMF_E), was ported to Python in the [CaImAn](https://github.com/flatironinstitute/CaImAn) package, described in [Giovannucci, 2018](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6342523/). 
-The Inscopix Data Products and Analytics team then reimplemented the constrained non-negative matrix factorization approach in C++ (Inscopix-CNMFe) to offer in the Inscopix Data Processing Software GUI as well as its Python and MATLAB APIs. Here we've packaged Inscopix-CNMFe into a standalone open source software for anyone to use.
+The first version of  CNMF-E, originally developed in MATLAB as [CNMF_E](https://github.com/zhoupc/CNMF_E), was ported to Python in the [CaImAn](https://github.com/flatironinstitute/CaImAn) package, described in [Giovannucci, 2018](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6342523/). 
+The Inscopix Data Products and Analytics team then reimplemented the constrained non-negative matrix factorization approach in C++ (Inscopix CNMF-E) to offer in the Inscopix Data Processing Software GUI as well as its Python and MATLAB APIs. Here we've packaged Inscopix CNMF-E into a standalone open source software for anyone to use.
 
 ## Installation & Usage
 
 ### Using Python
-Inscopix-CNMFe can be installed directly into your Python environment using the commands below.
+Inscopix CNMF-E can be installed directly into your Python environment using the commands below.
 These commands assume you have pre-installed [Anaconda](https://www.anaconda.com/products/individual), which can be used to create and manage Python environments.
-Note that Inscopix-CNMFe is currently available only for Python version 3.6 or higher on 64-bit machines,
+Note that Inscopix CNMF-E is currently available only for Python version 3.6 or higher on 64-bit machines,
 with the exception of Python 3.10 on Windows which isn't compatible yet.
 
 ```
@@ -28,17 +28,17 @@ pip install inscopix-cnmfe
 Note that on Windows the environment must include the `anaconda` package, which can be installed while creating the environment
 using the commands provided below.
 
-For Python 3.6:
+For Python 3.6 on Windows:
 ```
 conda create -n inscopix-cnmfe python=3.6 anaconda==2020.07
 ```
 
-For Python 3.7, 3.8, 3.9
+For Python 3.7, 3.8, 3.9 on Windows:
 ```
 conda create -n inscopix-cnmfe python=3.9 anaconda==2021.05
 ```
 
-Once Inscopix-CNMFe is installed in your Python environment, you can run CNMFe on a given movie as follows:
+Once Inscopix CNMF-E is installed in your Python environment, you can run  CNMF-E on a given movie as follows:
 ```
 import inscopix_cnmfe
 
@@ -65,16 +65,16 @@ footprints, traces = inscopix_cnmfe.run_cnmfe(
 ```
 
 #### Example Notebook
-A demo Jupyter Notebook that runs Inscopix-CNMFe on a small movie and displays spatial footprints 
-and temporal traces side by side is available [here](Inscopix_CNMFe_Demo.ipynb).
+A demo Jupyter Notebook that runs Inscopix CNMF-E on a small movie and displays spatial footprints 
+and temporal traces side by side is available [here](Inscopix_ CNMF-E_Demo.ipynb).
 
 ### Using Docker
 
 **Step 1: Install [Docker](https://docs.docker.com/get-docker/)**
 
-**Step 2: Run Inscopix CNMFe within a docker container**
+**Step 2: Run Inscopix  CNMF-E within a docker container**
 
-Place the input movie and the CNMFe parameters stored in a json file in the same folder.
+Place the input movie and the  CNMF-E parameters stored in a json file in the same folder.
 Note that only tiff movies are currently supported.
 The docker image will automatically be downloaded the first time you run the command.
 ```
@@ -85,33 +85,33 @@ docker run --rm -ti \
 ```
 
 ## Algorithm Overview
-CNMFe is an iterative algorithm that solves a non-convex optimization problem, which consists of minimizing the difference between the input movie and the data reconstructed using the model. The process consists of making an initial estimation of the spatial location and temporal activity of cells, which we refer to as the initialization phase, and then refining this estimate over several iterations of processing. The algorithm can be broken down into distinct and reusable processing modules as depicted below. 
+ CNMF-E is an iterative algorithm that solves a non-convex optimization problem, which consists of minimizing the difference between the input movie and the data reconstructed using the model. The process consists of making an initial estimation of the spatial location and temporal activity of cells, which we refer to as the initialization phase, and then refining this estimate over several iterations of processing. The algorithm can be broken down into distinct and reusable processing modules as depicted below. 
 
-The first two steps of Inscopix-CNMFe aim to determine how to efficiently process the movie through division of labor and efficient memory management. The following 13 steps (steps 3 through 16) encompass the core functionality of CNMFe and are applied to the movie, or to spatially distinct portions of the movie for parallel processing. Finally, the results from parallel processing are combined and the components scaled based on user-specified parameters.
+The first two steps of Inscopix CNMF-E aim to determine how to efficiently process the movie through division of labor and efficient memory management. The following 13 steps (steps 3 through 16) encompass the core functionality of  CNMF-E and are applied to the movie, or to spatially distinct portions of the movie for parallel processing. Finally, the results from parallel processing are combined and the components scaled based on user-specified parameters.
 
-![CNMFe Modules Overview](img/cnmfe_modules_overview.png?raw=true "CNMFe Modules Overview")
+![ CNMF-E Modules Overview](img/cnmfe_modules_overview.png?raw=true " CNMF-E Modules Overview")
 
 ## Recommended Workflow
-Prior to running Inscopix-CNMFe, we recommend applying the following operations
+Prior to running Inscopix CNMF-E, we recommend applying the following operations
 to the input movie to help improve the performance of the source extraction algorithm.
 1. Temporal downsampling of the data to 10 Hz or below. On each iteration of the algorithm,
    temporal traces are deconvolved using an autoregressive model of order 1. Higher-frequency data
-   may not be adequately deconvolved using low-order models in noisy regimes. The current version of Inscopix-CNMFe
+   may not be adequately deconvolved using low-order models in noisy regimes. The current version of Inscopix CNMF-E
    performs deconvolution using the [OASIS](https://pubmed.ncbi.nlm.nih.gov/28291787/) algorithm with an AR(1) model,
    which is appropriate for data recorded at up to 10 Hz.
 2. Spatial downsampling of the data by a factor of 2 to 4. This will help blur away
-   minor spatial fluctuations and significantly reduce CNMFe processing time.
+   minor spatial fluctuations and significantly reduce  CNMF-E processing time.
 3. Spatial bandpass filtering with global mean subtraction. The removal of low spatial
    frequency content will help remove out-of-focus cells. The removal of
    high spatial frequencies will reduce noise by smoothing the movie images.
 4. Motion correction. The removal of motion artifacts will help ensure that the spatial
-   location of cells identified by CNMFe is confined to their precise positions as
+   location of cells identified by  CNMF-E is confined to their precise positions as
    opposed to the pixels visited by their respective cell body over time.
    This will in turn ensure that the temporal dynamics extracted for each cell are due to
    fluctuations in the fluorescent reporter and not cellular displacements.
 
 ## Algorithm Parameters
-The CNMFe parameters used in the Python package are listed below along with their respective descriptions and default values.
+The  CNMF-E parameters used in the Python package are listed below along with their respective descriptions and default values.
 All parameters are optional with the exception of the input movie file and the average cell diameter.
 Note that the default values may not be optimal for all scenarios and should be adjusted based on the results obtained by the algorithm.
 
@@ -127,7 +127,7 @@ Note that the default values may not be optimal for all scenarios and should be 
 | ring_size_factor | the multiple of the average cell diameter to use for computing the radius of the ring model used for estimating the background activity | 1.4 |
 | merge_threshold | the temporal correlation threshold for merging cells that are spatially close | 0.7 |
 | number_of_threads | the number of threads to use for processing | 4 |
-| processing_mode | the processing mode to use to run CNMFe (0: all in memory, 1: sequential patches, 2: parallel patches) <br/><br/><ul><li>All in memory: processes the entire field of view at once.</li><li>Sequential patches: breaks the field of view into overlapping patches and processes them one at a time using the specified number of threads where parallelization is possible.</li><li>Parallel patches:  breaks the field of view into overlapping patches and processes them in parallel using a single thread for each.</li></ul>| 2 |
+| processing_mode | the processing mode to use to run  CNMF-E (0: all in memory, 1: sequential patches, 2: parallel patches) <br/><br/><ul><li>All in memory: processes the entire field of view at once.</li><li>Sequential patches: breaks the field of view into overlapping patches and processes them one at a time using the specified number of threads where parallelization is possible.</li><li>Parallel patches:  breaks the field of view into overlapping patches and processes them in parallel using a single thread for each.</li></ul>| 2 |
 | patch_size | the side length of an individual square patch of the field of view in pixels | 80 |
 | patch_overlap | the amount of overlap between adjacent patches in pixels | 20 |
 | deconvolve | specifies whether to deconvolve the final temporal traces (0: return raw traces, 1: return deconvolved traces) | 0 |
@@ -138,9 +138,14 @@ Note that the default values may not be optimal for all scenarios and should be 
 ## Tuning Parameters to Optimize Performance
 To learn more about the effect of each parameter on the algorithm or to determine the best course of action
 for fine-tuning parameters based on the results obtained by the algorithm, please consult our documentation
-on Inscopix-CNMFe Parameters [here](docs/parameter_tuning.md).
+on Inscopix CNMF-E Parameters [here](docs/parameter_tuning.md).
 
-## Contribute to Inscopix CNMFe
+## Comparison of Inscopix CNMF-E and CaImAn CNMF-E
+Since our implementation of CNMF-E is based on the version offered in the [CaImAn](https://github.com/flatironinstitute/CaImAn) package,
+we have compared the performance and outputs obtained using both implementations.
+Our approach and results are presented [here](docs/comparison_to_caiman.md) along with a full parameter mapping.
+
+## Contribute to Inscopix CNMF-E
 For those interested in contributing to this project, please consult our documentation for developers [here](docs/developers_guide.md).
 
 ## Project Team

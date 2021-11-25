@@ -1,11 +1,11 @@
-# Building and Contributing to Inscopix CNMFe (for developers)
-This section provides the necessary information for developers interested in contributing to the Inscopix CNMFe project.
+# Building and Contributing to Inscopix CNMF-E (for developers)
+This section provides the necessary information for developers interested in contributing to the Inscopix CNMF-E project.
 This includes instructions for setting up the development environment, compiling the project into a static C++ library, 
 packaging the project into a Python installable wheel file, and building a Docker image for the project.
 A sample C++ program and unit tests are provided as well.
 
 ## Project structure
-This section outlines the expected project structure and dependencies required to build Inscopix CNMFe.
+This section outlines the expected project structure and dependencies required to build Inscopix CNMF-E.
 
 ### Libraries directory
 The build instructions assume the dependencies are located in a subdirectory called *lib* as shown below.
@@ -26,7 +26,7 @@ isx-cnmfe
 ```
 
 ### Dependencies
-Below is a list of all the dependencies and corresponding versions used in Inscopix CNMFe.
+Below is a list of all the dependencies and corresponding versions used in Inscopix CNMF-E.
 Note that it may be compatible with other versions of the libraries, but only the ones listed here were tested.
 pybind11 is only needed if you intend to build the Python API.
 
@@ -44,7 +44,7 @@ pybind11 is only needed if you intend to build the Python API.
 | [pybind11](https://github.com/pybind/pybind11) | 2.8.0 |
 
 ### Tested Systems
-Below is a list of systems that were used to build and test Inscopix CNMFe along with its dependencies.
+Below is a list of systems that were used to build and test Inscopix CNMF-E along with its dependencies.
 Note that it may be compatible with other systems, but only the ones listed below were tested.
 
 | Operating System       | Compiler       |
@@ -53,8 +53,8 @@ Note that it may be compatible with other systems, but only the ones listed belo
 | Ubuntu 18.04 LTS | GCC 4.8.5 (Ubuntu 4.8.5-4ubuntu8) |
 | Windows 10 | Visual Studio 14 2015 Win64 (MSVC 19.0.24215.1) |
 
-## Building Inscopix CNMFe as a static library
-Below are platform-specific instructions for compiling CNMFe into a static C++ library.
+## Building Inscopix CNMF-E as a static library
+Below are platform-specific instructions for compiling CNMF-E into a static C++ library.
 The target platform can be specified using the CMake generator flag (-G).
 The specific compilers to use can be specified by setting the appropriate CMake flags (CMAKE_C_COMPILER, CMAKE_CXX_COMPILER).
 
@@ -87,10 +87,10 @@ cmake -G "Visual Studio 14 2015 Win64" ..
 # open build/cnmfe.sln in Visual Studio to build the project
 ```
 
-## Example code for using the Inscopix CNMFe library
-An example C++ project using the Inscopix CNMFe library is available in *example.cpp* and
+## Example code for using the Inscopix CNMF-E library
+An example C++ project using the Inscopix CNMF-E library is available in *example.cpp* and
 compiled into an executable when building the app.
-The following command will run CNMFe on a small movie recorded in the striatum.
+The following command will run CNMF-E on a small movie recorded in the striatum.
 
 Mac & Linux
 ```
@@ -115,13 +115,13 @@ Windows
 ./build/test/Release/runTests.exe
 ```
 
-## Building and using the Inscopix CNMFe Docker image locally
+## Building and using the Inscopix CNMF-E Docker image locally
 To compile the app in a containerized environment, i.e. a Docker image:
 ```
 docker build -t inscopix/cnmfe .
 ```
 
-To run CNMFe within the container:
+To run CNMF-E within the container:
 ```
 docker run --rm -ti \
 	-v $PWD/test/data:/input \
@@ -129,7 +129,7 @@ docker run --rm -ti \
     inscopix/cnmfe /input/movie.tif /input/params.json /output
 ```
 
-## Building Inscopix CNMFe as an installable Python package
+## Building Inscopix CNMF-E as an installable Python package
 ### Step 1: Create a Python virtual environment
 ```
 conda create -n inscopix-cnmfe python=3.9
@@ -152,7 +152,7 @@ The wheel filename may differ depending on the system and environment used to cr
 ```
 pip install dist/inscopix_cnmfe-1.0.0-cp39-cp39-macosx_10_12_x86_64.whl
 ```
-You are now ready to use Inscopix CNMFe using Python.
+You are now ready to use Inscopix CNMF-E using Python.
 
 ### Usage in Python
 ```
