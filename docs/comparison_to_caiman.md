@@ -126,7 +126,7 @@ All experiments were conducted on a laptop with the following specifications:
 | Computer | MacBook Pro (16-inch, 2019) |
 |:----------|:-------------|
 | Operating System | macOS Catalina (version 10.15.7) |
-| Processor | 2.4 GHz 8-Core Intel Core i9 |
+| Processor | 2.6 GHz 6-Core Intel Core i7 |
 | Memory | 64 GB 2667 MHz DDR4 |
 | Graphics | AMD Radeon Pro 5300M 4 GB Intel UHD Graphics 630 1536 MB |
 
