@@ -145,4 +145,4 @@ setup(name='inscopix-cnmfe',
       install_requires=['numpy>=1.12.0'],
       zip_safe=False,
       license="GNU AFFERO GENERAL PUBLIC LICENSE",
-      license_files="LICENSE")
+      license_files=["LICENSE"])
