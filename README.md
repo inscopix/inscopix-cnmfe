@@ -126,14 +126,15 @@ Note that the default values may not be optimal for all scenarios and should be 
 | background_downsampling_factor | the spatial downsampling factor to use when estimating the background activity | 2 |
 | ring_size_factor | the multiple of the average cell diameter to use for computing the radius of the ring model used for estimating the background activity | 1.4 |
 | merge_threshold | the temporal correlation threshold for merging cells that are spatially close | 0.7 |
-| number_of_threads | the number of threads to use for processing | 4 |
-| processing_mode | the processing mode to use to run  CNMF-E (0: all in memory, 1: sequential patches, 2: parallel patches) <br/><br/><ul><li>All in memory: processes the entire field of view at once.</li><li>Sequential patches: breaks the field of view into overlapping patches and processes them one at a time using the specified number of threads where parallelization is possible.</li><li>Parallel patches:  breaks the field of view into overlapping patches and processes them in parallel using a single thread for each.</li></ul>| 2 |
+| num_threads | the number of threads to use for processing | 4 |
+| processing_mode | the processing mode to use to run CNMF-E (0: all in memory, 1: sequential patches, 2: parallel patches) <br/><br/><ul><li>All in memory: processes the entire field of view at once.</li><li>Sequential patches: breaks the field of view into overlapping patches and processes them one at a time using the specified number of threads where parallelization is possible.</li><li>Parallel patches:  breaks the field of view into overlapping patches and processes them in parallel using a single thread for each.</li></ul>| 2 |
 | patch_size | the side length of an individual square patch of the field of view in pixels | 80 |
 | patch_overlap | the amount of overlap between adjacent patches in pixels | 20 |
 | deconvolve | specifies whether to deconvolve the final temporal traces (0: return raw traces, 1: return deconvolved traces) | 0 |
 | output_units | the units of the output temporal traces (0: dF, 1: dF over noise) <br/><br/><ul><li>dF: temporal traces on the same scale of pixel intensity as the original movie. dF is calculated as the average fluorescence activity of all pixels in a cell, scaled so that each spatial footprint has a magnitude of 1.</li><li>dF over noise: temporal traces divided by their respective estimated noise level. This can be interpreted similarly to a z-score, with the added benefit that the noise is a more robust measure of the variance in a temporal trace compared to the standard deviation.</li></ul> | 1 |
 | output_filetype | the file types into which the output will be saved (0: footprints saved to a tiff file and traces saved to a csv file, 1: output saved to a h5 file under the keys footprints and traces) | 0 |
 | output_dir_path | path to the directory where output files will be stored (output files not saved to disk when given an empty string) | empty string |
+| verbose | To enable and disable verbose mode. When enabled, progress is displayed in the console. (0: disabled, 1: enabled) | 0 |
 
 ## Tuning Parameters to Optimize Performance
 To learn more about the effect of each parameter on the algorithm or to determine the best course of action
