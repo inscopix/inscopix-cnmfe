@@ -8,8 +8,8 @@ PYTHON_VERSIONS=(3.6 3.7 3.8 3.9 3.10)
 for PYTHON_VERSION in "${PYTHON_VERSIONS[@]}"
 do
 CONDA_ENV_NAME=inscopix-cnmfe-${PYTHON_VERSION}
+source $(conda info --base)/etc/profile.d/conda.sh
 conda create -n ${CONDA_ENV_NAME} python=${PYTHON_VERSION} -y
-conda activate ${CONDA_ENV_NAME}
 conda run -n ${CONDA_ENV_NAME} python setup.py bdist_wheel
 conda run -n ${CONDA_ENV_NAME} pip install dist/*cp${PYTHON_VERSION//./}*
 conda run -n ${CONDA_ENV_NAME} python -c "import inscopix_cnmfe; inscopix_cnmfe.run_cnmfe('test/data/movie.tif')"
