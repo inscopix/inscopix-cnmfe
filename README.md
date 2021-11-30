@@ -146,6 +146,17 @@ Since our implementation of CNMF-E is based on the version offered in the [CaImA
 we have compared the performance and outputs obtained using both implementations.
 Our approach and results are presented [here](docs/comparison_to_caiman.md) along with a full parameter mapping.
 
+## Troubleshooting
+Below is a list of common issues you may encounter while using the Inscopix CNMF-E package along with solutions to them.
+These may be the result of using incompatible data types for the input movie, specifying parameters using unsupported formats, 
+or issues related to the specific operating system used to run the algorithm. 
+
+| Operating System | Issue   | Cause   | Solution       |
+|:-------------|:------------------|:------------------|:------------------|
+| Mac OS | The function `inscopix_cnmfe.run_cnmfe()` stalls and does not appear to complete, and therefore does not return output traces and footprints as numpy arrays. | This could occur if Inscopix CNMF-E was installed in an environment where `numpy` was previously installed using something other than `pip`. | You can reinstall numpy via pip using the following command: `pip install --ignore-installed numpy` |
+| Windows | SyntaxError: (unicode error) 'unicodeescape' codec can't decode bytes. | The path specified cannot be parsed because it includes invalid symbols. This can occur on Windows when using forward slashes in a file path specified as a standard string, for instance `C:\path\to\movie.tiff`. | To fix this, you can convert the path to a raw string in Python by prepending `r` to the string as follows: `r'C:\path\to\movie.tiff'` |
+| Any <br> (previously observed on an Intel-based machine running Mac OS Monterey) | No cells are identified, even after tweaking the parameters. | This could occur when using an input movie where each pixel is represented by a 32-bit floating-point value on a system that does not support such images. | This can be resolved by converting the input movie to one where each pixel is represented by a 16-bit unsigned integer. This can easily be done with [Fiji](https://imagej.net/software/fiji/), [ImageJ](https://imagej.nih.gov/ij/), or other image processing software. |
+
 ## Contribute to Inscopix CNMF-E
 For those interested in contributing to this project, please consult our documentation for developers [here](docs/developers_guide.md).
 
