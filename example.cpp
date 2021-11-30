@@ -19,7 +19,7 @@ int main(int argc, char* argv[]) {
     const int backgroundDownsamplingFactor = params["background_downsampling_factor"].get<int>();
     const float ringSizeFactor = params["ring_size_factor"].get<float>();
     const float mergeThreshold = params["merge_threshold"].get<float>();
-    const int numThreads = params["number_of_threads"].get<int>();
+    const int numThreads = params["num_threads"].get<int>();
     const int processingMode = params["processing_mode"].get<int>();
     const int patchSize = params["patch_size"].get<int>();
     const int patchOverlap = params["patch_overlap"].get<int>();

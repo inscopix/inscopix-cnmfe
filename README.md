@@ -62,8 +62,8 @@ footprints, traces = inscopix_cnmfe.run_cnmfe(
     output_dir_path='output', 
     output_filetype=0,
     average_cell_diameter=7,
-    min_corr=0.8,
-    min_pnr=10.0,
+    min_pixel_correlation=0.8,
+    min_peak_to_noise_ratio=10.0,
     gaussian_kernel_size=0,
     closing_kernel_size=0,
     background_downsampling_factor=2,
@@ -73,7 +73,7 @@ footprints, traces = inscopix_cnmfe.run_cnmfe(
     processing_mode=2,
     patch_size=80,
     patch_overlap=20,
-    trace_output_units=1,
+    output_units=1,
     deconvolve=0,
     verbose=1
 )
@@ -141,14 +141,15 @@ Note that the default values may not be optimal for all scenarios and should be 
 | background_downsampling_factor | the spatial downsampling factor to use when estimating the background activity | 2 |
 | ring_size_factor | the multiple of the average cell diameter to use for computing the radius of the ring model used for estimating the background activity | 1.4 |
 | merge_threshold | the temporal correlation threshold for merging cells that are spatially close | 0.7 |
-| number_of_threads | the number of threads to use for processing | 4 |
-| processing_mode | the processing mode to use to run  CNMF-E (0: all in memory, 1: sequential patches, 2: parallel patches) <br/><br/><ul><li>All in memory: processes the entire field of view at once.</li><li>Sequential patches: breaks the field of view into overlapping patches and processes them one at a time using the specified number of threads where parallelization is possible.</li><li>Parallel patches:  breaks the field of view into overlapping patches and processes them in parallel using a single thread for each.</li></ul>| 2 |
+| num_threads | the number of threads to use for processing | 4 |
+| processing_mode | the processing mode to use to run CNMF-E (0: all in memory, 1: sequential patches, 2: parallel patches) <br/><br/><ul><li>All in memory: processes the entire field of view at once.</li><li>Sequential patches: breaks the field of view into overlapping patches and processes them one at a time using the specified number of threads where parallelization is possible.</li><li>Parallel patches:  breaks the field of view into overlapping patches and processes them in parallel using a single thread for each.</li></ul>| 2 |
 | patch_size | the side length of an individual square patch of the field of view in pixels | 80 |
 | patch_overlap | the amount of overlap between adjacent patches in pixels | 20 |
 | deconvolve | specifies whether to deconvolve the final temporal traces (0: return raw traces, 1: return deconvolved traces) | 0 |
 | output_units | the units of the output temporal traces (0: dF, 1: dF over noise) <br/><br/><ul><li>dF: temporal traces on the same scale of pixel intensity as the original movie. dF is calculated as the average fluorescence activity of all pixels in a cell, scaled so that each spatial footprint has a magnitude of 1.</li><li>dF over noise: temporal traces divided by their respective estimated noise level. This can be interpreted similarly to a z-score, with the added benefit that the noise is a more robust measure of the variance in a temporal trace compared to the standard deviation.</li></ul> | 1 |
 | output_filetype | the file types into which the output will be saved (0: footprints saved to a tiff file and traces saved to a csv file, 1: output saved to a h5 file under the keys footprints and traces) | 0 |
 | output_dir_path | path to the directory where output files will be stored (output files not saved to disk when given an empty string) | empty string |
+| verbose | To enable and disable verbose mode. When enabled, progress is displayed in the console. (0: disabled, 1: enabled) | 0 |
 
 ## [Tuning Parameters to Optimize Performance](docs/parameter_tuning.md)
 To learn more about the effect of each parameter on the algorithm or to determine the best course of action
@@ -159,6 +160,17 @@ on Inscopix CNMF-E Parameters [here](docs/parameter_tuning.md).
 Since our implementation of CNMF-E is based on the version offered in the [CaImAn](https://github.com/flatironinstitute/CaImAn) package,
 we have compared the performance and outputs obtained using both implementations.
 Our approach and results are presented [here](docs/comparison_to_caiman.md) along with a full parameter mapping.
+
+## Troubleshooting
+Below is a list of common issues you may encounter while using the Inscopix CNMF-E package along with solutions to them.
+These may be the result of using incompatible data types for the input movie, specifying parameters using unsupported formats, 
+or issues related to the specific operating system used to run the algorithm. 
+
+| Operating System | Issue   | Cause   | Solution       |
+|:-------------|:------------------|:------------------|:------------------|
+| Mac OS | The function `inscopix_cnmfe.run_cnmfe()` stalls and does not appear to complete, and therefore does not return output traces and footprints as numpy arrays. | This could occur if Inscopix CNMF-E was installed in an environment where `numpy` was previously installed using something other than `pip`. | You can reinstall numpy via pip using the following command: `pip install --ignore-installed numpy` |
+| Windows | SyntaxError: (unicode error) 'unicodeescape' codec can't decode bytes. | The path specified cannot be parsed because it includes invalid symbols. This can occur on Windows when using forward slashes in a file path specified as a standard string, for instance `C:\path\to\movie.tiff`. | To fix this, you can convert the path to a raw string in Python by prepending `r` to the string as follows: `r'C:\path\to\movie.tiff'` |
+| Any <br> (previously observed on an Intel-based machine running Mac OS Monterey) | No cells are identified, even after tweaking the parameters. | This could occur when using an input movie where each pixel is represented by a 32-bit floating-point value on a system that does not support such images. | This can be resolved by converting the input movie to one where each pixel is represented by a 16-bit unsigned integer. This can easily be done with [Fiji](https://imagej.net/software/fiji/), [ImageJ](https://imagej.nih.gov/ij/), or other image processing software. |
 
 ## [Contribute to Inscopix CNMF-E](docs/developers_guide.md)
 For those interested in contributing to this project, please consult our documentation for developers [here](docs/developers_guide.md).
