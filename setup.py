@@ -10,6 +10,10 @@ This file was adapted from the pybind cmake examples:
 https://github.com/pybind/cmake_example/blob/master/setup.py
 """
 
+# Inscopix CNMF-E Version
+with open('version.txt', 'r') as f:
+      INSCOPIX_CNMFE_VERSION = f.readline().replace('\n', '')
+
 # convert distutils Windows platform specifiers to CMake -A arguments
 WIN_PLATFORM_TO_CMAKE = {
       "win32": "Win32",
@@ -125,7 +129,7 @@ class CMakeBuild(build_ext):
             )
 
 setup(name='inscopix-cnmfe',
-      version='1.0.0',
+      version=INSCOPIX_CNMFE_VERSION,
       author='Inscopix, Inc.',
       author_email="support@inscopix.com",
       url="https://github.com/inscopix/isx-cnmfe",

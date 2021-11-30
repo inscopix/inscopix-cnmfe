@@ -1,6 +1,7 @@
 #include <pybind11/pybind11.h>
 #include <pybind11/numpy.h>
 #include "isx/cnmfe.h"
+#include "isxUtilities.h"
 
 namespace py = pybind11;
 
@@ -123,6 +124,7 @@ std::tuple<py::array,py::array> isx_cnmfe_python(
 PYBIND11_MODULE(inscopix_cnmfe, handle)
 {
     handle.doc() = "Inscopix CNMF-E for automated source extraction";
+    handle.attr("__version__") = isx::getPackageVersion();
     handle.def("run_cnmfe", &isx_cnmfe_python, R"mydelimiter(
     Run the CNMF-E cell identification algorithm on a movie
 

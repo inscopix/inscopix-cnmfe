@@ -77,12 +77,18 @@ namespace isx
     /// \return         The base name of the path.
     std::string getBaseName(const std::string & path);
 
-    // Get current date & time
-    // Format is YYYY-MM-DD HH:mm:ss.xxx (xxx represents milliseconds)
+    /// Get current date & time
+    /// Format is YYYY-MM-DD HH:mm:ss.xxx (xxx represents milliseconds)
     ///
     /// \param  includeMilliseconds     Appends milliseconds to string
     /// \return                         Current date time as a string
     std::string getCurrentDateTime(const std::string & format, const bool includeMilliseconds=true);
+
+    /// Get package version number
+    ///
+    /// \param  versionFilePath     Path to the text file containing the version
+    /// \return       version number (e.g. "1.0.0")
+    std::string getPackageVersion(std::string versionFilePath = "version.txt");
 
 } // namespace
 

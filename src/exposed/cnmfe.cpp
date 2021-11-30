@@ -3,6 +3,7 @@
 #include "isxCnmfeIO.h"
 #include "isxTiffMovie.h"
 #include "isxCnmfePatch.h"
+#include "isxUtilities.h"
 #include "isxLog.h"
 #include "json.hpp"
 #include <tuple>
@@ -39,7 +40,7 @@ namespace isx
         const std::string timeStamp = getCurrentDateTime("%Y%m%d-%H%M%S", false);
         const std::string logFileName = outputDirPath.empty() ? "" : outputDirPath + "/" + "Inscopix_CNMF-E_Log_" + timeStamp + ".txt";
         const std::string appName = "Inscopix CNMF-E";
-        const std::string appVersion = "1.0.0";
+        const std::string appVersion = getPackageVersion();
         const bool verboseEnabled = verbose==1 ? true : false;
         Logger::initialize(logFileName, appName, appVersion, verboseEnabled);
 

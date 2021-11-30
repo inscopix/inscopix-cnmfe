@@ -6,6 +6,7 @@
 #include <iostream>
 #include <sstream>
 #include <iomanip>
+#include <fstream>
 
 #ifdef _WIN32
 #include <direct.h>  // Windows
@@ -125,5 +126,13 @@ namespace isx
         }
         
         return oss.str();
+    }
+
+    std::string getPackageVersion(std::string versionFilePath)
+    {
+        std::string version;
+        std::ifstream versionFile(versionFilePath);
+        std::getline(versionFile, version);
+        return version;
     }
 }
