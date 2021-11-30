@@ -9,7 +9,7 @@ Inscopix CNMF-E is implemented in C++, and can be used out of the box in Python 
 - [Background](#background)
 - [Installation & Usage](#installation--usage)
    - [Using Python](#using-python)
-   - [Example Notebook](#example-notebook)
+     - [Example Notebook](#example-notebook)
    - [Using Docker](#using-docker)
 - [Algorithm Overview](#algorithm-overview)
 - [Recommended Workflow](#recommended-workflow)
