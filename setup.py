@@ -125,7 +125,7 @@ class CMakeBuild(build_ext):
             )
 
 setup(name='inscopix-cnmfe',
-      version='1.0.0',
+      version='1.0.1',
       author='Inscopix, Inc.',
       author_email="support@inscopix.com",
       url="https://github.com/inscopix/isx-cnmfe",
