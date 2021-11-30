@@ -24,12 +24,13 @@ This includes the trace output units and the explicit processing modes.
 | background_downsampling_factor | ssub_B | the spatial downsampling factor to use when estimating the background activity | Positive integer |
 | ring_size_factor | ring_size_factor | the multiple of the average cell diameter to use for computing the radius of the ring model used for estimating the background activity | Positive decimal number |
 | merge_threshold | merge_thr | the temporal correlation threshold for merging cells that are spatially close | Decimal number between 0 and 1 |
-| number_of_threads | n_processes | the number of threads to use for processing | Positive integer |
+| num_threads | n_processes | the number of threads to use for processing | Positive integer |
 | processing_mode | N/A | the processing mode to use to run CNMF-E | Integer in {0, 1, 2} </br> <ul><li>0: all in memory</li><li>1: sequential patches</li><li>2: parallel patches</li></ul> |
 | patch_size | rf (used to specify the half-size of a patch) | the side length of an individual square patch of the field of view in pixels | Positive integer |
 | patch_overlap | stride | the amount of overlap between adjacent patches in pixels | Positive integer |
 | output_units | N/A | the units of the output temporal traces | Integer in {0, 1} </br> <ul><li>0: dF</li><li>1: dF over noise</li></ul> |
 | output_filetype | N/A | the file types into which the output will be saved | Integer in {0, 1} </br> <ul><li>0: footprints saved to a tiff file and traces saved to a csv file</li><li>1: output saved to a h5 file under the keys footprints and traces</li></ul> |
+| verbose | verbosity | to control whether progress gets displayed in the console | Integer in {0, 1} </br> <ul><li>0: disabled</li><li>1: enabled</li></ul> |
 
 ### Parameters Automatically Set in Inscopix CNMF-E
 Some parameters offered in CaImAn CNMF-E are automatically determined or set to a fixed value in Inscopix CNMF-E as described in the table below.
