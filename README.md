@@ -5,6 +5,22 @@ Inscopix CNMF-E is a constrained non-negative matrix factorization (CNMF) algori
 
 Inscopix CNMF-E is implemented in C++, and can be used out of the box in Python via `pip install` or with a Docker container. The source code is open and available to developers who wish to further evaluate, modify, and improve the algorithm.
 
+## Table of Contents
+- [Background](#background)
+- [Installation & Usage](#installation--usage)
+  - [Using Python](#using-python)
+    - [Example Notebook](#example-notebook)
+  - [Using Docker](#using-docker)
+- [Algorithm Overview](#algorithm-overview)
+- [Recommended Workflow](#recommended-workflow)
+- [Algorithm Parameters](#algorithm-parameters)
+- [Tuning Parameters to Optimize Performance](#tuning-parameters-to-optimize-performance)
+- [Comparison of Inscopix CNMF-E and CaImAn CNMF-E](#comparison-of-inscopix-cnmf-e-and-caiman-cnmf-e)
+- [Troubleshooting](#troubleshooting)
+- [Contribute to Inscopix CNMF-E](#contribute-to-inscopix-cnmf-e)
+- [Project Team](#project-team)
+- [License](#license)
+
 ## Background
 The CNMF algorithm was originally developed for two-photon data by [Pnevmatikakis, 2016](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4881387/). 
 The two-photon algorithm was modified with enhanced background subtraction routines to work in the one-photon setting by [Zhou, 2018](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5871355/). 
@@ -66,7 +82,7 @@ footprints, traces = inscopix_cnmfe.run_cnmfe(
 
 #### Example Notebook
 A demo Jupyter Notebook that runs Inscopix CNMF-E on a small movie and displays spatial footprints 
-and temporal traces side by side is available [here](Inscopix_ CNMF-E_Demo.ipynb).
+and temporal traces side by side is available [here](Inscopix_CNMF-E_Demo.ipynb).
 
 ### Using Docker
 
@@ -136,12 +152,12 @@ Note that the default values may not be optimal for all scenarios and should be 
 | output_dir_path | path to the directory where output files will be stored (output files not saved to disk when given an empty string) | empty string |
 | verbose | To enable and disable verbose mode. When enabled, progress is displayed in the console. (0: disabled, 1: enabled) | 0 |
 
-## Tuning Parameters to Optimize Performance
+## [Tuning Parameters to Optimize Performance](docs/parameter_tuning.md)
 To learn more about the effect of each parameter on the algorithm or to determine the best course of action
 for fine-tuning parameters based on the results obtained by the algorithm, please consult our documentation
 on Inscopix CNMF-E Parameters [here](docs/parameter_tuning.md).
 
-## Comparison of Inscopix CNMF-E and CaImAn CNMF-E
+## [Comparison of Inscopix CNMF-E and CaImAn CNMF-E](docs/comparison_to_caiman.md)
 Since our implementation of CNMF-E is based on the version offered in the [CaImAn](https://github.com/flatironinstitute/CaImAn) package,
 we have compared the performance and outputs obtained using both implementations.
 Our approach and results are presented [here](docs/comparison_to_caiman.md) along with a full parameter mapping.
@@ -157,7 +173,7 @@ or issues related to the specific operating system used to run the algorithm.
 | Windows | SyntaxError: (unicode error) 'unicodeescape' codec can't decode bytes. | The path specified cannot be parsed because it includes invalid symbols. This can occur on Windows when using forward slashes in a file path specified as a standard string, for instance `C:\path\to\movie.tiff`. | To fix this, you can convert the path to a raw string in Python by prepending `r` to the string as follows: `r'C:\path\to\movie.tiff'` |
 | Any <br> (previously observed on an Intel-based machine running Mac OS Monterey) | No cells are identified, even after tweaking the parameters. | This could occur when using an input movie where each pixel is represented by a 32-bit floating-point value on a system that does not support such images. | This can be resolved by converting the input movie to one where each pixel is represented by a 16-bit unsigned integer. This can easily be done with [Fiji](https://imagej.net/software/fiji/), [ImageJ](https://imagej.nih.gov/ij/), or other image processing software. |
 
-## Contribute to Inscopix CNMF-E
+## [Contribute to Inscopix CNMF-E](docs/developers_guide.md)
 For those interested in contributing to this project, please consult our documentation for developers [here](docs/developers_guide.md).
 
 ## Project Team
