@@ -145,6 +145,15 @@ Since our implementation of CNMF-E is based on the version offered in the [CaImA
 we have compared the performance and outputs obtained using both implementations.
 Our approach and results are presented [here](docs/comparison_to_caiman.md) along with a full parameter mapping.
 
+## Troubleshooting
+Below is a list of common issues you may encounter while using the `run_cnmfe` function.
+
+| Operating System | Error   | Solution       |
+|:-------------|:------------------|:------------------|
+| Mac OS | The function does not return after processing | Install numpy via pip: `pip install numpy` |
+| Mac OS Montery | No cells are identified, even after tweaking the parameters.  | There are issues using float32 movies on this OS. Check the datatype and convert to uint16, which can easily be done with Fiji or ImageJ |
+| Windows | SyntaxError: (unicode error) 'unicodeescape' codec can't decode bytes in position 2-3: truncated \UXXXXXXXX escape  | The path cannot be parsed. Convert the path to a raw string: `r'C:\path\to\file.tiff'` |
+
 ## Contribute to Inscopix CNMF-E
 For those interested in contributing to this project, please consult our documentation for developers [here](docs/developers_guide.md).
 
