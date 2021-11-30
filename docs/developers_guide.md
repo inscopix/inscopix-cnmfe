@@ -136,9 +136,16 @@ conda create -n inscopix-cnmfe python=3.9
 conda activate inscopix-cnmfe
 ```
 
-Note that on Windows the environment must be created with the `anaconda` package:
+Note that on Windows the environment must be created with the `anaconda` package.
+
+For Python 3.6 on Windows:
 ```
-conda create -n inscopix-cnmfe python=3.9 anaconda
+conda create -n inscopix-cnmfe python=3.6 anaconda==2020.07
+```
+
+For Python 3.7, 3.8, 3.9 on Windows:
+```
+conda create -n inscopix-cnmfe python=3.9 anaconda==2021.05
 ```
 
 ### Step 2: Build the wheel file
@@ -146,6 +153,9 @@ By default the wheel file will be located in the distribution folder (`dist`).
 ```
 python setup.py bdist_wheel
 ```
+
+To automatically generate wheel files for different versions of Python,
+please consult our script for generating wheel files on Mac and Linux [here](../test/scripts/generate_python_wheels.sh).
 
 ### Step 3: Install the inscopix_cnmfe package using the wheel file
 The wheel filename may differ depending on the system and environment used to create it.
@@ -163,8 +173,8 @@ footprints, traces = inscopix_cnmfe.run_cnmfe(
 	output_dir_path='output', 
 	output_filetype=0,
 	average_cell_diameter=7,
-	min_corr=0.8,
-	min_pnr=10.0,
+	min_pixel_correlation=0.8,
+	min_peak_to_noise_ratio=10.0,
 	gaussian_kernel_size=0,
 	closing_kernel_size=0,
 	background_downsampling_factor=2,
@@ -174,7 +184,7 @@ footprints, traces = inscopix_cnmfe.run_cnmfe(
 	processing_mode=2,
 	patch_size=80,
 	patch_overlap=20,
-	trace_output_units=1,
+	output_units=1,
 	deconvolve=0,
 	verbose=1
 )
