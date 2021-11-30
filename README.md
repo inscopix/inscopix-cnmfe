@@ -5,6 +5,21 @@ Inscopix CNMF-E is a constrained non-negative matrix factorization (CNMF) algori
 
 Inscopix CNMF-E is implemented in C++, and can be used out of the box in Python via `pip install` or with a Docker container. The source code is open and available to developers who wish to further evaluate, modify, and improve the algorithm.
 
+## Table of Contents
+- [Background](#background)
+- [Installation & Usage](#installation--usage)
+   - [Using Python](#using-python)
+   - [Example Notebook](#example-notebook)
+   - [Using Docker](#using-docker)
+- [Algorithm Overview](#algorithm-overview)
+- [Recommended Workflow](#recommended-workflow)
+- [Algorithm Parameters](#algorithm-parameters)
+- [Tuning Parameters to Optimize Performance](#tuning-parameters-to-optimize-performance)
+- [Comparison of Inscopix CNMF-E and CaImAn CNMF-E](#comparison-of-inscopix-cnmf-e-and-caiman-cnmf-e)
+- [Contribute to Inscopix CNMF-E](#contribute-to-inscopix-cnmf-e)
+- [Project Team](#project-team)
+- [License](#license)
+
 ## Background
 The CNMF algorithm was originally developed for two-photon data by [Pnevmatikakis, 2016](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4881387/). 
 The two-photon algorithm was modified with enhanced background subtraction routines to work in the one-photon setting by [Zhou, 2018](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5871355/). 

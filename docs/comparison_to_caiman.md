@@ -6,6 +6,26 @@ across multiple datasets obtained from distinct brain regions.
 We evaluated processing time and similarity between the outputs obtained using the two algorithms, as well as 
 how processing time is affected by the input dimensions.
 
+## Table of Contents
+- [Algorithm Parameters](#algorithm-parameters)
+  - [Parameter Mapping](#parameter-mapping)
+  - [Parameters Automatically Set in Inscopix CNMF-E](#parameters-automatically-set-in-inscopix-cnmf-e)
+  - [Processing Modes](#processing-modes)
+  - [Output Units](#output-units)
+- [Methods](#methods)
+  - [Cell Set Comparison](#cell-set-comparison)
+  - [Hardware](#hardware)
+  - [Data Preprocessing](#data-preprocessing)
+  - [Analysis Parameters](#analysis-parameters)
+  - [Notes on Matching the Outputs from Inscopix CNMF-E and CaImAn CNMF-E](#notes-on-matching-the-outputs-from-inscopix-cnmf-e-and-caiman-cnmf-e)
+- [Results](#results)
+  - [Overview](#overview)
+  - [Components Identified Across Various Brain Regions](#components-identified-across-various-brain-regions)
+  - [Differences Between the Cell Sets Produced by Inscopix CNMF-E and CaImAn CNMF-E](#differences-between-the-cell-sets-produced-by-inscopix-cnmf-e-and-caiman-cnmf-e)
+  - [Processing Time Comparison](#processing-time-comparison)
+    - [Processing Time as a Function of the Dimensions of the Field of View](#processing-time-as-a-function-of-the-dimensions-of-the-field-of-view)
+    - [Processing Time as a Function of the Number of Frames](#processing-time-as-a-function-of-the-number-of-frames)
+
 ## Algorithm Parameters
 In this section we summarize how the Inscopix CNMF-E parameters relate to or differ from those used in CaImAn CNMF-E.
 

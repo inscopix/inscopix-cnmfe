@@ -4,6 +4,24 @@ This includes instructions for setting up the development environment, compiling
 packaging the project into a Python installable wheel file, and building a Docker image for the project.
 A sample C++ program and unit tests are provided as well.
 
+## Table of Contents
+- [Project structure](#project-structure)
+	- [Libraries directory](#libraries-directory)
+	- [Dependencies](#dependencies)
+	- [Tested Systems](#tested-systems)
+- [Building Inscopix CNMF-E as a static library](#building-inscopix-cnmf-e-as-a-static-library)
+	- [Step 1: Create the build directory](#step-1-create-the-build-directory)
+	- [Step 2: Build the project](#step-2-build-the-project)
+- [Example code for using the Inscopix CNMF-E library](#example-code-for-using-the-inscopix-cnmf-e-library)
+	- [Running the unit tests](#running-the-unit-tests)
+- [Building and using the Inscopix CNMF-E Docker image locally](#building-and-using-the-inscopix-cnmf-e-docker-image-locally)
+- [Building Inscopix CNMF-E as an installable Python package](#building-inscopix-cnmf-e-as-an-installable-python-package)
+	- [Step 1: Create a Python virtual environment](#step-1-create-a-python-virtual-environment)
+	- [Step 2: Build the wheel file](#step-2-build-the-wheel-file)
+	- [Step 3: Install the inscopix_cnmfe package using the wheel file](#step-3-install-the-inscopix_cnmfe-package-using-the-wheel-file)
+	- [Usage in Python](#usage-in-python)
+- [Troubleshooting](#troubleshooting)
+
 ## Project structure
 This section outlines the expected project structure and dependencies required to build Inscopix CNMF-E.
 
