@@ -98,9 +98,13 @@ namespace isx
         patchCnmfe(movie, memoryMapPath, footprints, traces, deconvParams, initParams, spatialParams, patchParams,
            maxNumNeurons, ringSizeFactor, mergeThreshold, numIterations, numThreads, outputType, deconvolve);
 
-        // if output directory provided, save output files to disk
-        if (!outputDirPath.empty())
+        if (footprints.n_slices == 0 || traces.n_rows == 0)
         {
+            ISX_LOG_WARNING("No components were identified by CNMF-E");
+        }
+        else if (!outputDirPath.empty())
+        {
+            // if an output directory was provided and cells were identified, save output files to disk
             if (outputFiletype == 1)
             {
                 std::string outputFilename = getH5OutputFilename(inputMoviePath, outputDirPath);
