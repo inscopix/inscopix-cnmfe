@@ -4,6 +4,30 @@ based on the results obtained by the algorithm. The default parameters may not b
 As such, it is important to understand how each parameter affects processing in order to
 determine which ones to tweak to obtain the desired output.
 
+## Table of Contents
+- [Relationships between Individual Parameters and CNMF-E Processing Modules](#relationships-between-individual-parameters-and-cnmf-e-processing-modules)
+- [Initialization Parameters](#initialization-parameters)
+  - [Preprocessing](#preprocessing)
+  - [Seed Pixels](#seed-pixels)
+- [Background Parameters](#background-parameters)
+  - [Downsampling](#downsampling)
+  - [Background Model](#background-model)
+- [Spatial Parameters](#spatial-parameters)
+- [Merging Parameters](#merging-parameters)
+- [Processing Parameters](#processing-parameters)
+  - [Processing Modes](#processing-modes)
+  - [Patch Size and Patch Overlap](#patch-size-and-patch-overlap)
+  - [Number of Threads](#number-of-threads)
+- [Auto-Estimated Parameters](#auto-estimated-parameters)
+- [Common Issues](#common-issues)
+  - [Inaccurate Average Cell Diameter](#inaccurate-average-cell-diameter)
+  - [Missing Cells](#missing-cells)
+  - [Too Many Cells](#too-many-cells)
+  - [Oversegmented Cells](#oversegmented-cells)
+  - [Slow Processing](#slow-processing)
+  - [Limited Computing Resources](#limited-computing-resources)
+- [Output Units](#output-units)
+
 ## Relationships between Individual Parameters and CNMF-E Processing Modules
 The flow chart below shows how data flows through the different CNMF-E modules during processing.
 The table underneath lists the input parameters that can be fine-tuned, with each row color-coded 
