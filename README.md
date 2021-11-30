@@ -81,7 +81,7 @@ footprints, traces = inscopix_cnmfe.run_cnmfe(
 
 #### Example Notebook
 A demo Jupyter Notebook that runs Inscopix CNMF-E on a small movie and displays spatial footprints 
-and temporal traces side by side is available [here](Inscopix_ CNMF-E_Demo.ipynb).
+and temporal traces side by side is available [here](Inscopix_CNMF-E_Demo.ipynb).
 
 ### Using Docker
 
