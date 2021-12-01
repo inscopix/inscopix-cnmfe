@@ -123,7 +123,7 @@ std::tuple<py::array,py::array> isx_cnmfe_python(
 PYBIND11_MODULE(inscopix_cnmfe, handle)
 {
     handle.doc() = "Inscopix CNMF-E for automated source extraction";
-    handle.attr("__version__") = "1.0.1";
+    handle.attr("__version__") = "1.0.2";
     handle.def("run_cnmfe", &isx_cnmfe_python, R"mydelimiter(
     Run the CNMF-E cell identification algorithm on a movie
 
