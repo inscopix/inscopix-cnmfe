@@ -124,12 +124,16 @@ class CMakeBuild(build_ext):
                   ["cmake", "--build", "."] + build_args, cwd=self.build_temp
             )
 
+with open("README.md", "r") as f:
+      long_description = f.read()
+
 setup(name='inscopix-cnmfe',
-      version='1.0.1',
+      version='1.0.2',
       author='Inscopix, Inc.',
       author_email="support@inscopix.com",
       url="https://github.com/inscopix/isx-cnmfe",
       description='Inscopix CNMF-E for automated source extraction',
+      long_description="Inscopix CNMF-E is a constrained non-negative matrix factorization (CNMF) algorithm used to perform automated source extraction from microendoscopic calcium imaging movies. Specifically, it aims to retrieve the spatial location and temporal dynamics of neurons in a fluorescent 1-photon calcium imaging movie. The source code is open and available to developers who wish to further evaluate, modify, and improve the algorithm.",
       classifiers=[
             'Operating System :: MacOS',
             'Operating System :: POSIX :: Linux',
