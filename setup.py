@@ -124,9 +124,6 @@ class CMakeBuild(build_ext):
                   ["cmake", "--build", "."] + build_args, cwd=self.build_temp
             )
 
-with open("README.md", "r") as f:
-      long_description = f.read()
-
 setup(name='inscopix-cnmfe',
       version='1.0.2',
       author='Inscopix, Inc.',
