@@ -1,0 +1,17 @@
+*.DS_Store
+
+*.a
+*.so
+
+.idea/
+cmake-build-debug/
+
+build/
+dist/
+lib/
+output/
+test/output/
+
+*.egg-info
+
+.ipynb_checkpoints/
