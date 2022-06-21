@@ -28,6 +28,21 @@ determine which ones to tweak to obtain the desired output.
   - [Limited Computing Resources](#limited-computing-resources)
 - [Output Units](#output-units)
 
+## Interactive parameter explorer
+
+To build intuition about what some CNMF-E parameters do on real datasets, 
+the following interactive tools provide instantaneous feedback showing
+you what effect these parameters:
+
+- the cell diameter
+- Gaussian kernel size
+- minimum peak-to-noise ratio
+- minimum correlation between seed pixels
+
+have on extracted cells and their footprints. 
+
+[CNMF-E parameter explorer -- Striatal data](https://inscopix.github.io/inscopix-cnmfe/parameter-tuning/striatum_IM1/)
+
 ## Relationships between Individual Parameters and CNMF-E Processing Modules
 The flow chart below shows how data flows through the different CNMF-E modules during processing.
 The table underneath lists the input parameters that can be fine-tuned, with each row color-coded 
