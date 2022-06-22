@@ -5,6 +5,7 @@ As such, it is important to understand how each parameter affects processing in 
 determine which ones to tweak to obtain the desired output.
 
 ## Table of Contents
+- [Interactive parameter explorer](#interactive-parameter-explorer)
 - [Relationships between Individual Parameters and CNMF-E Processing Modules](#relationships-between-individual-parameters-and-cnmf-e-processing-modules)
 - [Initialization Parameters](#initialization-parameters)
   - [Preprocessing](#preprocessing)
@@ -28,7 +29,7 @@ determine which ones to tweak to obtain the desired output.
   - [Limited Computing Resources](#limited-computing-resources)
 - [Output Units](#output-units)
 
-## Interactive parameter explorer
+## Interactive Parameter Explorer
 
 To build intuition about what some CNMF-E parameters do on real datasets, 
 the following interactive tools provide instantaneous feedback showing
@@ -37,7 +38,7 @@ you what effect these parameters:
 - the cell diameter
 - Gaussian kernel size
 - minimum peak-to-noise ratio
-- minimum correlation between seed pixels
+- minimum correlation a seed pixel and its immediate neighbors 
 
 have on extracted cells and their footprints. 
 
