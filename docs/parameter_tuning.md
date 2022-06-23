@@ -42,10 +42,17 @@ you what effect these parameters:
 
 have on extracted cells and their footprints. 
 
-### Explore CNMF-E parameters on the following datasets:
+### Explore CNMF-E parameters using the following datasets:
 
-- [CNMF-E parameter explorer -- Striatal data 1](https://inscopix.github.io/inscopix-cnmfe/parameter-tuning/striatum_IM1/)
-- [CNMF-E parameter explorer -- Striatal data 2](https://inscopix.github.io/inscopix-cnmfe/parameter-tuning/striatum_IM2/)
+
+| Dataset | Brain region |  
+| ------- | ------------ |
+| [Striatum IM1]((https://inscopix.github.io/inscopix-cnmfe/parameter-tuning/striatum_IM1/)) | Striatum |
+| [Striatum IM2]((https://inscopix.github.io/inscopix-cnmfe/parameter-tuning/striatum_IM2/)) | Striatum |
+| [PFC_V3_38]((https://inscopix.github.io/inscopix-cnmfe/parameter-tuning/PFC_V3_38/)) | PFC |
+| [PFC_IM2]((https://inscopix.github.io/inscopix-cnmfe/parameter-tuning/PFC_IM2/)) | PFC |
+
+
 
 ## Relationships between Individual Parameters and CNMF-E Processing Modules
 The flow chart below shows how data flows through the different CNMF-E modules during processing.
