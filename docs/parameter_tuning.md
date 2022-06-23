@@ -47,10 +47,10 @@ have on extracted cells and their footprints.
 
 | Dataset | Brain region |  
 | ------- | ------------ |
-| [Striatum IM1]((https://inscopix.github.io/inscopix-cnmfe/parameter-tuning/striatum_IM1/)) | Striatum |
-| [Striatum IM2]((https://inscopix.github.io/inscopix-cnmfe/parameter-tuning/striatum_IM2/)) | Striatum |
-| [PFC_V3_38]((https://inscopix.github.io/inscopix-cnmfe/parameter-tuning/PFC_V3_38/)) | PFC |
-| [PFC_IM2]((https://inscopix.github.io/inscopix-cnmfe/parameter-tuning/PFC_IM2/)) | PFC |
+| [Striatum IM1](https://inscopix.github.io/inscopix-cnmfe/parameter-tuning/striatum_IM1/) | Striatum |
+| [Striatum IM2](https://inscopix.github.io/inscopix-cnmfe/parameter-tuning/striatum_IM2/) | Striatum |
+| [PFC_V3_38](https://inscopix.github.io/inscopix-cnmfe/parameter-tuning/PFC_V3_38/) | PFC |
+| [PFC_IM2](https://inscopix.github.io/inscopix-cnmfe/parameter-tuning/PFC_IM2/) | PFC |
 
 
 
