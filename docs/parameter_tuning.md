@@ -51,6 +51,7 @@ have on extracted cells and their footprints.
 | [Striatum IM2](https://inscopix.github.io/inscopix-cnmfe/parameter-tuning/striatum_IM2/) | Striatum |
 | [PFC_V3_38](https://inscopix.github.io/inscopix-cnmfe/parameter-tuning/PFC_V3_38/) | PFC |
 | [PFC_IM2](https://inscopix.github.io/inscopix-cnmfe/parameter-tuning/PFC_IM2/) | PFC |
+| [Hippocampus_DD1](https://inscopix.github.io/inscopix-cnmfe/parameter-tuning/Hippocampus_DD1/) | Hippocampus |
 
 
 
