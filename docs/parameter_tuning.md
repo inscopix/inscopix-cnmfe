@@ -5,7 +5,7 @@ As such, it is important to understand how each parameter affects processing in 
 determine which ones to tweak to obtain the desired output.
 
 ## Table of Contents
-- [Interactive parameter explorer](#interactive-parameter-explorer)
+- [Interactive Parameter Explorer](#interactive-parameter-explorer)
 - [Relationships between Individual Parameters and CNMF-E Processing Modules](#relationships-between-individual-parameters-and-cnmf-e-processing-modules)
 - [Initialization Parameters](#initialization-parameters)
   - [Preprocessing](#preprocessing)
