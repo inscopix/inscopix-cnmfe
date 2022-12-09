@@ -1,0 +1,26 @@
+cff-version: 1.2.0
+title: Inscopix CNMF-E
+message: >-
+  If you use this software, please cite it using the
+  metadata from this file.
+type: software
+authors:
+  - given-names: Bruno
+    family-names: Boivin
+  - given-names: Nosheen
+    family-names: Adil
+  - given-names: Shay
+    family-names: Neufeld
+abstract: >-
+  Inscopix CNMF-E is a constrained non-negative
+  matrix factorization (CNMF) algorithm used to
+  perform automated source extraction from
+  microendoscopic calcium imaging movies (the 'E'
+  stands for endoscope). Specifically, it aims to
+  retrieve the spatial location and temporal dynamics
+  of neurons in a fluorescent 1-photon calcium
+  imaging movie.
+license: AGPL-3.0
+commit: 2eb5739
+version: 1.0.2
+date-released: '2021-12-01'
