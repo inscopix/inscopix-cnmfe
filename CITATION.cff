@@ -7,13 +7,10 @@ type: software
 authors:
   - given-names: Bruno
     family-names: Boivin
-    affiliation: Inscopix
   - given-names: Nosheen
     family-names: Adil
-    affiliation: Inscopix
   - given-names: Shay
     family-names: Neufeld
-    affiliation: Inscopix
 abstract: >-
   Inscopix CNMF-E is a constrained non-negative
   matrix factorization (CNMF) algorithm used to
