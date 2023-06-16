@@ -153,7 +153,7 @@ namespace isx
 
     float Cnmfe::getMergeThreshold()
     {
-        return m_ringSizeFactor;
+        return m_mergeThresh;
     }
 
     size_t Cnmfe::getNumIterations()
